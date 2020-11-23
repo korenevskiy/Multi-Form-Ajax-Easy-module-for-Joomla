@@ -16,6 +16,17 @@ use Joomla\CMS\Language\Text as JText;
 use Joomla\CMS\Factory as JFactory;
 use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 
+
+//        echo "<pre>";
+//        echo 'checkGet:'.print_r(JSession::checkToken('get'), true).'+<br>';
+//        echo 'checkPost:'.print_r(JSession::checkToken('post'), true).'+<br>';
+//        echo 'token:'.print_r(JSession::getFormToken(), true).'<br>';
+//        echo 'SiteName:'.print_r(JFactory::getApplication()->getName(), true).'<br>';
+////        echo 'SiteName:'.print_r(JFactory::getApplication()->getSession(), true).'<br>';
+//        echo "</pre>";
+//        $token = "<br>".JSession::getFormToken()
+//                ."<br>+".JSession::checkToken().'+';
+//        JFactory::getApplication()->enqueueMessage($token);
 /**
  * Form Field class for the Joomla Platform.
  * Provides a one line text box with up-down handles to set a number in the field.
@@ -46,10 +57,73 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
 	 */
 	public function getInput()
 	{
+        $this->id = $this->form->getValue('id',null,0); 
+        
+        $sql = "SELECT menuid FROM `#__modules_menu` WHERE `moduleid` =$this->id; ";
+        $itemids = JFactory::getDbo()->setQuery($sql)->loadColumn();
+        
+        if(count($itemids) > 1){
+            $itemids = "&Itemid=[". implode(',', $itemids)."]";
+        }
+        elseif(count($itemids) == 1 && reset($itemids)==0){
+            $itemids = "&Itemid=".reset($itemids);
+        }
+        else{
+            $itemids = '';
+        }
+        
+        
+        
+        $html = '';
 		
+        $config	= JFactory::getConfig()->toObject(); 
+        $key = $this->id ? ('&key='.md5($config->secret.$this->id)) : '' ;
+        
+        $input = JFactory::getApplication()->input;//->getArray();
+        
+        $hash = crypt ($config->secret, substr($config->dbprefix,0,2));
+        $hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
+        
+        $isToken = $input->get($hash, false);
+        //$isToken = in_array($word, $full_string);
+        
+        $token = $isToken ? JSession::getFormToken() : JSession::getFormToken(TRUE);
+        
+        $urlToken = JUri::root(). "?option=com_ajax&module=multi_form&format=raw&method=getToken&$hash=$this->id";
+        
+        $root = JUri::root();
+        
+        //$urlForm = JUri::root(). "/?option=com_ajax&module=multi_form&format=raw&method=getForm&id=$this->id&$hash=1&show=1&Itemid=0";
+       
+        $html .= "<script>"
+                . "const script$this->id  = function(){\n"
+                . "const request$this->id = new XMLHttpRequest();\n"
+                . "const url$this->id = '$urlToken';\n"
+                . "request$this->id.open('GET', url$this->id);\n"
+                . "request$this->id.setRequestHeader('Content-Type', 'application/x-www-form-url');\n"                
+                . "request$this->id.addEventListener('readystatechange', () => {if (request$this->id.readyState === 4 && request$this->id.status === 200) {\n"
+                
+                . "const ulrForm$this->id = '$root?option=com_ajax&module=multi_form&format=raw&method=getForm&show=1&id=$this->id$itemids&'+ request$this->id.responseText + '=1$key';\n"
+                . "//console.log('urlResponse', request$this->id.responseText );\n"
+                . "//console.log('ulrForm', ulrForm$this->id );\n"
+                . "document.getElementById('mod_test_$this->id').href = ulrForm$this->id;\n"
+                . "}});"
+                . "request$this->id.send();"
+                . "}\n"
+                . "document.addEventListener('DOMContentLoaded', script$this->id);"
+                . "</script>";
+        
                 
 
-                $this->id = $this->form->getValue('id',null,0); 
+        
+//        echo "<pre>";
+//        //echo '$root/?option=com_ajax&module=multi_form&format=raw&method=getForm&id=$this->id$itemids&'+ request$this->id.responseText + '=1$key'<br>'; 
+//        echo 'hash:'.print_r($hash, true).'+<br>'; 
+//        echo 'key:'.print_r($key, true).'+<br>'; 
+//        echo "</pre>";
+        
+        
+        
                  
                 $this->default = $this->default ?JText::_($this->default):JText::_('JAPPLY');
                 
@@ -61,21 +135,6 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
 			$type = 'a';
         
         $this->id;
-        
-        $sql = "SELECT menuid FROM `#__modules_menu` WHERE `moduleid` =$this->id; ";
-        $itemids = JFactory::getDbo()->setQuery($sql)->loadColumn();
-        
-        
-        
-        if(count($itemids) > 1){
-            $itemids = "&Itemid=[". implode(',', $itemids)."]";
-        }
-        elseif(count($itemids) == 1 && reset($itemids)==0){
-            $itemids = "&Itemid=".reset($itemids);
-        }
-        else{
-            $itemids = '';
-        }
             
 
 		$class   = $this->element['class'] ? (string) $this->element['class'] : ' btn-medium button-apply btn-success';
@@ -87,8 +146,8 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
 		if($icon){
 			$icon = "<span class='icon-$icon'></span>";
 		}
-        $key = $this->id ? ('&key='.md5(JFactory::getConfig()->get('secret').$this->id)) : '' ;
-        $url = JUri::root()."?option=com_ajax&module=multi_form&format=raw&method=getForm$key&id=$this->id&".JSession::getFormToken().'=1&show=1'.$itemids;
+        $url = "";
+        //$url .= JUri::root()."?option=com_ajax&module=multi_form&format=raw&method=getForm$key&id=$this->id&".JSession::getFormToken().'=1&show=1'.$itemids;
         $href = $this->id ? "href='$url'" : '' ;
         $message = $this->id ?'': " onclick=\"alert('".JText::_('MOD_MULTI_FORM_TEST_MODULE_MESSAGE')."')\"";
                 
@@ -96,17 +155,18 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
         $text = $this->id ? JText::sprintf($text,$this->id) : $this->default;
         $this->value = htmlspecialchars($text, ENT_COMPAT, 'UTF-8') ;
                 
-                $style=' style=\'width: 220px; box-sizing: border-box;\'';
+                $style=' style="min-width: 220px; box-sizing: border-box;" ';
                 
                 $this->disabled = $this->id? '':' disabled ';
                 $this->readonly = $this->id? '':' readonly '; 
  
             if($type == 'a'){
-                return "<a $title $href id='mod_$this->id' target='_blank' class='btn $class' $this->disabled $this->readonly $style $message>$icon $text</a>";
+                return "<a $title $href id='mod_test_$this->id' target='_blank' class='btn $class' $this->disabled $this->readonly $style $message>$icon $text</a>$html";
             }
+            
                 
             $formaction = $this->id ? "formaction='$url'" : '' ;
-            return "<$type id='mod_$this->id' class='btn $class'   $title $message $formaction formmethod='GET' formtarget='_blank'>$icon $this->value </$type>";
+            return "<$type id='mod_test_$this->id' class='btn $class'   $title $message $formaction formmethod='GET' formtarget='_blank'>$icon $this->value </$type>" ;
 	 
 	}	
         /**

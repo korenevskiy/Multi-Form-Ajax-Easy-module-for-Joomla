@@ -21,6 +21,7 @@ use Joomla\CMS\Filter\InputFilter as JFilterInput;
 use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\Router\Route as JRoute;
 use \Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
+use Joomla\CMS\Session\Session as JSession;
 
 $path_base = JUri::root();
 JFactory::getDocument()->setBase($path_base);
@@ -1215,7 +1216,8 @@ class modMultiFormHelper {
         $param->header_tag = $params->set('header_tag', $param->head_tag);
         $param->module_tag = $params->set('module_tag', $param->mod_tag);
         
-        $textsuccesssendAjax .= ' Param-'.$param->captcha.' ---- ';
+//
+//        $textsuccesssendAjax .= ' Param-'.$param->captcha.' ---- ';
         
         if($params->get('captcha')){
 //            $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0
@@ -1418,6 +1420,29 @@ class modMultiFormHelper {
         return $textsuccesssendAjax; // Ответ Ajax'у
     }
     
+    
+    public static function getTokenAjax(){
+        
+        $config	= JFactory::getConfig()->toObject();
+        $input = JFactory::getApplication()->input;//->getArray();
+        
+        $hash = crypt ($config->secret, substr($config->dbprefix,0,2));
+        $hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
+        $isToken = $input->get($hash, false); 
+//        echo "hash: ". $hash .'<br>';
+//        echo "ID: ". $isToken .'<br>';
+//        echo '<br>token:'.  ($isToken ? 'TRUE' : 'False' ).'<br>';// JSession::getFormToken(TRUE);
+//        echo "<br>";
+//        echo "<pre>";
+//        echo 'hash:'.print_r(JFactory::getApplication()->input->getArray(), true).'+<br>'; 
+//        echo "</pre>";
+        return $isToken ? JSession::getFormToken() : JSession::getFormToken(TRUE);
+        
+//        $2y$10$AfNUkMAQXcJq4ms17urWu.R3MpGN0VBylO8U1RvVJy9mTr4SfGEdu
+//        $2y$10$n3pCB5kO/4DYgBAcU6CHGuHO0hbDCnUan8pp/jD8fARmnA7JxT2QK
+        
+    }
+    
     public static function getFormAjax(){
         jimport('joomla.application.module.helper'); //подключаем хелпер для модуля
         
@@ -1464,7 +1489,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         if(is_string($list_fields))
             $list_fields = new JRegistry($list_fields);
-        $list_fields->select_ditor = $params->get('select_ditor');
+        $list_fields->select_editor = $params->get('select_editor');
         
         if($params->get('debug')=='debug' || $module->deb){
             JFactory::getDocument()->addStyleDeclaration("#mfForm_$module->id{display:block;}");
@@ -1502,6 +1527,15 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         if($module->deb || JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')){
             echo "<style type='text/css'>#mfForm_$module->id{display:block;}</style>";
         } 
+//echo "<pre class='container-fluid full-width'>";
+//        echo 'check:'.print_r(JSession::checkToken('get'),  true).'+<br>';
+//        echo 'check:'.print_r(JSession::checkToken('post'), true).'+<br>';
+//        echo 'token:'.print_r(JSession::getFormToken(), true).'<br>';
+//        echo 'SiteName:'.print_r(JFactory::getApplication()->getName(), true).'<br>';
+////        echo 'SiteName:'.print_r(JFactory::getApplication()->getSession(), true).'<br>';
+////        echo 'token:'.print_r(JSession::getData(), true).'<br>'; 
+//        echo print_r(JFactory::getApplication()->input->getArray(), true);
+//echo "</pre>";
 //        echo (JModuleHelper::getLayoutPath('mod_multi_form', $params->get('layout', 'default'))).('  Testing !!!++ Debug '.($module->deb?'true ':'false ') . $params->get('layout', 'default'));      
 //        return 'Testing !!!++ Debug '.($module->deb?'true ':'false ') . $params->get('layout', 'default');      
         include JModuleHelper::getLayoutPath('mod_multi_form', $params->get('layout', 'default'));

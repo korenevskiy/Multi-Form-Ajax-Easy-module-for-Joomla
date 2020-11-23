@@ -111,12 +111,13 @@
     line-height: initial;
 	max-width: 260px;
     width: 12rem; 
+    width: -webkit-fill-available;
     text-align-last: center;
     text-align: center;
 	text-decoration: none;
     margin: 0 auto;
-    font-size: 14px;
-    font-size: 1rem;
+    /*font-size: 14px;*/
+    /*font-size: 1rem;*/
     transition: 0.3s 0.1s;
 }
 .mfGo{     
@@ -205,8 +206,8 @@ dialog.mfForm_modal  .mfClose{
 	text-align: center;
     line-height: 20px;
 	border-radius: 3px;
-    -border: none;
-    -color: transparent;
+    /*border: none;*/
+    /*color: transparent;*/
     top: 3px;
     top: -6px;
     right: 7px;

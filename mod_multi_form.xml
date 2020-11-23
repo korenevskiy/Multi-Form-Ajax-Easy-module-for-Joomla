@@ -6,7 +6,7 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-	<modificationDate>2020-06-22</modificationDate>
+	<modificationDate>2020-11-22</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
@@ -40,7 +40,7 @@
             <fieldset
                 name="basic"
                 addfieldpath="modules/mod_multi_form/fields">
-                
+                 
                 <field type="test"  icon='eye-open'/>   
                      
                       
@@ -542,6 +542,18 @@
                 
                 
             </fieldset>
+
+<!--            <fieldset name="table_fields" label="Fields">
+                
+                
+                    <field
+                        type="tableFields_"
+                        default=""
+                        label="&lt;hr>"
+                        description=""
+                    />
+            </fieldset>               -->
+
                 <fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
                     <field
                         name="work_type_require"
@@ -955,13 +967,25 @@ ORDER BY lft)t) ;
                     <option value="1">v1</option> 
                 </field>
                 <field
-                    name="select_ditor"
+                    name="select_editor"
                     type="sql" 
                     default="tinymce"
                     label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
                     description="JEDITOR_DESC" 
                         readonly="1" disabled="1" 
+                    
+                    translate="true"
+                        multiple="false" key_field="value" value_field="value" translate_default="true"
+                        
                     query="SELECT element value FROM #__extensions WHERE folder='editors' ;" />
+               
+                <!--
+                    
+                <field name="select_editor" type="editors" default="none" 
+                    label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
+                    description="JEDITOR_DESC"  />
+                -->
+                    
                  <field name="images_folder" type="folderlist" default="" label="JDIRECTORY_FILES" 
                     description="JDIRECTORY_FILES_DESC"   filter="" exclude="" stripext="" directory="images" multiple="false"
                             /> 

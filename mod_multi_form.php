@@ -11,7 +11,6 @@
  * mod_multi_form 
  */
 
-
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\Text as JText;
 use Joomla\CMS\Factory as JFactory;
@@ -137,13 +136,13 @@ if(in_array('editor', $allparams->typefield)){
             return $this;
         }
     }
-    $editor = Ed::getInstance($param->select_ditor)->Load(); 
+    $editor = Ed::getInstance($param->select_editor)->Load(); 
     
         
     
-    //$fieldB = JEditor::getInstance($param->select_ditor || 'tinymce')->initialise();
-    //\Joomla\CMS\Editor\Editor::getInstance($param->select_ditor || 'tinymce')->initialise();
-//$plg = JPluginHelper::getPlugin('editors','tinymce'); //->onInit() ,$param->select_ditor || 'tinymce'
+    //$fieldB = JEditor::getInstance($param->select_editor || 'tinymce')->initialise();
+    //\Joomla\CMS\Editor\Editor::getInstance($param->select_editor || 'tinymce')->initialise();
+//$plg = JPluginHelper::getPlugin('editors','tinymce'); //->onInit() ,$param->select_editor || 'tinymce'
 //         $methods = get_class_methods($editor);
 //         $methods = get_class($plg);
 //toPrint($methods,'$methods',0,'pre',true); 
@@ -157,7 +156,7 @@ if(in_array('editor', $allparams->typefield)){
 }
 
 
-//$fieldB = JEditor::getInstance($param->select_ditor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
+//$fieldB = JEditor::getInstance($param->select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
                                   
 //                                    $editor = JEditor::getInstance('tinymce');
 //                                     toPrint($editor,'Editor') ;
@@ -172,7 +171,7 @@ if($param->jsbeforesend){
  }
 
 //$allparams  = json_decode($params->get( 'list_fields' ));
-//$allparams->select_ditor = $param->select_ditor || 'tinymce';  
+//$allparams->select_editor = $param->select_editor || 'tinymce';  
 
 
 //$moduleid = $module->id;
