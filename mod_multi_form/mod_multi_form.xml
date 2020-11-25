@@ -6,7 +6,7 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-	<modificationDate>2020-11-22</modificationDate>
+	<modificationDate>2020-11-25</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
@@ -16,7 +16,9 @@
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
         <filename module="mod_multi_form">mod_multi_form.php</filename>
+        <filename>mod_multi_form.xml</filename> 
         <filename>helper.php</filename>
+        <filename>index.html</filename>
         <folder>css</folder>
         <folder>field</folder>
         <folder>img</folder>
@@ -33,7 +35,8 @@
         <language tag="uk-UA">language/uk-UA/uk-UA.mod_multi_form.sys.ini</language>
     </languages>
     <updateservers>
-        <server type="extension" priority="1" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>
+        <server type="extension" priority="1" name="mod_multi_form">https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form-update.xml</server>
+        <!--<server type="extension" priority="2" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>-->
     </updateservers>
     <config>
         <fields name="params">
