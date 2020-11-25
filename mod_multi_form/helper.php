@@ -1525,7 +1525,9 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        toPrint($params,'$params',0,'pre');
         ob_start();
         if($module->deb || JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')){
-            echo "<style type='text/css'>#mfForm_$module->id{display:block;}</style>";
+            //echo "<style type='text/css'>#mfForm_$module->id{display:block;}</style>";
+            echo "<link href='".JUri::root()."modules/mod_multi_form/css/test.css' rel='stylesheet'>";
+            echo "<script src='".JUri::root()."modules/mod_multi_form/js/test.js'></script>";
         } 
 //echo "<pre class='container-fluid full-width'>";
 //        echo 'check:'.print_r(JSession::checkToken('get'),  true).'+<br>';
