@@ -1,3 +1,47 @@
+<<<<<<< OURS
+# Created by https://www.toptal.com/developers/gitignore/api/netbeans
+# Edit at https://www.toptal.com/developers/gitignore?templates=netbeans
+
+### NetBeans ###
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+**/mod_multi_form/nbproject/private/
+**/mod_multi_form/nbproject/Makefile-*.mk
+**/mod_multi_form/nbproject/Package-*.bash
+/mod_multi_form/nbproject/private/
+/mod_multi_form/nbproject/Makefile-*.mk
+/mod_multi_form/nbproject/Package-*.bash
+mod_multi_form/nbproject/private/
+mod_multi_form/nbproject/Makefile-*.mk
+mod_multi_form/nbproject/Package-*.bash
+nbproject/private/
+nbproject/Makefile-*.mk
+nbproject/Package-*.bash
+nbproject/
+nbproject\
+_mod_Multi_Form/mod_multi_form/nbproject/
+_mod_Multi_Form\mod_multi_form\nbproject\
+mod_multi_form/nbproject/
+mod_multi_form\nbproject\
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+ 
+# End of https://www.toptal.com/developers/gitignore/api/netbeans
+
+.gitignore
+
+
+
+
+
+
+
+=======
+>>>>>>> THEIRS
 /.htaccess
 /README.md
 /futureFunc.txt
