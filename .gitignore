@@ -1,19 +1,3 @@
-/nbproject/private/
-/nbproject/
-/mod_multi_form/field/default.php
-/mod_multi_form/field/cat.php
-/mod_multi_form/field/jed.php
-/mod_multi_form.zip
-/mod_multi_form_free.zip
-/mod_multi_form_jed.zip
-/mod_multi_form_pro__20201120.zip
-/mod_multi_form_pro_sportmassage4you.nl.zip
-/mod_multi_form/nbproject/private/
-_mod_Multi_Form/mod_multi_form/nbproject/
-mod_multi_form/nbproject/
-mod_multi_form\nbproject\
-_mod_Multi_Form\mod_multi_form\nbproject\
-
 LICENSE
 README.md
 futureFunc.txt
@@ -21,3 +5,43 @@ mod_multi_form-update.xml
 
 .git/
 nbproject/
+
+# IDE & System Related Files #
+.buildpath
+.project
+.settings
+.DS_Store
+.idea
+.vscode
+
+
+# Test Related Files #
+/phpunit.xml
+
+# Stubs file holding mapped classes
+/stubs.php
+
+# Node modules #
+node_modules/
+
+# phpDocumentor Logs #
+phpdoc-*
+
+# OSX #
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows #
+Thumbs.db
+Desktop.ini
+
+# Never ignore #
+# Only apply this rule to the main repository's gitignore files
+field/default.php
+field/cat.php
+field/jed.php
+!/.gitignore
+!/build/.gitignore
+!/tests/unit/suites/libraries/joomla/archive/.gitignore
+!/tests/unit/tmp/.gitignore
