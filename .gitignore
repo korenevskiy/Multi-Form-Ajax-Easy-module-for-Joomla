@@ -1,15 +1,10 @@
-/.git
-/nbproject
+/.htaccess
 /README.md
 /futureFunc.txt
 /mod_multi_form-update.xml
 /LICENSE
-
-README.md
-futureFunc.txt
-mod_multi_form-update.xml
-LICENSE
-
+/.git
+/nbproject
 
 # IDE & System Related Files #
 .buildpath
@@ -43,9 +38,9 @@ Desktop.ini
 
 # Never ignore #
 # Only apply this rule to the main repository's gitignore files
-field/default.php
-field/cat.php
-field/jed.php
+/field/default.php
+/field/cat.php
+/field/jed.php
 !/.gitignore
 !/build/.gitignore
 !/tests/unit/suites/libraries/joomla/archive/.gitignore
