@@ -1,10 +1,11 @@
-/LICENSE
+/.git
+/nbproject
 /README.md
 /futureFunc.txt
 /mod_multi_form-update.xml
+/LICENSE
 
-.git/
-nbproject/
+
 
 # IDE & System Related Files #
 .buildpath
