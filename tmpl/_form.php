@@ -91,10 +91,10 @@ $min = false?'.min':'';
 JHtml::script("modules/$module->module/js/jquery.form$min.js",[],['async' => 'async', 'defer' => 'defer']);
 JHtml::script("modules/$module->module/js/jquery.validate.min.js",[],['async' => 'async', 'defer' => 'defer']);
 JHtml::script("modules/$module->module/js/messages.min.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/jquery.maskedinput$min.js",[],['async' => 'async', 'defer' => 'defer']); 
+//JHtml::script("modules/$module->module/js/jquery.maskedinput$min.js",[],['async' => 'async', 'defer' => 'defer']); 
 //JHtml::script("modules/$module->module/js/inputmask.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/jquery.inputmask.min.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['async' => 'async', 'defer' => 'defer']); 
+JHtml::script("modules/$module->module/js/jquery.inputmask$min.js",[],['async' => 'async', 'defer' => 'defer']);
+//JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['async' => 'async', 'defer' => 'defer']); 
 JHtml::script("modules/$module->module/js/url$min.js",[],['async' => 'async', 'defer' => 'defer']);
 
 $param->scriptver = $param->script?:1;

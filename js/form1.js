@@ -400,7 +400,7 @@ function mfButtonSubmit_Click(e) {
 //        return;
 //console.log('jQuery.validator.messages',jQuery.validator.messages);
 
-                console.clear();
+//this.deb &&                console.clear();
 //        console.log(11111111,"#mfForm_form_"+params.id,params,this);
     jQuery("#mfForm_form_" + params.id)
 //                .each(function(callback){
@@ -630,7 +630,7 @@ function mfAjaxDoneForm(data, status) {
     }).click(this, mfButtonSubmit_Click);
 
 //        jQuery('#mfForm_form_'+this.id +' input').inputmask();
-//    console.log('🏆 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Success! - Done! status:', status);
+    this.deb && console.log('🏆 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Success! - Done! status:', status);
 }
 
 function mfAjaxFailForm(jqXHR, status, errorThrown) {
@@ -753,7 +753,12 @@ function mfGetAllModules() {
  */
 function mfAjaxCompleteAllForm(p1) {
 
-    for (let module of this) {
+    let mods = Array.isArray(this)? this : [this];
+
+//console.log('mfAjaxCompleteAllForm()',mods);
+
+    for (let module of mods) {
+//console.log('555555 ',module );
         if (module.captcha) {
             console.log('-----> Captcha-RENDER() !!!!!->', 'dynamic_captcha_' + module.id, module.captcha, module);
             Object.assign(module,jQuery('#dynamic_captcha_'+module.id).data());
@@ -789,7 +794,7 @@ function mfAjaxCompleteAllForm(p1) {
                        }catch(e){
                        }
                     }
-                    console.log('(III)  Delay-CallBack!!!!!-->R:', response, ' M:', module, 'this', this);
+                    console.log('(III)  Delay-CallBack!!!!!-->R:', response, ' M:', module, 'this:', mods);
                     //submitHandler.call(data,form,event); 
                 },
                 'error-callback': function (response) {
@@ -802,23 +807,26 @@ function mfAjaxCompleteAllForm(p1) {
                        }catch(e){
                        }
                     }
-                    console.log('(-II)  Error-CallBack!!!!!-->R:', response, ' M:', module, 'this', this);
+                    console.log('(-II)  Error-CallBack!!!!!-->R:', response, ' M:', module, 'this:', mods);
                     //submitHandler.call(data,form,event); 
                 }
             });
 
 //            console.log('----->2 CaptchaAllForm!!!!!->', 'dynamic_captcha_' + module.id, module.captcha, module);
-            //'sitekey':this.
+            //'sitekey':mods.
             // 1. Создать функцию CapcthRender для классов g-captcha
             // 2. Создать обработчик CallBak для Render.
             // 3. Создать PHP Проверку.
+        }else{
+//console.log('555555 ',module );
         }
+//console.log('66666666666 ',mods );
     }
 
 
 
 
-//    console.log('jQuery.validator.messages',jQuery.validator.messages );
+    console.log('jQuery.validator.messages',jQuery.validator.messages );
 //    jQuery("form").validate({messages:jQuery.validator.messages}); 
 //    jQuery.getScript('modules/mod_multi_form/js/messages.min.js');
 
@@ -905,58 +913,58 @@ function mfAjaxCompleteAllForm(p1) {
 
 
                     }
-                    return;
+//    return;
 //    console.log('actions ',actions);
 //    console.log(p1);
-//        console.log('🏆🏆🏆🏆🏆🏆🏆🏆 Module :',this);
-                    //$( this ).serializeArray()
+        console.log('🏆🏆🏆🏆🏆🏆🏆🏆 Module :',mods);
+                    //$( mods ).serializeArray()
 
                     //var hash = location.hash.substring(1); 
+    jQuery(":input").inputmask();
+}
 
-                }
+jQuery(function () {
 
-                jQuery(function () {
+    var mfButtons = {};
+    var itemid = 0;
 
-                    var mfButtons = {};
-                    var itemid = 0;
-
-                    for (let clss of document.body.classList) {
-                        if (clss.toString().substr(0, 7) === 'itemid-') {
-                            itemid = clss.toString().substr(7);
-                        }
-                    }
+    for (let clss of document.body.classList) {
+        if (clss.toString().substr(0, 7) === 'itemid-') {
+            itemid = clss.toString().substr(7);
+        }
+    }
 
 
-                    jQuery.when(...jQuery('.mfForm')//.get().reverse()
-                            .filter(function (i, form_mod) {
-                                var params = jQuery(form_mod).data();
-                                if (!params.id) {
-                                    return false;
-                                }
+    jQuery.when(...jQuery('.mfForm')//.get().reverse()
+        .filter(function (i, form_mod) {
+            var params = jQuery(form_mod).data();
+            if (!params.id) {
+                return false;
+            }
 
-                                params.button = jQuery(form_mod).get(0).id;
-                                params.tag = jQuery(form_mod).get(0).tagName;
+            params.button = jQuery(form_mod).get(0).id;
+            params.tag = jQuery(form_mod).get(0).tagName;
 
 //            console.log(i,'-form ',params.id,' ',params.tag,' ----------', params.button );
 
-                                if (!(params.id in mfButtons)) {
-                                    mfButtons[params.id] = [];
-                                }
+            if (!(params.id in mfButtons)) {
+                mfButtons[params.id] = [];
+            }
 
-                                if (['a', 'button', 'A', 'BUTTON'].includes(params.tag)) {
-                                    if (mfButtons[params.id]) {
-                                        mfButtons[params.id].push(form_mod);//params.button
-                                    }
-                                }
+            if (['a', 'button', 'A', 'BUTTON'].includes(params.tag)) {
+                if (mfButtons[params.id]) {
+                    mfButtons[params.id].push(form_mod);//params.button
+                }
+            }
 
-                                if ('mod_' + params.id !== params.button)
-                                    return false;
+            if ('mod_' + params.id !== params.button)
+                return false;
 
-                                params.buttons = mfButtons[params.id];
-                                form_mod.params = params;
-                                return true;
-                            })
-                            .map(function (index, form_mod) {//.popup
+            params.buttons = mfButtons[params.id];
+            form_mod.params = params;
+            return true;
+        })
+        .map(function (index, form_mod) {//.popup
 //console.log(index);
 //console.log(form_mod);
 //            var params = form_mod.params; 
@@ -968,15 +976,21 @@ function mfAjaxCompleteAllForm(p1) {
 //            params.deb = jQuery(form_mod).data('deb');
 //            params.type = jQuery(form_mod).data('type');
 
-                                var url = window.location.origin + '/index.php';
-                                url = document.baseURI + 'index.php';
+            var url = window.location.origin + '/index.php';
+                url = document.baseURI + 'index.php';
 //console.log(url);
-                                var request = {id: form_mod.params.id, format: 'raw', module: 'multi_form', option: 'com_ajax', method: 'getForm', Itemid: itemid};
-                                return jQuery.ajax({type: 'POST', url: url, dataType: 'html', data: request, context: form_mod.params}).done(mfAjaxDoneForm).fail(mfAjaxFailForm);
-                            })).done(mfAjaxCompleteAllForm);
-//    console.log(mfButtons);
+            var request = {id: form_mod.params.id, format: 'raw', module: 'multi_form', option: 'com_ajax', method: 'getForm', Itemid: itemid};
+            return jQuery.ajax({type: 'POST', url: url, dataType: 'html', data: request, context: form_mod.params})
+                    .done(mfAjaxDoneForm)
+                    .fail(mfAjaxFailForm);
+        })
+    )
+//    .then(function(){console.log('GOOD !!!!');},function(){console.log('BAD !!!!');})
+//    .done(function(){console.log('GOOD !!!!');})
+    .done(mfAjaxCompleteAllForm);
+    console.log(mfButtons);
 
 
 //        console.log('mfButtons:',mfButtons);
                     //hidden text textarea editor telephone email select radio checkbox color 
-                });
+});
