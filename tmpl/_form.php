@@ -86,7 +86,11 @@ if($param->onoffjquery){
     JHtml::_('bootstrap.framework');
 //    JHtml::_('bootstrap.loadCss', true);
 }
-$min = false?'.min':'';
+static $min;
+if(is_null($min)){
+    $min = $param->debug?'':'.min';
+}
+
 //JHtml::script('jquery.form.js', 'modules/$module->module/js/');
 JHtml::script("modules/$module->module/js/jquery.form$min.js",[],['async' => 'async', 'defer' => 'defer']);
 JHtml::script("modules/$module->module/js/jquery.validate.min.js",[],['async' => 'async', 'defer' => 'defer']);
