@@ -560,10 +560,10 @@ class modMultiFormHelper {
             $mask = $paramsfield?:'+999(999) 999-9999';
             if($labelOut){
                 $fieldB = "<div class='form-group mfFieldGroup tel $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' class='form-control input tel' $requiredField  data-inputmask='\"mask\":\"$mask\"' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'>"; //data-inputmask='\"mask\": \"$mask\"'
-                $fieldB .= " $intro</div>"; 
+                $fieldB .= "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' class='form-control input tel' $requiredField  data-inputmask=\"'mask': '$mask'\" pattern=\"[0-9]{3}-[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //data-inputmask='\"mask\": \"$mask\"'
+                $fieldB .= " $intro</div>";
             }else{
-                $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask='\"mask\": \"$mask\"' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'>"; //  data-inputmask='\"mask\": \"$mask\"'
+                $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask=\"'mask': '$mask'\" pattern=\"[0-9]{3}-[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //  data-inputmask='\"mask\": \"$mask\"'
                 $fieldB .= " $intro";
             }
                         
