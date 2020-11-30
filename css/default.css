@@ -582,8 +582,10 @@ form.mfStatusForm  fieldset.checkbox{
     display: flex;
 }*/
 form.mfStatusForm  label.error{
-	position: absolute;
-	bottom: 0;
+	/*position: absolute;*/
+	/*bottom: 0;*/
+     position: initial;
+    justify-self: baseline;
 }
 
 
