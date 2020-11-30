@@ -37,7 +37,7 @@
     </languages>
     <updateservers>
         <server type="extension" priority="1" name="mod_multi_form">https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form-update.xml</server>
-        <!--<server type="extension" priority="2" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>-->
+        <server type="extension" priority="2" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>
     </updateservers>
     <config>
         <fields name="params">
