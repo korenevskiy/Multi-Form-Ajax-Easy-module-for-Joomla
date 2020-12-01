@@ -607,6 +607,16 @@ function mfAjaxDoneForm(data, status) {
                 jQuery(btn).click(this, mfOpenModal_Click);
             }
         }
+        // Привязка события Escape 
+        let mod = {data: this, preventDefault: ()=>{}};
+        document.addEventListener('keydown', function(event) {
+            if(event.code === 'Escape'){ 
+                mfCloseModal_Click(mod);
+            }
+        });
+        
+        
+        
     } else {
         jQuery('#mod_' + this.id).append(jQuery(data));
         if (this.buttons.length > 0) {
@@ -988,7 +998,9 @@ jQuery(function () {
 //    .then(function(){console.log('GOOD !!!!');},function(){console.log('BAD !!!!');})
 //    .done(function(){console.log('GOOD !!!!');})
     .done(mfAjaxCompleteAllForm);
-    console.log(mfButtons);
+//    console.log(mfButtons);
+
+
 
 
 //        console.log('mfButtons:',mfButtons);
