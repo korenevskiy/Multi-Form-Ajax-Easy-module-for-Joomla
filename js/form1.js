@@ -96,15 +96,6 @@ function mfOpenModal_Click(event) {
 //    console.log('modal -> ', modal);
 //    console.log('this.id -> ', event.data.id);
 
-    if (heightpopupblock + 50 >= heightpage) {
-        var scrollFT = scrollFromTop();//положение прокрутки страницы 
-        var positiOnScroll = 50;// + scrollFT;
-        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-    } else {
-        var scrollFT = 0;//scrollFromTop();//положение прокрутки страницы 
-        var positiOnScroll = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-    }
 
 
 //    console.log('scrollFT -> ', scrollFT);
@@ -115,8 +106,26 @@ function mfOpenModal_Click(event) {
 
     jQuery(overley).fadeIn(400, // сначала плавно показываем темную подложку
             function () { // после выполнения предыдущей анимации
+                
+                document.getElementById("mfForm_" + event.data.id).showModal();
+                
+    if (heightpopupblock + 50 >= heightpage) {
+        var scrollFT = scrollFromTop();//положение прокрутки страницы 
+        var positiOnScroll = 50;// + scrollFT;
+//        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
+    } else {
+        var scrollFT = 0;//scrollFromTop();//положение прокрутки страницы 
+        var positiOnScroll = heightpage / 2 - heightpopupblock / 2 + scrollFT;
+//        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
+    }
+                 
+                
+                
+//                document.getElementById(modal).showModal();
+                //this.closest('dialog').close();
+                //document.getElementById(modal).close();
                 jQuery(modal)
-                        .css('display', 'block') // убираем у модального окна display: none;
+                        //.css('display', 'block') // убираем у модального окна display: none;
                         .animate({opacity: 1, top: positiOnScroll}, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
             });
     return false;
@@ -132,15 +141,19 @@ function mfCloseModal_Click(event) {
     //let id = button.dataset.id; 
     event.preventDefault();
     let id = event.data.id;
-    jQuery("#mfForm_" + event.data.id)
+    jQuery("#mfForm_" + id)
             .animate({top: 0}, 200)
             .animate({opacity: 0}, 300, function () { // после анимации
-                jQuery(this).css('display', 'none'); // делаем ему display: none;
+        
+                //this.closest('dialog').close();
+    console.log('modal -> ', 'mfForm_'+id);
+                document.getElementById('mfForm_'+id).close();
+//                jQuery(this).css('display', 'none'); // делаем ему display: none;
                 jQuery("#mfOverlay_" + id).fadeOut(400); // скрываем подложку
             });
 }
 var runingCloseModalForm = false;
-/**
+/** НЕ ИСПОЛЬЗУЕТСЯ!!!
  * Закрытие модального окна. Присваивается для подложки и кнопки КЛИК закрыть. 
  * @returns {undefined}
  */
@@ -609,8 +622,9 @@ function mfAjaxDoneForm(data, status) {
         }
         // Привязка события Escape 
         let mod = {data: this, preventDefault: ()=>{}};
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', event => {
             if(event.code === 'Escape'){ 
+                event.preventDefault();
                 mfCloseModal_Click(mod);
             }
         });

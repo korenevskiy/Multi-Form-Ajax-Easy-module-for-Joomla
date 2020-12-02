@@ -50,6 +50,10 @@ if(empty($param->popup)){
 
 $tag_form = $param->popup? 'dialog' : 'div';
 $class_form = $param->popup? 'modal' : 'static';
+$attribute_form = $param->popup? ' role=\'dialog\' aria-modal=\'true\'' : ' ';
+$ariaHeader = $param->popup? " aria-labeledby='mfHeader_$module->id'" : ' ';
+$ariaDescribe = $param->textbeforeformShow && ($param->textbeforeform1 || $param->textbeforeform2 )?
+        " aria-describedby='mfDescribe_$module->id'" : ' ';
 
 $method=$fields_test?' method="post"  enctype="multipart/form-data" ':'';
 $show_debug_modal = $params->get('debug')=='debug' ?'display:block; opacity: 0.8;':'';
@@ -57,23 +61,24 @@ $show_debug_modal = $params->get('debug')=='debug' ?'display:block; opacity: 0.8
 
 
 echo "<$tag_form id='mfForm_$module->id' "
-        . "class='mfForm_{$class_form} -modal-dialog {$class_form}_$module->id id$module->id $param->moduleclass_sfx $param->style style_$style' "
-        . " role='document' style='$show_debug_modal' data-moduleid='$module->id' data-id='$module->id' >";//само окно    data-sending='$param->textwhensending'
+        . " class='mfForm_{$class_form} -modal-dialog {$class_form}_$module->id id$module->id $param->moduleclass_sfx $param->style style_$style' "
+        . " $attribute_form  aria-labeledby='mfHeader_$module->id' $ariaDescribe "
+        . " style='$show_debug_modal' data-moduleid='$module->id' data-id='$module->id' >";//само окно    data-sending='$param->textwhensending'
 //    echo '<div class="modal-dialog" role="document">';
 
-echo "<div class='{$class_form}-content'>";
+echo "<div class='{$class_form}-content' role='document' >";
         
  
 
 if($param->popup ){
     if($module->showtitle && $module->title){
-        echo "<div class='{$class_form}-header'><$param->header_tag class='{$class_form}-title'>$module->title</$param->header_tag>
-            <button class='close mfClose' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."' >"
-        . ($param->icomoon?"<span class='icon-remove large-icon' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")
+        echo "<div class='{$class_form}-header'><$param->header_tag class='{$class_form}-title' id='mfHeader_$module->id'>$module->title</$param->header_tag>
+            <button class='close mfClose ' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."' >"
+        . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times btn button' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")
         . "</button></div>";
     }else{
         echo  "<button class='close mfClose ' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button'  aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'>" //onClick='mfCloseModal(this);'
-            . ($param->icomoon?"<span class='icon-remove large-icon' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")//кнопка ЗАКРЫТЬ &times;
+            . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times btn button' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")//кнопка ЗАКРЫТЬ &times;
             . "</button>";
     }
 }
@@ -84,7 +89,7 @@ $action = JUri::root();
 
 if($param->textbeforeformShow && ($param->textbeforeform1 || $param->textbeforeform2 )){
     $param->textbeforeform1 = modMultiFormHelper::getArticles($param->textbeforeform1);
-    echo "<div class='mfBeforeForm id$module->id'>$param->textbeforeform1 $param->textbeforeform2</div>";
+    echo "<div class='mfBeforeForm id$module->id' id='mfDescribe_$module->id'>$param->textbeforeform1 $param->textbeforeform2</div>";
     //echo "<div class='mfBeforeText'>$textbeforeform1".str_replace(array("\r\n", "\r", "\n"), '',  $textbeforeform2)."</div>";
 } 
  

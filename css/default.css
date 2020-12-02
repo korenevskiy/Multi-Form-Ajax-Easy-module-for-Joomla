@@ -140,6 +140,7 @@
     
     margin-block-start: 0;
     margin-block-end: 0;
+    line-height: 1em;
 }
 .mfForm_modal h4.modal-title{ 
     font-size: x-large;
@@ -189,9 +190,6 @@
     font-weight: bold;
     box-shadow: 0 0 10px;
 }
-.mfOverlay + .modal-backdrop{
-    display: none;
-}
 
 
 dialog.mfForm_modal  .mfClose{
@@ -212,14 +210,10 @@ dialog.mfForm_modal  .mfClose{
     top: -6px;
     right: 7px;
     right: 0px;
+    top: -9px;
+    right: 4px;
     border-radius: 3px;
     opacity: .8;
-    transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transition: transform .5s;
     display: flex;
     justify-content: center;
     justify-items: center;
@@ -245,25 +239,56 @@ dialog.mfForm_modal  .mfClose{
     height: 2.4em !important;
     width: 2.4em!important;
         padding-top: 2px ;
+    transition: transform .5s; 
 }
-dialog.mfForm_modal .mfClose:focus{
+dialog.mfForm_modal .mfClose:focus,
+dialog.mfForm_modal .mfClose:hover {
     outline: 0;
     box-shadow: 0 0 0 gray;
-    box-shadow: 0 0 2px var(--btn-bg-color-hover,#ffffff);
+    color: var(--button-text-color-select,black);
+    background-color: transparent;
+    opacity: 1;
+    -color: transparent;
 }
 dialog.mfForm_modal .mfClose span{
     margin: 0;
     line-height: 0;
     line-height: 1.11em; 
+    line-height: 1em; 
+    line-height: 0.9em; 
     width: auto;
     height: auto;
+    
+    /*box-shadow: 0 0 2px grey;*/
+    height: auto;
+    width: auto;
+    /*background-color: yellow;*/
+    padding: 3px 8px;
+    border-radius: 5px;
+    border-radius: 3px;
+    /*border: 1px solid #ccc;*/
+    border: 1px solid transparent;
+/*    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;*/
+        width: 100%;
+    height: 40%;
+    padding: 5px 8px 0px;
+    margin: 0px 0px 0 0;
 }
 
-dialog.mfForm_modal .mfClose:hover {
-    color: var(--button-text-color-select,black);
-    background-color: transparent;
-    opacity: 1;
-    -color: transparent;
+dialog.mfForm_modal .mfClose:hover span,
+dialog.mfForm_modal .mfClose:focus span{
+    display: block;
+    transition: transform .5s; 
+    border: 1px solid #ccc;
+}
+dialog.mfForm_modal .mfClose span:before{
+    display: block;
+    transition: transform .5s;
+    
+}
+dialog.mfForm_modal .mfClose:hover .btn:before{
+    
     transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
@@ -272,6 +297,12 @@ dialog.mfForm_modal .mfClose:hover {
 }
 
 /* РџРѕРґР»РѕР¶РєР° */
+
+.mfForm_modal + .modal-backdrop{
+    display: none;
+}
+.mfForm_modal + .modal-backdrop,
+.mfForm_modal::backdrop,
 .mfOverlay {
 	z-index: 1040;
 	position: fixed;
