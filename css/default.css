@@ -239,6 +239,8 @@ dialog.mfForm_modal  .mfClose{
     text-shadow: 0 0 2px black;
     height: 2.4em !important;
     width: 2.4em!important;
+    height: 3rem !important;
+    width: 3rem!important;
         padding-top: 2px ;
     transition: transform .5s; 
 }
@@ -254,10 +256,10 @@ dialog.mfForm_modal .mfClose:hover {
 dialog.mfForm_modal .mfClose span{
     display: block; 
     margin: 0;
-    line-height: 0;
-    line-height: 1.11em; 
-    line-height: 1em; 
-    line-height: 0.9em; 
+    /*line-height: 0;*/
+    /*line-height: 1.11em;*/ 
+    /*line-height: 1em;*/ 
+    /*line-height: 0.9em;*/ 
     width: auto;
     height: auto;
     
@@ -274,7 +276,9 @@ dialog.mfForm_modal .mfClose span{
     outline-offset: -2px;*/
         width: 100%;
     height: 40%;
+    height: 50%;
     padding: 5px 8px 0px;
+    padding: 0 8px;
     margin: 0px 0px 0 0;
     transition: .5s; 
     background-image: none;
@@ -282,7 +286,14 @@ dialog.mfForm_modal .mfClose span{
     background-image: linear-gradient(to bottom,#fff,#e6e6e6);
     background-image: linear-gradient(to top,#fff,#e6e6e6);
     background-image: linear-gradient(to bottom,#e6e6e6,#fff);
+    background-image: linear-gradient(to bottom,#8882,#fff0);
     background-position: 0 -20px;
+    
+    position: relative;
+    /*background-color: red;*/
+    line-height: inherit;
+    display: flex;
+    place-content: center;
 }
 
 dialog.mfForm_modal .mfClose:hover span,
@@ -294,7 +305,18 @@ dialog.mfForm_modal .mfClose:focus span{
 dialog.mfForm_modal .mfClose .btn:before{
     display: block;
     transition: transform .5s;
-    
+    display: block;
+    transition: transform .5s;
+    position: absolute;
+    margin: auto;
+    margin: 2px auto;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    /* position: absolute; */
+    line-height: initial;
+    line-height: inherit;
 }
 dialog.mfForm_modal .mfClose:hover .btn:before{
     
