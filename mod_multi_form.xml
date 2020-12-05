@@ -1038,7 +1038,9 @@ ORDER BY lft)t) ;
                     name="stylefiles"
                     type="filelist"
                     Xfilter="css"
-                    filter="^(?!forAdmin.css).*.css"
+                    filter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
+                    xxfilter="^(?!(forAdmin.css)|(test.css)).*.css"
+                    xfilter="^(?!forAdmin.css).*.css"
                     hide_default="true"
                     hide_none="true"
                     multiple="false"
@@ -1046,8 +1048,23 @@ ORDER BY lft)t) ;
                     directory="modules/mod_multi_form/css/"
                     exclude=""
                     stripext=""
+                    label="Style"
+                    description="MOD_MULTI_FORM_COLOR_SCHEME_DESC"></field>
+<!--      <field
+                    name="stylethemes"
+                    type="filelist"
+                    Xfilter="css"
+                    filter="^(theme_)[A-Za-z0-9]*(.css)"
+                    hide_default="true"
+                    hide_none="true"
+                    multiple="false"
+                    default="theme_dark.css"
+                    directory="modules/mod_multi_form/css/"
+                    exclude=""
+                    stripext=""
                     label="MOD_MULTI_FORM_COLOR_SCHEME_LABEL"
                     description="MOD_MULTI_FORM_COLOR_SCHEME_DESC"></field>
+-->
                 <field
                     name="style_field"
                     type="list"
