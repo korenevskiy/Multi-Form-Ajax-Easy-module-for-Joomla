@@ -222,9 +222,9 @@ dialog.mfForm_modal  .mfClose{
     align-content: center;
     margin: 0;
     padding: 0;
-    font-size: initial;
     border-radius: 4px;
     
+    font-size: initial;
         font-size: large;
     background-color: transparent;
     opacity: 1;
@@ -287,9 +287,11 @@ dialog.mfForm_modal .mfClose span{
     background-image: linear-gradient(to top,#fff,#e6e6e6);
     background-image: linear-gradient(to bottom,#e6e6e6,#fff);
     background-image: linear-gradient(to bottom,#8882,#fff0);
-    background-position: 0 -20px;
-    
-    position: relative;
+    background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);
+    background-repeat: no-repeat;
+    background-position: 0 1.5rem;
+    box-sizing: initial;
+    /*position: relative;*/
     /*background-color: red;*/
     line-height: inherit;
     display: flex;
@@ -300,32 +302,31 @@ dialog.mfForm_modal .mfClose:hover span,
 dialog.mfForm_modal .mfClose:focus span{
     border: 1px solid #ccc;
     /*background-color: #e6e6e6;*/
-    background-position-y: 0px;
+    /*background-position-y: -1.5rem;*/
+    background-position-y: 0rem;
 }
-dialog.mfForm_modal .mfClose .btn:before{
-    display: block;
-    transition: transform .5s;
-    display: block;
-    transition: transform .5s;
-    position: absolute;
-    margin: auto;
-    margin: 2px auto;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    /* position: absolute; */
+dialog.mfForm_modal .mfClose span::before {
+    position: absolute; 
+    /* top: 0; */
+    /* left: 0; */
+    /* right: 0; */
+    /* bottom: 0; */
+    /*margin: auto;*/
+    /*margin: 2px auto;*/
+    /*margin: 0.05rem auto;*/
+    margin: 0.1rem auto;
     line-height: initial;
-    line-height: inherit;
+    /*line-height: inherit;*/
+    display: flex;
+    place-items: center;
+    place-content: center;
+    /* text-align: center; */
+    /* text-align-last: center; */
+    transition: transform .5s; 
 }
-dialog.mfForm_modal .mfClose:hover .btn:before{
-    
+dialog.mfForm_modal .mfClose:hover span::before { 
     transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-}
+} 
 
 /* РџРѕРґР»РѕР¶РєР° */
 
