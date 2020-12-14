@@ -52,10 +52,13 @@
 .mfForm {
     text-align: center;
     text-align-last: center;
-    padding-bottom: 20px;
+    padding-bottom: 20px;   
+    /*color: inherit;*/
 }
 .mfForm_modal .modal-content{
     border: 0 none transparent;
+    background-color: inherit;
+    background-color: #8883;
 }
 .mfStatusForm,
 .mfForm_modal .modal-body,
@@ -77,6 +80,9 @@
     align-items: center;
     display: table;
 }
+.mfForm_modal .modal-body{
+    border-bottom: 1px solid #8888;
+}
 .mfForm_modal .mfBeforeForm,
 .mfForm_modal .modal-header,
 .mfForm_modal .modal-body,
@@ -90,6 +96,9 @@
 }
 .mfForm_modal .modal-footer{
     padding-bottom: 1.3rem;
+    background-color: #8883;
+    background-color: transparent;
+    background-color: initial;
 }
 
 
