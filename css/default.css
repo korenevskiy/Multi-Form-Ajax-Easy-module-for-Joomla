@@ -173,7 +173,9 @@
 }
 .mfForm_modal .modal-footer,
 .mfForm_static .static-footer{
-    
+    flex-direction: column;
+    place-items: center;
+    gap: 8px;
 }
 .mfForm_modal .modal-header{
     border: 0 none transparent;
@@ -201,14 +203,24 @@
     box-shadow: 0 0 10px;
 }
 
-
+dialog.mfForm_modal  .mfCloseLabel{ 
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    top: -1rem;
+    right: -0.3rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    cursor: pointer;
+}
 dialog.mfForm_modal  .mfClose{
     z-index: 1;
     width: 1.4em;
     height: 1.4em;
         display: block;
     padding: 0.04em 0 0;
-    position: absolute;
+    /*position: absolute;*/
     -cursor: pointer;
 	display: block;
 	text-align: center;
@@ -221,7 +233,11 @@ dialog.mfForm_modal  .mfClose{
     right: 7px;
     right: 0px;
     top: -9px;
+     top: -6px;
+    top: 3px;
     right: 4px;
+     right: 0px;
+    right: 2px;
     border-radius: 3px;
     opacity: .8;
     display: flex;
@@ -231,10 +247,13 @@ dialog.mfForm_modal  .mfClose{
     align-content: center;
     margin: 0;
     padding: 0;
-    border-radius: 4px;
+    margin: auto;
+    /*border-radius: 4px;*/
     
     font-size: initial;
         font-size: large;
+    font-size: inherit;
+        
     background-color: transparent;
     opacity: 1;
     border: 0 none transparent;
@@ -242,25 +261,34 @@ dialog.mfForm_modal  .mfClose{
     color: black;
     border: 3px solid #ed8714;
     border: 0 none transparent;
-    box-shadow: 0 0 5px black, 0 0 3px inset black;
-    box-shadow: none;
-    border-radius: 8px !important;
+    background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);
+    background-repeat: no-repeat;
+    background-position: 0 1.5rem;
+    /*box-shadow: 0 0 5px black, 0 0 3px inset black;*/
+    /*box-shadow: none;*/
+    /*border-radius: 8px !important;*/
     text-shadow: 0 0 2px black;
-    height: 2.4em !important;
-    width: 2.4em!important;
-    height: 3rem !important;
-    width: 3rem!important;
+    /*height: 2.4em !important;*/
+    height: 1.5rem;
+    /*width: 2.4em!important;*/
+    width: 3rem;
+    /*height: 3rem !important;*/
+    /*width: 3rem!important;*/
         padding-top: 2px ;
     transition: transform .5s; 
 }
-dialog.mfForm_modal .mfClose:focus,
-dialog.mfForm_modal .mfClose:hover {
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):focus,
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover
+{
     outline: 0;
     box-shadow: 0 0 0 gray;
+    box-shadow: 0 1px 2px #8888;
     color: var(--button-text-color-select,black);
     background-color: transparent;
     opacity: 1;
     -color: transparent;
+    border: 1px solid #ccc;
+    background-position-y: 0rem;
 }
 dialog.mfForm_modal .mfClose span{
     display: block; 
@@ -268,40 +296,38 @@ dialog.mfForm_modal .mfClose span{
     /*line-height: 0;*/
     /*line-height: 1.11em;*/ 
     /*line-height: 1em;*/ 
-    /*line-height: 0.9em;*/ 
-    width: auto;
-    height: auto;
+    /*line-height: 0.9em;*/  
     
     /*box-shadow: 0 0 2px grey;*/
-    height: auto;
-    width: auto;
+    /*height: auto;*/
+    /*width: auto;*/    
     /*background-color: yellow;*/
     padding: 3px 8px;
-    border-radius: 5px;
-    border-radius: 3px;
+    /*border-radius: 5px;*/
+    /*border-radius: 3px;*/
     /*border: 1px solid #ccc;*/
-    border: 1px solid transparent;
+    /*border: 1px solid transparent;*/
 /*    outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;*/
-        width: 100%;
-    height: 40%;
-    height: 50%;
+        /*width: 100%;*/
+    /*height: 40%;*/
+    /*height: 50%;*/
+    height: inherit;
+    width: inherit;
     padding: 5px 8px 0px;
     padding: 0 8px;
     margin: 0px 0px 0 0;
     transition: .5s; 
-    background-image: none;
-    background-color: transparent;
-    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
-    background-image: linear-gradient(to top,#fff,#e6e6e6);
-    background-image: linear-gradient(to bottom,#e6e6e6,#fff);
-    background-image: linear-gradient(to bottom,#8882,#fff0);
-    background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);
-    background-repeat: no-repeat;
-    background-position: 0 1.5rem;
-    box-sizing: initial;
-    /*position: relative;*/
-    /*background-color: red;*/
+    /*background-image: none;*/
+    /*background-color: transparent;*/
+    /*background-image: linear-gradient(to bottom,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to top,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to bottom,#e6e6e6,#fff);*/
+    /*background-image: linear-gradient(to bottom,#8882,#fff0);*/
+    /*background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 0 1.5rem;*/
+    box-sizing: initial; 
     line-height: inherit;
     display: flex;
     place-content: center;
@@ -309,10 +335,10 @@ dialog.mfForm_modal .mfClose span{
 
 dialog.mfForm_modal .mfClose:hover span,
 dialog.mfForm_modal .mfClose:focus span{
-    border: 1px solid #ccc;
     /*background-color: #e6e6e6;*/
     /*background-position-y: -1.5rem;*/
-    background-position-y: 0rem;
+    /*border: 1px solid #ccc;*/
+    /*background-position-y: 0rem;*/
 }
 dialog.mfForm_modal .mfClose span::before {
     position: absolute; 
@@ -342,13 +368,13 @@ dialog.mfForm_modal .mfClose:hover span::before {
 .mfForm_modal + .modal-backdrop{
     display: none;
 }
-.mfForm_modal + .modal-backdrop,
+.mfForm_modal ~ .modal-backdrop,
 .mfForm_modal::backdrop,
 .mfOverlay {
 	z-index: 1040;
 	position: fixed;
 	display: none;
-	width: 100%; 
+	width: 100%;
 	height: 100%;
 	top: 0; 
 	left: 0;
@@ -498,7 +524,7 @@ form.mfStatusForm  textarea:focus{
     -o-transition: color 400ms, background-color 400ms, border-color 400ms;
     -transition: color 400ms, background-color 400ms, border-color 400ms;*/
 }
-.mfForm .g-recaptcha{
+.mfForm .g-recaptcha:not(.btn){
     max-width: 240px;
     max-width: 256px;
     margin: auto;
@@ -549,6 +575,7 @@ form.mfStatusForm .form-group.col {
     flex-wrap: nowrap;
 }
 
+.mfStatusForm  input.submit:focus,
 .mfStatusForm  input.submit:hover,
 .mfStatusForm  input.submit:active {
 	-border: 0 solid transparent;
@@ -574,7 +601,7 @@ form.mfStatusForm .form-group.col {
 .mfStatusForm  textarea {
   border: 1px solid transparent;
   border-radius: 0;
-  background-color: rgba(204,204,204,0.3);
+  /*background-color: rgba(204,204,204,0.3);*/
   margin-top: 15px;
   resize: vertical;
 }

@@ -22,16 +22,20 @@ use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\Router\Route as JRoute;
 use \Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
 use Joomla\CMS\Session\Session as JSession;
+use Joomla\CMS\Captcha\Captcha as JCaptcha;
 
-$path_base = JUri::root();
-JFactory::getDocument()->setBase($path_base);
+//$path_base = JUri::root();
+JFactory::getDocument()->setBase(JUri::root());
 
 
 class modMultiFormHelper {
     public static function constructor($param = []) {
-        static $path_base;                
-        if(isset($path_base))
+        //static $path_base;
+        if(isset(static::$min))
             return;
+        
+        static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+        
         
         //JFactory::getDocument()->setBase(JUri::root());
         //JUri::root();
@@ -42,6 +46,12 @@ class modMultiFormHelper {
 //        JFactory::getDocument()->setBase($path_base);
         
     }
+   
+    /**
+     * Is included scrip minification or not minification / определяет подключаются скрипты минифицированные или не минифицированные.
+     * @var string
+     */
+    public static $min;
     
     /**
      * Checking the terms of impressions. / Проверка условий показов
@@ -1218,22 +1228,126 @@ class modMultiFormHelper {
         
 //
 //        $textsuccesssendAjax .= ' Param-'.$param->captcha.' ---- ';
+        $captcha_verify = TRUE;
         
-        if($params->get('captcha')){
-//            $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0
+//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                    . '1233  Helper: '.print_r($module,true).'</pre>';
+//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                    . '1235  Helper: '.print_r($param,true).'</pre>';
+            
+
+
+        if($param->captcha && $config->captcha){
+            $captcha_type = $config->captcha;//recaptcha, recaptcha_invisible, 0
+//            
+//            toPrint($captcha_type,'$captcha_type',0,'pre',true);
+//            toPrint(JFactory::getApplication()->get('captcha'),'AplicationCaptcha',0,'pre',true);
+//            toPrint(JFactory::getApplication()->getParams()->get('captcha'),'AplicationCaptchaParam',0,'pre',true);
 //            if(empty($captcha_type)|| $captcha_type == "0")
 //                return null;
 //            $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
 //            $textsuccesssendAjax .= $anwer= $plugin->onCheckAnswer();
             
-            $captcha_input = JFactory::getApplication()->input->getString('g-recaptcha-response');  
-    JPluginHelper::importPlugin('captcha'); 
+        ///$token = $input->get('gToken','','STRING'); 
+//        $captcha_input = JFactory::getApplication()->input->getString('g-recaptcha-response');  
+//        JPluginHelper::importPlugin('captcha'); 
 //    $textsuccesssendAjax .= $anwer = JDispatcher::getInstance()->trigger('onCheckAnswer', $captcha_input);      
 //            $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
 //                    .JFactory::getApplication()->triggerEvent('onCheckAnswer', [$captcha_input]).'</pre>';
             //$textsuccesssendAjax .= toPrint(JFactory::getApplication()->input,'Inputs ' , 0 ,false,true);
-            $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
-                    .print_r(JFactory::getApplication()->input->post,true).'</pre>';
+//            $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">1247  Helper: '
+//                    .print_r(JFactory::getApplication()->input->post,true).'</pre>';
+//            return 'Привет дружечек мой!';
+            
+            
+            try {
+                
+                
+        
+                
+                
+//        $deb = "";
+//            $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0                
+//            JPluginHelper::importPlugin('captcha');        
+//            $plugin = JPluginHelper::getPlugin('captcha', $captcha_type); //return [] or {type, name, params, id}
+//            
+//            
+//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                . '1264- $captcha_type: '.print_r($captcha_type,true).'</pre>';
+//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                . '1266- Helper: $plugin '.print_r($plugin,true).'</pre>';
+//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                . '1268- Helper: $plugin->params '.print_r($plugin->params,true).'</pre>';
+//            
+//            if($plugin && $plugin->params){
+//                $plugin->params = new JRegistry($plugin->params);// return public_key, private_key, badge, tabindex, callback, expired_callback, error_callback
+//                $plugin->param = $plugin->params->toObject();
+//            }
+//            
+//
+//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                . '1276- Helper: $plugin->params '.print_r($plugin->param,true).'</pre>';
+//        
+////        
+////        
+//return  $deb;
+//                JPluginHelper::importPlugin('captcha');  
+//                $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
+//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//                    .print_r($captcha_type,true).'</pre>';
+//                $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
+//                
+//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//                    .print_r($plugin->params,true).'</pre>';
+//                return $textsuccesssendAjax;
+//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//                    .print_r($plugin->params->get('public_key'),true).'</pre>';
+//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//                    .print_r($plugin->params->get('private_key'),true).'</pre>';
+                
+                $captcha_verify = static::captcha();
+                
+//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                    . '1298  Helper: '.print_r($param,true).'</pre>';
+            
+                if ($param->debug == 'debug'){
+                    
+//toPrint($captcha_verify,'$captcha_verify',0,'pre',true);
+                    
+$textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border:1px solid #0008;border-radius:10px; padding:5px;}</style>';
+//               $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                       . '1300  Helper: '.JPATH_BASE.'</pre>';
+//                    $typ= '';
+//                    if ($captcha_verify === TRUE)
+//                        $typ= 'TRUE';
+//                    if ($captcha_verify === FALSE)
+//                        $typ= 'FALSE';
+//                    if ($captcha_verify === NULL)
+//                        $typ= 'NULL';
+//                    $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  '
+//                            . 'Captcha: '.$typ.'-'. gettype($captcha_verify) .'- '.print_r($captcha_verify,true).'</pre>';
+//                    $textsuccesssendAjax .= '';
+                }
+                
+                
+//                return $captcha_verify;
+                if(is_null($captcha_verify)){
+                    $textFailAjax    = '';
+                    $textFailAjax	.= static::getArticles($param->textfailsend1);
+                    $textFailAjax	.= $param->textfailsend2??'';
+                    return $textFailAjax.$textsuccesssendAjax;
+                }
+            } catch (Exception $exc) {
+                if ($param->debug == 'debug')
+                    return $exc->getTraceAsString();
+                $textFailAjax    = '';
+                $textFailAjax	.= static::getArticles($param->textfailsend1);
+                $textFailAjax	.= $param->textfailsend2??'';
+                return $textFailAjax.$textsuccesssendAjax;
+            }
+            
+
+        
 //            echo $anwer;
 //            if(empty($plugin))
 //                return null;
@@ -1271,6 +1385,7 @@ class modMultiFormHelper {
         
         
         
+            
 
 
 
@@ -1281,18 +1396,20 @@ class modMultiFormHelper {
 		//$bodymail	 = '<table cellpadding="10">'.$textsuccesssendAjax;
           
          $bodymail = "";
-	$ajaxDataFields =  self::ajaxDataField($param->list_fields, $module->id);
+    $ajaxDataFields = [];
+    if($captcha_verify)
+        $ajaxDataFields =  self::ajaxDataField($param->list_fields, $module->id);
 	$replyToEmail = "";
 //$bodymail .= toPrint($ajaxDataFields,'$ajaxDataFields',0,TRUE,TRUE);
 //$bodymail .= toPrint($input,'$input',0,TRUE,TRUE);
 	$replyToName = "";
         $bodymail  .= $param->textbeforemassage.'<table cellpadding="10">';
 	foreach($ajaxDataFields as $i => $field){
-            if(in_array($field['type'], ['file','files']) && $inputfiles->get($field["nameforfield"])){
+        if(in_array($field['type'], ['file','files']) && $inputfiles->get($field["nameforfield"])){
                 $bodymail .= "<tr><td colspan='2'>";
                 $files = $inputfiles->get($field["nameforfield"]);
                 $files = $field['type'] == 'file' ? [$files] :$files;
-                foreach ($files as $file){
+            foreach ($files as $file){
                                 
                     $filename = $file['name'];
                     $filename = \Joomla\CMS\Factory::getLanguage()->transliterate($filename); 
@@ -1305,25 +1422,25 @@ class modMultiFormHelper {
                     $img = "/images/$param->images_folder/$filename"; //JPATH_ROOT . 
                     $bodymail .= "<img src='$img' style='max-width: 1024px;'><br>";
                     $mailer->AddEmbeddedImage($dest, 'logo_id', $filename);
-                }
-                $bodymail .= "</td></tr>";
             }
+            $bodymail .= "</td></tr>";
+        }
             
             $bodymail .= "<tr>";
             $bodymail .= "<td>".$ajaxDataFields[$i]["nameforpost"]."</td>";
-            if($field['type']=='editor')
+        if($field['type']=='editor')
 //                $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','HTML')."</td>";
 //                $bodymail .= "<td>".strip_tags($input->post->getRaw($field["nameforfield"]))."</td>";
-                $bodymail .= "<td>".JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
-            else
-                $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
-            $bodymail .= "</tr>";
-            if(in_array($ajaxDataFields[$i]["nameforpost"], ['E-mail','e-mail','email','Email'])){
-		$replyToEmail = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
-            }
-            if(in_array($ajaxDataFields[$i]["nameforpost"], ['Имя','имя','Name','name'])){
-		$replyToName = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
-            }
+            $bodymail .= "<td>".JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
+        else
+            $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
+        $bodymail .= "</tr>";
+        if(in_array($ajaxDataFields[$i]["nameforpost"], ['E-mail','e-mail','email','Email'])){
+            $replyToEmail = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+        }
+        if(in_array($ajaxDataFields[$i]["nameforpost"], ['Имя','имя','Name','name'])){
+            $replyToName = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+        }
 	}
 	$bodymail	.= '</table>';
 	//JText::_('MOD_MULTI_FORM_TEXT_PAGE_FORM').
@@ -1360,13 +1477,41 @@ class modMultiFormHelper {
 	$mailer->setSender( array( $param->sendfromemail, $param->sendfromname ) );
 	//указываем получателя письма
 	//$mailer->addRecipient( array($param->sendtoemail));
-        if($param->recipient_show){
-            $mailer->addRecipient( $param->sendtoemail );
-            //добавляем получателя копии
-            $mailer->addCc( $param->sendtoemailcc );
-            //добавляем получателя копии
-            $mailer->addBcc( $param->sendtoemailbcc );
-        }else{ 
+    
+    
+        if($param->recipient_show=='subscriber'){
+            $query = "SELECT email FROM `#__users` WHERE block=0 and activation=0 and sendEmail=1; ";//id,name,username,email 
+            $emails = JFactory::getDbo()->setQuery($query)->loadColumn();//->loadObjectList('id');
+            
+//toPrint($emails,'$emails Subscriber',0,'pre',TRUE);            
+            
+            if(count($emails))
+                $mailer->addRecipient($emails);
+            else 
+                $param->recipient_show='custom';
+        }
+        if($param->recipient_show=='user'){
+            $user = JUser::getInstance($param->sendtouser);
+//toPrint($user->email,'$user->email User',0,'pre',TRUE);   //$user->email         
+            if(empty($user->block) && empty($user->activation))
+                $mailer->addRecipient( $user->email );
+            else 
+                $param->recipient_show='custom';
+        }
+        if($param->recipient_show=='custom'){
+            if($param->sendtoemail){
+//toPrint($param->sendtoemail,'$param->sendtoemail User',0,'pre',TRUE);     
+                $mailer->addRecipient( $param->sendtoemail );
+                //добавляем получателя копии
+                $mailer->addCc( $param->sendtoemailcc );
+                //добавляем получателя копии
+                $mailer->addBcc( $param->sendtoemailbcc );
+            }
+            else 
+                $param->recipient_show='';
+        }
+        if($param->recipient_show==''){
+//toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
             $mailer->addRecipient( $config->mailfrom );
         }
 	
@@ -1409,9 +1554,9 @@ class modMultiFormHelper {
             
             $mail_sended = $mail_sended?'SENDED':'NOT Sended';
             $textsuccesssendAjax .= "<message class='message'>DEBUG-$module->id: $mail_sended</message>";
-//            $textsuccesssendAjax .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
+            $textsuccesssendAjax .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
 //            $textsuccesssendAjax .= "<pre class='message'>Factory::getApplication()->input: ".print_r(($input) ,TRUE)."</pre>";
-            $textsuccesssendAjax .= "<pre class='message'>Mailer: ".print_r(get_object_vars($mailer) ,TRUE)."</pre>";
+//            $textsuccesssendAjax .= "<pre class='message'>Mailer: ".print_r(get_object_vars($mailer) ,TRUE)."</pre>";
             $textsuccesssendAjax .= "<style type=\"text/css\">#mfForm_$module->id{display: block !important;}</style>";
         }
 	
@@ -1618,22 +1763,75 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
     /**
      * Include Captcha of Check captcha / Подключение Каптчи или проверка Каптчи
      * @param bool $check Check capctcha  / Начать проверку Капчи
-     * @return bool Result check/ Результат проверки  
+     * @return bool Result check/ Результат проверки  <br> <b>TRUE</b> - Validated, <br> <b>FALSE</b> - Spam, <br> <b>NULL</b> - Disabled
      */
-    public static function captcha($check=false) {
+    public static function captcha($code=NULL) {
 //        if(empty(isset($param->captcha)))
 //            return TRUE;
                 
 //        $captcha = $param->captcha;
         //id: dynamic_recaptcha_$module->id
+        
+        $captcha_type = JFactory::getApplication()->getParams()->get('captcha',JFactory::getApplication()->get('captcha',JFactory::getConfig()->get('captcha',false)));
+        //JFactory::getApplication()->get('captcha');
+        //$captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
+//toPrint($captcha_type,'$captcha_type',0,'pre',true);
                 
-        JPluginHelper::importPlugin('captcha'); 
-        $post = JFactory::getApplication()->input->post;
-        $captcha = JFactory::getApplication()->triggerEvent('onCheckAnswer',[$post['recaptcha_response_field']]);
-        //$captcha = JEventDispatcher::getInstance()->trigger('onCheckAnswer',$post['recaptcha_response_field']);
+        if(empty($captcha_type))
+            return NULL;
+        
+        JPluginHelper::importPlugin('captcha',$captcha_type);
+//toPrint($plg,'$plg',0,'pre',true);
+        
+        $plugin_param = JPluginHelper::getPlugin('captcha', $captcha_type);//return [] or {type, name, params, id}
+        
+                
+        
+//toPrint($plugin_param,'$plugin_param',0,'pre',true);
+        if(empty($plugin_param) || empty($plugin_param->params))
+            return FALSE;
+        
+        $plugin = JCaptcha::getInstance($captcha_type, []);
+        
+//toPrint($plugin,'$plugin',0,'pre',true);
+
+//        $plg = $plugin->get('_captcha');
+//toPrint($plg,'$plg',0,'pre',true);
+        if(empty($plugin))
+            return NULL;
+        
+        $plugin_param->params = new JRegistry($plugin_param->params);
+        $param = $plugin_param->params->toObject();
+//toPrint($plugin,'$plugin',0,'pre',true);
+//toPrint($param,'$plg->$param',0,'pre',true);
         
         
-        return (bool) $captcha[0];
+//return  '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//        .print_r($plugin,true).'</pre>';
+        
+        if(!$param->public_key || !$param->private_key)
+            return NULL;
+        
+        $is_valid = $plugin->checkAnswer($code);
+        
+//toPrint($is_valid,'$is_valid',0,'pre',true);
+        
+        //$post = JFactory::getApplication()->input->post;
+        
+        
+        //$captcha_input = JFactory::getApplication()->input->getString('g-recaptcha-response');
+        
+//        $is_valid = JDispatcher::getInstance()->trigger('onCheckAnswer');//$post['recaptcha_response_field']
+//        $is_valid = JEventDispatcher::getInstance()->trigger('onCheckAnswer');//$post['recaptcha_response_field']
+//        $is_valid = JFactory::getApplication()->triggerEvent('onCheckAnswer');
+        
+//        $is_valid = $plugin->update(['event'=>'onCheckAnswer']);
+        
+//toPrint($is_valid,'$is_valid',0,'pre',true);
+        
+                
+        
+        return (bool) $is_valid;
     }
     /**
      * html attribute for html element captcha/ Строка атрибутоов для html элементов капчи

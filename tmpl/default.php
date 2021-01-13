@@ -73,13 +73,11 @@ echo "<div class='{$class_form}-content' role='document' >";
 if($param->popup ){
     if($module->showtitle && $module->title){
         echo "<div class='{$class_form}-header'><$param->header_tag class='{$class_form}-title' id='mfHeader_$module->id'>$module->title</$param->header_tag>
-            <button class='close mfClose ' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."' >"
-        . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times btn button' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")
-        . "</button></div>";
+            </div>";
     }else{
-        echo  "<button class='close mfClose ' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button'  aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'>" //onClick='mfCloseModal(this);'
-            . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times btn button' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")//кнопка ЗАКРЫТЬ &times;
-            . "</button>";
+//        echo  "<button class='close mfClose btn button' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button'  aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'>" //onClick='mfCloseModal(this);'
+//            . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times ' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")//кнопка ЗАКРЫТЬ &times;
+//            . "</button>";
     }
 }
 
@@ -112,10 +110,9 @@ if($param->captcha){
 if($captcha_type){ 
     $plugin = modMultiFormHelper::captcha_element_attribute($module->id);
 //echo '<pre style="color: green;">'. count([]).'----'. strlen($captcha_type).'------'.print_r($plugin,true).'</pre>';
-    $captcha_attr = $plugin->attributes; 
-        $captcha_id = "dynamic_captcha_$module->id";
-    $captcha_attr = $plugin->attributes;    
-    $captcha_class = "$captcha_type $plugin->badge g-recaptcha captcha";
+    $captcha_attr = $plugin->attributes;
+    $captcha_id = "dynamic_captcha_$module->id";
+    $captcha_class = "$captcha_type $plugin->badge -g-recaptcha captcha";
         
 //        $plugin->badge;//bottomright, bottomleft, inline
 //        $plugin->theme2;//light, dark
@@ -171,9 +168,17 @@ echo  "<div class='mfStatusError {$class_form}-body id$module->id ' style='displ
 echo  "<div class='mfStatusDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
  
 echo  "<div class='mfFieldGroup {$class_form}-footer id$module->id '>  "
+    . "<div id='dynamic_captcha_$module->id' class='-form-control $captcha_class $plugin_badge' {$captcha_attr}  style='transform: scale(0.8);'></div>"
     . " <input type='submit' form='mfForm_form_$module->id' value='$param->textsubmit' id='submit_$module->id' " 
-        . " class='$captcha_class $param->classbuttonsubmit  submit $captcha_class' $captcha_attr data-ready='$param->textsubmit' data-sending='$param->textwhensending'/>"
-    . "</div>"; 
+        . " class='$param->classbuttonsubmit  submit $captcha_class' {$captcha_attr} data-ready='$param->textsubmit' data-sending='$param->textwhensending'/>"
+    . "</div>"; // $captcha_class $captcha_attr
+
+if($param->popup ){    
+    echo "<label class='mfCloseLabel' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'>
+            <button class='close mfClose  btn button' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."' >"
+        . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")
+        . "</button></label>";
+}
 
 echo '</div>';
 
