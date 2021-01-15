@@ -44,7 +44,8 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 [//vk.com/joomla_multiform](//vk.com/joomla_multiform)  
 [info@explorer-office.ru](mailto:info@explorer-office.ru)  
 
-**Example of use in article:**
+**Example of use in article:**  
+***
 1.Place the link in any article:  
 < a  href="**#mod123**">Go to module< /a>  or  
 < a  href="**#mod_123**">Go to module< /a>  or  
