@@ -35,27 +35,27 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 - Filter module display conditions: menu items, IP, Mobile only, PC only, Together with another module, component only, article only, debug mode only.
 - Thanks to the module, the site turns into a store, each article can serve as a product description, and the module as a product order form.
 
-**Home page module:** 
- //explorer-office.ru/download/joomla 
+**Home page module:**  
+ //explorer-office.ru/download/joomla  
 
-**Support of the social network.:** 
-//fb.com/groups/joomlamultiform/
-//vk.com/joomla_multiform
-info@explorer-office.ru
+**Support of the social network.:**  
+[//fb.com/groups/joomlamultiform/](//fb.com/groups/joomlamultiform/)  
+[//vk.com/joomla_multiform](//vk.com/joomla_multiform)  
+[info@explorer-office.ru](mailto:info@explorer-office.ru)  
 
 **Example of use in article:**
-1.Place the link in any article: 
-< a  href=''**#mod123**''>Go to module< /a>  or
-< a  href=''**#mod_123**''>Go to module< /a>  or
-< a  href=''**#mfForm_123**''>Go to module< /a>  or
-< a  href=''**#mfForm_form_123**''>Go to module< /a> 
-* **''123''** - ID module.*
-After that, the page will automatically scroll or open a PopUp window.
-2.Going to any section of the site will also allow you to go to the form:
-< a  href='**/article?itemid=22#mod123**'>Go to module< /a> 
-3.Passing values to fields by reference without reloading with scrolling:
-< a  href='**#mod123&text0123=Madonna&text1123=My_friend**'>Go to module< /a> 
-This way the module form will be filled with the text Madonna and My friend. where **text0123** and **text1123** - id field.
+1.Place the link in any article:  
+< a  href="**#mod123**">Go to module< /a>  or  
+< a  href="**#mod_123**">Go to module< /a>  or  
+< a  href="**#mfForm_123**">Go to module< /a>  or  
+< a  href="**#mfForm_form_123**">Go to module< /a>  
+* **"123"** - ID module.*  
+After that, the page will automatically scroll or open a PopUp window.  
+2.Going to any section of the site will also allow you to go to the form:  
+< a  href='**/article?itemid=22#mod123**'>Go to module< /a>  
+3.Passing values to fields by reference without reloading with scrolling:  
+< a  href='**#mod123&text0123=Madonna&text1123=My_friend**'>Go to module< /a>   
+This way the module form will be filled with the text Madonna and My friend. where **text0123** and **text1123** - id field.  
 The page will NOT be reloaded 
 
 
