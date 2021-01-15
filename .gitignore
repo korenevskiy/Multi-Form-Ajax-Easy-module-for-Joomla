@@ -19,11 +19,8 @@ nbproject/private/
 nbproject/Makefile-*.mk
 nbproject/Package-*.bash
 nbproject/
-nbproject\
 _mod_Multi_Form/mod_multi_form/nbproject/
-_mod_Multi_Form\mod_multi_form\nbproject\
 mod_multi_form/nbproject/
-mod_multi_form\nbproject\
 build/
 nbbuild/
 dist/
@@ -32,7 +29,7 @@ nbdist/
  
 # End of https://www.toptal.com/developers/gitignore/api/netbeans
 
-.gitignore
+
 
 
 
@@ -43,7 +40,7 @@ nbdist/
 =======
 >>>>>>> THEIRS
 /.htaccess
-/README.md
+# /README.md
 /futureFunc.txt
 /mod_multi_form-update.xml
 /LICENSE

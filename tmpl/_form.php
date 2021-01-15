@@ -16,6 +16,7 @@
 use Joomla\CMS\Factory as JFactory;
 use Joomla\CMS\HTML\HTMLHelper as JHtml; 
 use \Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
+//use Joomla\Registry\Registry as JRegistry;
  
 
 $param = $params->toObject();
@@ -80,36 +81,37 @@ foreach ($stylefiles as $css_file){
 }
 $style = substr(reset($stylefiles), 0, -4);
 if($param->onoffjquery){
-    JHtml::script("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",[],['async' => 'async', 'defer' => 'defer']); 
+    JHtml::script("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",[],[ 'defer' => 'defer']); //'async' => 'async',
 }else{
     JHtml::_('jquery.framework'); 
     JHtml::_('bootstrap.framework');
 //    JHtml::_('bootstrap.loadCss', true);
 }
-static $min;
-if(is_null($min)){
-    $min = $param->debug?'':'.min';
-}
+//if(is_null(modMultiFormHelper::$min)){
+//    modMultiFormHelper::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+//}
+$min = modMultiFormHelper::$min;
 
 //JHtml::script('jquery.form.js', 'modules/$module->module/js/');
-JHtml::script("modules/$module->module/js/jquery.form$min.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/jquery.validate.min.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/messages.min.js",[],['async' => 'async', 'defer' => 'defer']);
-//JHtml::script("modules/$module->module/js/jquery.maskedinput$min.js",[],['async' => 'async', 'defer' => 'defer']); 
-//JHtml::script("modules/$module->module/js/inputmask.js",[],['async' => 'async', 'defer' => 'defer']);
-JHtml::script("modules/$module->module/js/jquery.inputmask$min.js",[],['async' => 'async', 'defer' => 'defer']);
-//JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['async' => 'async', 'defer' => 'defer']); 
-JHtml::script("modules/$module->module/js/url$min.js",[],['async' => 'async', 'defer' => 'defer']);
+JHtml::script("modules/$module->module/js/jquery.form$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+JHtml::script("modules/$module->module/js/jquery.validate.min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+JHtml::script("modules/$module->module/js/messages.min.js",[],['defer' => 'defer']);//'async' => 'async',
+//JHtml::script("modules/$module->module/js/jquery.maskedinput$min.js",[],[ 'defer' => 'defer']); //'async' => 'async',
+//JHtml::script("modules/$module->module/js/inputmask.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+JHtml::script("modules/$module->module/js/jquery.inputmask$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+//JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['defer' => 'defer']); //'async' => 'async',
+JHtml::script("modules/$module->module/js/url$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 
 $param->scriptver = $param->script?:1;
-JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",[],['async' => 'async', 'defer' => 'defer']);
+JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",[],[ ]); //'async' => 'async','defer' => 'defer'
 //JHtml::script("modules/$module->module/js/typed.js"); 
+
 
 JFactory::getDocument()->addStyleDeclaration($param->css);
 
 $param->debug &&  JFactory::getDocument()->addScriptDeclaration("console.log('ModMultiForm ID: $module->id');");
 $style_not = in_array($param->style, [NULL,'','0','System-none','none']);
- 
+
 $debug = $param->debug?" data-deb='1' ":'';
 $popup = $param->popup?"popup":"static";
 $class_form = $param->popup? 'modal' : 'static';  
@@ -142,7 +144,7 @@ if($param->popup && empty($param->form_use_id)){
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}'  data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</button>";
 }
-if($param->form_use_id){ 
+if($param->form_use_id){
     echo "<a id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title'  "
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}' data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</a>";
