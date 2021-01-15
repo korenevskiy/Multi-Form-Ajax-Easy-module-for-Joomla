@@ -45,7 +45,7 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 [info@explorer-office.ru](mailto:info@explorer-office.ru)  
 
 **Example of use in article:**  
-___
+----------------
 1.Place the link in any article:  
 < a  href="**#mod123**">Go to module< /a>  or  
 < a  href="**#mod_123**">Go to module< /a>  or  
