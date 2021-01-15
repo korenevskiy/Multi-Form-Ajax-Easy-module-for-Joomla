@@ -40,7 +40,7 @@ nbdist/
 =======
 >>>>>>> THEIRS
 /.htaccess
-/README.md
+# /README.md
 /futureFunc.txt
 /mod_multi_form-update.xml
 /LICENSE
