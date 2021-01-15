@@ -49,7 +49,7 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 < a  href="**#mod_123**">Go to module< /a>  or  
 < a  href="**#mfForm_123**">Go to module< /a>  or  
 < a  href="**#mfForm_form_123**">Go to module< /a>  
-* **"123"** - ID module.*  
+ **"123"** - ID module.  
 After that, the page will automatically scroll or open a PopUp window.  
 2.Going to any section of the site will also allow you to go to the form:  
 < a  href='**/article?itemid=22#mod123**'>Go to module< /a>  
