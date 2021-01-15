@@ -1,7 +1,7 @@
 # Multi Form Ajax Easy Free module for Joomla 
 
 The module allows you to easily create any feedback forms. Wide functionality and easy configuration will allow you to receive messages immediately.
-Designed to increase sales of any sites. Sending an email and saving in article in the site category will allow you to follow all requests and allow you to create sections of reviews on the site.
+Designed to increase sales of any sites. Sending an email and saving in article in the site category will allow you to follow all requests and allow you to create sections of reviews on the site.  
 [https://extensions.joomla.org/extension/multi-form-ajax-easy/](https://extensions.joomla.org/extension/multi-form-ajax-easy/)
 
 **Type of form:**
