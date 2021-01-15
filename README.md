@@ -36,7 +36,7 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 - Thanks to the module, the site turns into a store, each article can serve as a product description, and the module as a product order form.
 
 **Home page module:**  
- //explorer-office.ru/download/joomla  
+ [//explorer-office.ru/download/joomla](//explorer-office.ru/download/joomla)  
 
 **Support of the social network.:**  
 [//fb.com/groups/joomlamultiform/](//fb.com/groups/joomlamultiform/)  
