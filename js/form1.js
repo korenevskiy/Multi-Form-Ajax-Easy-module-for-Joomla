@@ -635,7 +635,12 @@ function submitHandler(form) {
 }
 
 // -------- Load F 
-
+/**
+ * 
+ * @param {html} data return html from server
+ * @param {type} status
+ * @returns {undefined}
+ */
 function mfAjaxDoneForm(data, status) {
 //        var id = jQuery(this).data('id');
 //        var deb = jQuery(this).data('deb');

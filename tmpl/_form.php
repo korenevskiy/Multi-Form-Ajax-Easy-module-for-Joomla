@@ -90,7 +90,7 @@ if($param->onoffjquery){
 //if(is_null(modMultiFormHelper::$min)){
 //    modMultiFormHelper::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
 //}
-$min = modMultiFormHelper::$min;
+$min = JDEBUG?'':'.min';//modMultiFormHelper::$min;
 
 //JHtml::script('jquery.form.js', 'modules/$module->module/js/');
 JHtml::script("modules/$module->module/js/jquery.form$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
@@ -100,14 +100,19 @@ JHtml::script("modules/$module->module/js/messages.min.js",[],['defer' => 'defer
 //JHtml::script("modules/$module->module/js/inputmask.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/js/jquery.inputmask$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 //JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['defer' => 'defer']); //'async' => 'async',
-JHtml::script("modules/$module->module/js/url$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+JHtml::script("modules/$module->module/js/url$min.js",[],[ 'defer' => TRUE]);//'async' => 'async',
 
 $param->scriptver = $param->script?:1;
-JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",[],[ ]); //'async' => 'async','defer' => 'defer'
+JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",['detectDebug'=>true],[ 'defer' => 'defer' ]); //'async' => 'async','defer' => 'defer'
 //JHtml::script("modules/$module->module/js/typed.js"); 
 
 
-JFactory::getDocument()->addStyleDeclaration($param->css);
+//        echo "<pre>Min-".modMultiFormHelper::$min."</pre>";
+//        echo "<pre>"."modules/$module->module/js/form$param->scriptver$min.js"."</pre>";
+//echo '<style type="text/css">.debug.pre{grid-column: 1/5;}</style>';
+
+if($param->css)
+    JFactory::getDocument()->addStyleDeclaration($min?:"/* Mod$module->id */ ".$param->css);
 
 $param->debug &&  JFactory::getDocument()->addScriptDeclaration("console.log('ModMultiForm ID: $module->id');");
 $style_not = in_array($param->style, [NULL,'','0','System-none','none']);

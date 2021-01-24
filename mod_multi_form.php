@@ -107,10 +107,10 @@ if($param->popup){
 //$colorscheme 			= $params->get( 'colorscheme' );
  
 $allparams  = json_decode($params->get( 'list_fields' ));
-//$allparams->select_ditor = $param->select_ditor || 'tinymce';  
+//$allparams->select_editor = $param->select_editor || 'tinymce';  
 if(in_array('editor', $allparams->typefield)){
     
-//toPrint($allparams->typefield,'$allparams+'.$param->select_ditor,0,'pre',true);
+//toPrint($allparams->typefield,'$allparams+'.$param->select_editor,0,'pre',true);
     jimport( 'joomla.html.editor' );
     JPluginHelper::importPlugin('editors');
         

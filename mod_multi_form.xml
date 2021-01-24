@@ -6,13 +6,13 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-    <modificationDate>2021-01-10</modificationDate>
+    <modificationDate>2021-01-24</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
     <license>GNU General Public License version 2, or later.</license>
     <oldversion>4.00.07</oldversion>
-    <version>3.10.02</version>
+    <version>3.10.03</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>

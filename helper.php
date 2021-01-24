@@ -34,8 +34,12 @@ class modMultiFormHelper {
         if(isset(static::$min))
             return;
         
-        static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+        //static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+        static::$min = JDEBUG;
         
+        
+//        echo "<pre>".JFactory::getConfig()->get('error_reporting','default')."</pre>";
+//        echo "<pre>".static::$min."</pre>";
         
         //JFactory::getDocument()->setBase(JUri::root());
         //JUri::root();
@@ -465,7 +469,7 @@ class modMultiFormHelper {
 //        echo "<pre>allparams <br>". print_r($allparams, true). "</pre>";
         
 //        toPrint($allparams,'$allparams') ;
-        $select_ditor = $allparams->select_ditor ?: 'tinymce' ;
+        $select_editor = $allparams->select_editor ?: 'tinymce' ;
         
         empty($allparams) && $allparams = new stdClass;
         empty($allparams->namefield) && $allparams->namefield = [];
@@ -557,7 +561,7 @@ class modMultiFormHelper {
 //                    $editor = JEditor::getInstance('tinymce');
 //                     toPrint($editor,'Editor') ;
                 //arkeditor, tinymce,  codemirror none   
-            $fieldB = JEditor::getInstance($select_ditor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
+            $fieldB = JEditor::getInstance($select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
             $fieldB .= " $intro";
             if($labelOut){
                 $fieldB = "<div class='form-group mfFieldGroup editor mfEditor $style_field'>"
@@ -1033,14 +1037,14 @@ class modMultiFormHelper {
 	 */
     public static function &getModules($mod_ids)
     {
-
-        $is4 = \Joomla\CMS\Version::MAJOR_VERSION > 3;
-        
-            $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
-            foreach ($mod_ids as $i => $m){
-                $mod_ids[$i] = $is4? (int)$m : (string)$m;
-            }
                 
+        $is4 = false;// \Joomla\CMS\Version::MAJOR_VERSION > 3;
+        
+        $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
+        foreach ($mod_ids as $i => $m){
+            $mod_ids[$i] = $is4? (string)$m : (string)$m;
+        }  
+
             
             $results = [];//Массив объектов модулей для возрвата
 //            $ids = [];//ID для которых нужно инициализировать объекты модулей
@@ -1156,6 +1160,7 @@ class modMultiFormHelper {
 
     
         
+//echo "<pre>". print_r($moduleid, true). "</pre>";
         
         $modules = self::getModules($moduleid);
         
@@ -1627,9 +1632,12 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
     //$params->set('debug',true);
 }
         
+//echo '123';
+//return;
 //        echo "<pre>". print_r($module, true). "</pre>";
         $list_fields = $params->get('list_fields');
             
+//echo "<pre>". print_r($params, true). "</pre>";
         if(is_null($list_fields))
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         if(is_string($list_fields))
@@ -1656,7 +1664,8 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         
 //        return __DIR__."/../tmpl/$form";
         
-                           
+              
+        
         
         $fields = self::buildFields($list_fields, $module->id, $params->get('nameInOut'), $params->get('style_field'));
         
@@ -1923,9 +1932,9 @@ abstract class mfModuleHelper extends JModuleHelper{
         }
         $modules = &static::getModules($module->position); 
         
-        $module->published = FALSE; 
-        $module->position = FALSE; 
-        $module->module = FALSE; 
+        $module->published = FALSE;
+        $module->position = FALSE;
+        $module->module = FALSE;
         $module->style = 'System-none';//System-none
         return $modules;
     }
