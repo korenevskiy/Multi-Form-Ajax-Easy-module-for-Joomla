@@ -96,13 +96,13 @@
                 
                 <field name="article_in_category"
                        type="cat"  extension="com_content"
-                       show_root="false"   class=" "
+                       show_root="false"   class=" " 
                        show_empty="true" showon="default:default.php"
                        label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
                        description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC">
                 </field>
                 
-                <field
+                <field 
                     name="article_published" 
                     type="list" 
                     default="0"  showon="default:default.php[AND]article_in_category!:"
@@ -321,7 +321,7 @@
                 />   
                 <field
                     name="textbuttonpopup"
-                    showon="popup:1"
+                    showon="popup:1"  group="JNOW"
                     type="textTranslate"
                     xtype="textTranslate"
                     addfieldpath="modules/mod_multi_form/fields/"
@@ -332,7 +332,7 @@
                 
                 
                 <field
-                    name="textsubmit"
+                    name="textsubmit"   
                     translate_default="true"
                     type="textTranslate"
                     addfieldpath="modules/mod_multi_form/fields/"
@@ -342,13 +342,13 @@
                     required=""
                     class="" />
                 <field
-                    name="textwhensending"
+                    name="textwhensending"  
                     translate_default="true"
                     type="textTranslate"
                     addfieldpath="modules/mod_multi_form/fields/"
+                    default="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DEF"
                     label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
                     description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
-                    default="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DEF"
                     required=""
                     class="" />
                 
@@ -572,16 +572,87 @@
                 
             </fieldset>
 
-            <!--            <fieldset name="table_fields" label="Fields">
+            <fieldset name="table_fields" label="Table Fields">
                 
                 
+                <field
+                    name="tbl"
+                    type="tableFields"
+                    label="Новая таблица" 
+                    
+                    creatable="true"
+                    movable="true"
+                    removable="true" 
+                    >
+                           
                     <field
-                        type="tableFields_"
+                        type="spacer" 
+                        label="Имя" default="Сергей"/> 
+                    <field
+                        name="namefield"
+                        type="text"
+                        label="MOD_MULTI_FORM_TITLE_FIELD_LABEL" 
+                        description="Описание и пояснения к названию колонки" 
+                        class="" />
+                    <field
+                        name="nameforpost"
+                        type="text"
+                        default="Я выступаю в Форбс"
+                        label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL" 
+                        class="" />
+                    <field
+                        name="typefield" 
+                        type="list" class="far fa-edit"
+                        default="editor"
+                        label="MOD_MULTI_FORM_TYPE_FIELD_LABEL" >
+                        <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+                        <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
+                        <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
+                        <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
+                    </field>
+                    <field
+                        name="paramsfield"
+                        label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+                        size="30"
+                        type="text" 
                         default=""
-                        label="&lt;hr>"
-                        description=""
-                    />
-            </fieldset>               -->
+                        class="params_type span2" />
+                    <!--       -->
+                    <default>
+                                   {
+  "info": [
+    "1",
+    "2"
+  ],
+  "namefield": [
+    "Сайт Имя",
+    "Сайт Телефон"
+  ],
+  "nameforpost": [
+    "Почта имя",
+    "Почта Телефон"
+  ],
+  "typefield": [
+    "text",
+    "text"
+  ],
+  "paramsfield": [
+    "",
+    ""
+  ],
+  "art_id": [
+    "",
+    ""
+  ],
+  "onoff": [
+    "2",
+    "2"
+  ]
+}
+                    </default>
+                </field>
+                  
+            </fieldset>                  
 
             <fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
                 <field
