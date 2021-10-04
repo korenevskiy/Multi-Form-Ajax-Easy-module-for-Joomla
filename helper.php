@@ -1682,6 +1682,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         
                            
         
+        
         $fields = self::buildFields($list_fields, $module->id, $params->get('nameInOut'), $params->get('style_field'));
         
         $fields_test = self::getFieldsTest($module);
@@ -1932,6 +1933,36 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        $captcha = JEventDispatcher::getInstance()->trigger('onCheckAnswer',$post['recaptcha_response_field']); 
         return $param;
     }
+	
+	public static function isJ4() {
+        return JVersion::MAJOR_VERSION > 3; 
+    }
+
+//    public static $debugs = [];
+    public static function event(...$arg){
+		return;
+        $file =         JPATH_ROOT. '/events.txt';
+		
+//        toPrint(JPATH_ROOT. '/events.txt','Event $file',0,'pre');
+        
+        $data = print_r($arg,true);
+        $data .= "\n\n\n\n"; 
+        $data .= "============================================================\n"; 
+        $data .= "============================================================\n"; 
+        $data .= "\n\n\n\n"; 
+        file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+        
+//        static::$debugs[] = $arg;
+//        toPrint($arg,'Event Module',0,'pre');
+//        toPrint(static::$debugs,'static::$debugs',0,'pre');
+}
+    public  function onBeforeRender($arg){
+        toPrint($arg,'Event Module',0,'pre');
+    }
+    public  function onPrepareContent($arg){
+        toPrint($arg,'Event Module',0,'pre');
+    }
+
 }
 
 
