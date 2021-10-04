@@ -22,6 +22,8 @@ use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 //echo \Joomla\CMS\Uri\Uri::base(). "<br>";
 //echo \Joomla\CMS\Uri\Uri::root(). "<br>";
 
+if(file_exists(__DIR__ . '/functions.php'))
+	require_once  __DIR__ . '/functions.php';
 // Include the helper.
 require_once __DIR__ . '/helper.php'; 
 //require_once JPATH_BASE . '/components/com_content/helpers/route.php'; 
@@ -85,8 +87,59 @@ if($param->popup){
 //$textbeforeform1			= modMultiFormHelper::getArticle($params->get( 'textbeforeform1',0));
 //$textbeforeform2			= $params->get( 'textbeforeform2' );
 
-//toPrint($params,'$params',0);
+//function eventMulti(...$arg){
+//    toPrint($arg,'$arg',0,'pre');
+////    $arg[] = 'eventMulti';
+////    modMultiFormHelper::event($arg);
+//};
+//        toPrint(JPATH_ROOT. '/events.txt','Event $file',0,'pre');
+jimport( 'joomla.application.application' );
+//$event = new Joomla\Event\Event(); 
+//system ---------------------  
+//    JFactory::getApplication()->registerEvent('onAfterInitialise', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterRoute', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterDispatch', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterRender', function(...$arg){$arg[]='!6';toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onBeforeRender', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onBeforeCompileHead', function(...$arg){$arg[]='!5';toPrint($arg,'$arg',0,'pre');});
+//JFactory::getApplication()->registerEvent('onBeforeCompileHead',       [new modMultiFormHelper,'event']); 
+//Field --------------------- 
+//JFactory::getApplication()->registerEvent('onContentPrepareForm',       [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onCustomFieldsGetTypes',     [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onCustomFieldsPrepareDom',   [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onCustomFieldsPrepareField', [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentBeforeSave',        [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onCustomFieldsBeforePrepareField',[new modMultiFormHelper,'event']); 
+//module --------------------- 
+//    JFactory::getApplication()->registerEvent('onRenderModule', function(...$arg){$arg[]='!1,3';toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterRenderModule', function(...$arg){$arg[]='!2,4';toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onPrepareModuleList', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterModuleList', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onAfterCleanModuleList', function(...$arg){toPrint($arg,'$arg',0,'pre');}); 
+//Content ---------------------
+//! onContentPrepare
+//! onContentAfterTitle
+//! onContentBeforeDisplay
+//! onContentAfterDisplay
+//JFactory::getApplication()->registerEvent('onContentPrepare',       [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentAfterTitle',    [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentBeforeDisplay', [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentAfterDisplay',  [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentBeforeSave',    [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentAfterSave',     [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentPrepareForm',   [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentPrepareData',   [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentBeforeDelete',  [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentAfterDelete',   [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentChangeState',   [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentSearch',        [new modMultiFormHelper,'event']);
+//JFactory::getApplication()->registerEvent('onContentSearchAreas',   [new modMultiFormHelper,'event']); 
 
+//    JFactory::getApplication()->registerEvent('onBeforeCompileHead', function(...$arg){toPrint($arg,'$arg',0,'pre');});
+//    JFactory::getApplication()->registerEvent('onContentPrepare', [new modMultiFormHelper,'event']);//onPrepareContent  onBeforeRender
+    ////onPrepareContent  !onBeforeCompileHead 'eventMulti'
+//JFactory::getApplication()->registerEvent('onBeforeCompileHead', 'modMultiFormHelper');//onPrepareContent
+//JFactory::getApplication()->registerEvent('onBeforeCompileHead', 'modMultiFormHelper');//onPrepareContent
 
 //$textbuttonpopup = $textcallpopup = $params->get( 'textbuttonpopup',$params->get( 'textcallpopup' ) ); 
 
@@ -106,14 +159,14 @@ if($param->popup){
 
 //$colorscheme 			= $params->get( 'colorscheme' );
  
-$allparams  = json_decode($params->get( 'list_fields' ));
-//$allparams->select_ditor = $param->select_ditor || 'tinymce';  
-if(in_array('editor', $allparams->typefield)){
+$allparams  = $params->get( 'list_fields' );//json_decode($params->get( 'list_fields' ));
+//$allparams->select_editor = $param->select_editor || 'tinymce';   
+if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
     
-//toPrint($allparams->typefield,'$allparams+'.$param->select_ditor,0,'pre',true);
+//toPrint($allparams->typefield,'$allparams+'.$param->select_editor,0,'pre',true);
     jimport( 'joomla.html.editor' );
     JPluginHelper::importPlugin('editors');
-        
+    if(class_exists('Ed')){ 
     class Ed extends \Joomla\CMS\Editor\Editor{ 
 
         public static function getInstance($editor = 'none') {  
@@ -136,6 +189,8 @@ if(in_array('editor', $allparams->typefield)){
             return $this;
         }
     }
+	}    
+	
     $editor = Ed::getInstance($param->select_editor)->Load(); 
     
         
@@ -153,6 +208,8 @@ if(in_array('editor', $allparams->typefield)){
 //		\Joomla\CMS\HTML\HTMLHelper::_('behavior.polyfill', array('event'), 'lt IE 9');
 //		\Joomla\CMS\HTML\HTMLHelper::script('media/editors/tinymce/tinymce.min.js', array('version' => 'auto'));
 //		\Joomla\CMS\HTML\HTMLHelper::script('editors/tinymce/tinymce.min.js', array('version' => 'auto', 'relative' => true));
+}else{
+	$param->list_fields = [];
 }
 
 
@@ -207,7 +264,7 @@ $Itemid = " data-Itemid='$menu_id' ";
 //    $js = "jQuery(function(){mfOpenModalClick(); });";
 //    JFactory::getDocument()->addScriptDeclaration($js);
 //}
-
+if(empty(modMultiFormHelper::isJ4()))
 JHtml::stylesheet(JUri::base().'/media/jui/css/icomoon.css');
 
 //if($params->get( 'popup' )){ 
