@@ -6,13 +6,13 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-    <modificationDate>2021-01-10</modificationDate>
+    <modificationDate>2021-10-05</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
     <license>GNU General Public License version 2, or later.</license>
     <oldversion>4.00.07</oldversion>
-    <version>3.10.02</version>
+    <version>3.10.03</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
@@ -133,157 +133,7 @@
                         
                  
                 
-                <field
-                    name="list_fields"
-                    type="Repeatable"
-                    icon="list" 
-                    description=""
-                    label="MOD_MULTI_FORM_LIST_FIELD_LABEL"
-                    default="{       &quot;namefield&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;nameforpost&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;typefield&quot;:[&quot;text&quot;,&quot;text&quot;],         &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],      &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],        &quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]       }">
-                    <fields name="formfields">
-                        <fieldset
-                            hidden="true"
-                            name="list_fields_modal"
-                            repeat="true">
-                            <field
-                                name="namefield"
-                                type="text"
-                                label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
-                                class="" />
-                            <field
-                                name="nameforpost"
-                                type="text"
-                                label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
-                                class="" />
-                            <field
-                                name="typefield"
-                                type="list" class="far fa-edit"
-                                default=""
-                                label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
-                                <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
-                                <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
-                                <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
-                                <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
-                                <option class="tel"             value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
-                                <option class="email"             value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
-                                <option class="number"             value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
-                                <option class="select"             value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
-                                <option class="radio"             value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
-                                <option class="file"             value="file">File</option>
-                                <option class="files"             value="files">Files</option>
-                                <option class="checkbox"             value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
-                                
-                                
-                                <option class="time"             value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
-                                <option class="date"             value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
-                                <option class="datetime"             value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
-                                <option class="datetime-local"             value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
-                                <option class="week"             value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
-                                <option class="month"             value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
-                                <option class="image"             value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
-                                <option class="url"             value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
-                                <option class="password"             value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
-                                <option class="range"             value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
-                                
-                                <option class="color"             value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
-                                <option class="hidden"             value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
-                                <option class="separate"             value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
-                                <option class="startblock"             value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
-                                <option class="finishblock"             value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
-                            </field>
-                            <field
-                                name="paramsfield"
-                                label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
-                                size="30"
-                                type="textarea"
-                                description=""
-                                default=""
-                                class="params_type span2" />
-                            <field
-                                name="art_id"
-                                label="JGLOBAL_ARTICLES"
-                                type="text"
-                                description="IDs [[%1:]],JGLOBAL_ARTICLES"
-                                default=""
-                                filter="integer"
-                                hint="12,23"
-                                class=" span1" />
-                            <!--              <field
-                            name="textarticle"
-                            type="Modal_Article" addfieldpath="administrator/components/com_content/models/fields/modal/"
-                            label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
-                            description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC" 
-                            class="article"/>  -->
-                            <!--				<field 
-                                           name="sortnumber"
-                                           type="number"
-                                           class="poryadok"
-                                           size="2"
-                                           default="0"
-                                           label="MOD_MULTI_FORM_SORT_NUMBER_LABEL"
-                                           description="MOD_MULTI_FORM_SORT_NUMBER_DESC"
-                                           min="0"
-                                           max="99"
-                                           step="1" />
-                            -->
-                            <!--	<field 
-                                                     name="required" 
-                                                     type="radio" 
-                                                     default="1"  class="  btn-group btn-group-yesno  ">
-                                                     label="MOD_MULTI_FORM_REQUIRED_LABEL" 
-                                                     description="MOD_MULTI_FORM_REQUIRED_DESC">
-                                                     <option value="1">JYES</option>
-                                                     <option value="0">JNO</option>
-                                                 </field>
-                                                 <field 
-                                                     name="onoff_" 
-                                                     type="radio" 
-                                                     default="yes"
-                                                     label="MOD_MULTI_FORM_ONOFF_LABEL" 
-                                                     description="MOD_MULTI_FORM_ONOFF_DESC">
-                                                     <option value="yes">MOD_MULTI_FORM_YES_LABEL</option>
-                                                     <option value="no">MOD_MULTI_FORM_NO_LABEL</option>
-                                                 </field>  
-                     <field name="onoff_" type="checkbox" label="JON" description="Show" value="1" default="0"  
-                            class="span1_checkbox " />      
-                            -->
-                            <field
-                                name="onoff"
-                                type="radio"
-                                default="1"
-                                label="MOD_MULTI_FORM_ONOFF_LABEL"
-                                description="MOD_MULTI_FORM_NO_LABEL"
-                                class="btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
-                                <option             value="2">[[%1:]]*,JYES</option>
-                                <option             value="1">JYES</option>
-                                <option             value="0">JNO</option>
-                            </field>
-                            <!--              <field
-                                    name="textarticle"
-                                    type="Modal_Article" addfieldpath="administrator/components/com_content/models/fields/modal/"
-                                    label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
-                                    description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC" 
-                                    class="article"/>
-                
-                                                                          
-                                                        <field 
-                                name="idvx" 
-                                type="modal_article" addfieldpath="/administrator/components/com_content/models/fields"
-                                label="COM_CONTENT_FIELD_SELECT_ARTICLE_LABEL"
-                                description="COM_CONTENT_FIELD_SELECT_ARTICLE_DESC"
-                                required="true"
-                                select="true"
-                                new="true"
-                                edit="true"
-                                clear="true"
-                            />  -->
-                        </fieldset>
-                    </fields>
-                </field>
-                   
+              
                 <field
                     name="popup"
                     type="radio"
@@ -321,7 +171,7 @@
                 />   
                 <field
                     name="textbuttonpopup"
-                    showon="popup:1"
+                    showon="popup:1"  group="JNOW"
                     type="textTranslate"
                     xtype="textTranslate"
                     addfieldpath="modules/mod_multi_form/fields/"
@@ -572,16 +422,262 @@
                 
             </fieldset>
 
-            <!--            <fieldset name="table_fields" label="Fields">
+            <fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
+                addfieldpath="modules/mod_multi_form/field"> 
+<!--              
+-->
+ <!--                 
+                <field
+                    name="list_fields_"
+                    type="Repeatable"
+                    icon="list" 
+                    description=""
+                    label="MOD_MULTI_FORM_LIST_FIELD_LABEL"
+                    default="{       &quot;namefield&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;nameforpost&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;typefield&quot;:[&quot;text&quot;,&quot;text&quot;],         &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],      &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],        &quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]       }">
+                    <fields name="formfields">
+                        <fieldset
+                            hidden="true"
+                            name="list_fields_modal"
+                            repeat="true">
+                            <field
+                                name="namefield"
+                                type="text"
+                                label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
+                                description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
+                                class="" />
+                            <field
+                                name="nameforpost"
+                                type="text"
+                                label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
+                                description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
+                                class="" />
+                            <field
+                                name="typefield"
+                                type="list" class="far fa-edit"
+                                default=""
+                                label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
+                                description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
+                                <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+                                <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
+                                <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
+                                <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
+                                <option class="tel"             value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
+                                <option class="email"             value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
+                                <option class="number"             value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
+                                <option class="select"             value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
+                                <option class="radio"             value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
+                                <option class="file"             value="file">File</option>
+                                <option class="files"             value="files">Files</option>
+                                <option class="checkbox"             value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
+         
+
+                                <option class="time"             value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
+                                <option class="date"             value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
+                                <option class="datetime"             value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
+                                <option class="datetime-local"             value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
+                                <option class="week"             value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
+                                <option class="month"             value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
+                                <option class="image"             value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
+                                <option class="url"             value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
+                                <option class="password"             value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
+                                <option class="range"             value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
+                                
+                                <option class="color"             value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
+                                <option class="hidden"             value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
+                                <option class="separate"             value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
+                                <option class="startblock"             value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
+                                <option class="finishblock"             value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
+                            </field>
+                            <field
+                                name="paramsfield"
+                                label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+                                size="30"
+                                type="textarea"
+                                description=""
+                                default=""
+                                class="params_type span2" />
+                            <field
+                                name="art_id"
+                                label="JGLOBAL_ARTICLES"
+                                type="text"
+                                description="IDs [[%1:]],JGLOBAL_ARTICLES"
+                                default=""
+                                filter="integer"
+                                hint="12,23"
+                                class=" span1" />
+                              
+                            <field
+                                name="onoff"
+                                type="radio"
+                                default="1"
+                                label="MOD_MULTI_FORM_ONOFF_LABEL"
+                                description="MOD_MULTI_FORM_NO_LABEL"
+                                class="btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
+                                <option             value="2">[[%1:]]*,JYES</option>
+                                <option             value="1">JYES</option>
+                                <option             value="0">JNO</option>
+                            </field>
+                                  
+                        </fieldset>
+                    </fields>
+                </field>
+                
+-->
                 
                 
-                    <field
-                        type="tableFields_"
-                        default=""
-                        label="&lt;hr>"
-                        description=""
+<!--
+<field name="note13" type="note" label="LOREMIPSUM" description="LOREMIPSUM_DESC" close="true" /> 
+                    <sql primary="id">
+                        SELECT id, title, text FROM #__content;
+                    </sql>
+                    <field type="insert" sql="INSERT ...">
+                        <field/>
+                        <field/>
+                        <field/>
+                    </insert>
+                    <field name="" type="containier" label="">
+                        <field/>
+                        <field/>
+                    </field>
+                    <field name="edit" type="link" primary="id" label="Edit" target="_blank"
+                        default="/administrator/index.php?option=com_content&task=article.edit&id={0}"
                     />
-            </fieldset>               -->
+                    <field name="edit2" type="links" primary="id" label="Edit" target="_blank">
+                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit1</option>
+                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit2</option>
+                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit3</option>
+                    </field>
+-->
+<!--
+   <field
+                                label="JEDIT"
+                                type="format" 
+                                default="" 
+                                hint="12,23" hiddenLabel="true"
+                                class=" span1" >
+                                <![CDATA[
+                                <a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
+                            </field>
+-->
+                <field 
+                addfieldpath="modules/mod_multi_form/field"
+                    name="list_fields"
+                    type="gridfields"
+                    label="Новая таблица"
+                     
+                    creatable="true"
+                    movable="true"
+                    removable="true" 
+                     removableClass="btn-sm"
+                     removable-class="btn-sm"
+                    >   
+                    <default>
+                        {
+                        "namefield":["Name","Phone"],
+                        "nameforpost":["Name","Phone"],
+                        "typefield":["text","text"],
+                        "paramsfield":["",""],
+                        "art_id":["",""],
+                        "onoff":["2","2"]
+                        }
+                    </default>
+                            <field
+                                name="namefield" 
+                                type="text" 
+                                label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
+                                description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
+                                class="" />
+                            <field
+                                name="nameforpost"
+                                type="text"
+                                label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
+                                description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
+                                class="" /> 
+                            <field style="-width:10%"
+                                name="field"
+                                type="text"
+                                label="{Field}"
+                                description=""
+                                class=" w-5  form-control-sm" /> 
+                            <field
+                                name="typefield"
+                                type="list" class="far fa-edit   form-select-sm"
+                                default="" style="min-width: 100px;"
+                                label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
+                                description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
+                                <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+                                <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
+                                <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
+                                <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
+                                <option class="tel"             value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
+                                <option class="email"             value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
+                                <option class="number"             value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
+                                <option class="select"             value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
+                                <option class="radio"             value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
+                                <option class="file"             value="file">File</option>
+                                <option class="files"             value="files">Files</option>
+                                <option class="checkbox"             value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
+                                
+                                
+                                <option class="time"             value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
+                                <option class="date"             value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
+                                <option class="datetime"             value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
+                                <option class="datetime-local"             value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
+                                <option class="week"             value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
+                                <option class="month"             value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
+                                <option class="image"             value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
+                                <option class="url"             value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
+                                <option class="password"             value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
+                                <option class="range"             value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
+                                
+                                <option class="color"             value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
+                                <option class="hidden"             value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
+                                <option class="separate"             value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
+                                <option class="startblock"             value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
+                                <option class="finishblock"             value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
+                            </field>
+                            <field
+                                name="paramsfield"
+                                label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+                                size="30"
+                                type="textarea"  
+                                description=""
+                                default=""
+                                class="" />
+                            <field
+                                name="art_id"
+                                label="JGLOBAL_ARTICLES"
+                                type="text"
+                                description="IDs [[%1:]],JGLOBAL_ARTICLES"
+                                default=""
+                                filter="integer"
+                                hint="12,23"
+                                class="" />
+                            
+                            <field
+                                name="onoff"
+                                type="radio"
+                                default="1"
+                                label="MOD_MULTI_FORM_ONOFF_LABEL"
+                                description="MOD_MULTI_FORM_NO_LABEL"
+                                class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
+                                <option             value="2">[[%1:]]*,JYES</option>
+                                <option             value="1">JYES</option>
+                                <option             value="0">JNO</option>
+                            </field> 
+                            
+                     <!--         <field
+                                label="JEDIT"
+                                type="format" 
+                                default="" 
+                                hint="12,23" hiddenLabel="true"
+                                class=" span1" >
+                                <![CDATA[
+                                <a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
+                            </field> --> 
+                </field>
+ <!--                 --> 
+            </fieldset>                  
 
             <fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
                 <field
@@ -1086,7 +1182,7 @@ ORDER BY lft)t) ;
                                     name="stylethemes"
                                     type="filelist"
                                     Xfilter="css"
-                                    filter="^(theme_)[A-Za-z0-9]*(.css)"
+                                    fileFilter="^(theme_)[A-Za-z0-9]*(.css)"
                                     hide_default="true"
                                     hide_none="true"
                                     multiple="false"
