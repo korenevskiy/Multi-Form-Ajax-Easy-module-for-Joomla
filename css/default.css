@@ -331,6 +331,7 @@ dialog.mfForm_modal .mfClose span{
     line-height: inherit;
     display: flex;
     place-content: center;
+	position: relative;
 }
 
 dialog.mfForm_modal .mfClose:hover span,
@@ -342,10 +343,10 @@ dialog.mfForm_modal .mfClose:focus span{
 }
 dialog.mfForm_modal .mfClose span::before {
     position: absolute; 
-    /* top: 0; */
+     top: 0; 
     /* left: 0; */
     /* right: 0; */
-    /* bottom: 0; */
+    bottom: 0; 
     /*margin: auto;*/
     /*margin: 2px auto;*/
     /*margin: 0.05rem auto;*/
