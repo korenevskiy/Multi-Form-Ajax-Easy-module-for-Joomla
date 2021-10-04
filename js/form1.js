@@ -120,8 +120,17 @@ function mfOpenModal_Click(event) {
 //        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
     }
                  
-                
-                
+    let modal = jQuery('#' +modal_id);//.css('padding',0);    
+    modal.css('display', 'block').animate( {opacity: 1, top: positiOnScroll, opacity: 1, visibility: 'visible', }, 400, ()=>{
+          let overlay = jQuery(this).next('.mfOverlay');//.css('padding',0).css('padding-right',0);
+console.log(overlay,'HaHa 2');
+          jQuery(this).modal('show').css('padding',0).css('padding-right',0);
+          //overlay.css('padding',0).css('padding-right',0);
+console.log(overlay,'HaHa 4');
+            }
+        ).css('opacity',1).css('top','200');
+        
+        
 //                document.getElementById(modal_id).showModal();
                 //this.closest('#' + modal_id).close();
                 //document.getElementById("mfForm_" + id).close();
@@ -173,6 +182,7 @@ function mfClickCloseModal() {
             let id = jQuery(this).attr('data-id');
             let modal = "#mfForm_" + id;
             let overley = "#mfOverlay_" + id;
+console.log(overley,'HaHa');
             jQuery(modal).animate({top: 0}, 200);
             jQuery(modal)
                     .animate({opacity: 0}, 300, function () { // после анимации
@@ -283,15 +293,16 @@ function hideBlockStaticFormAfterSend(id, block, status, response) {
     }); // делаем ему display: none; 
 }
 /**
- * Скрыть и очистить форму перед отправкой
+ * Скрыть и очистить форму после отправки 
  * @param {int} id
- * @param {string} block
- * @param {html} status
- * @param {string} response
- * @param {string} textbutton
+ * @param {html} modal
+ * @param {string} overley
+ * @param {string} status
+ * @param {html} response 
+ * @param {string} textbutton 
  * @returns {undefined}
  */
-function hideAndClearStaticFormAfterSend(id, block, status, response, textbutton) {
+function hideAndClearFormAfterSend(id, modal, overley, status, response) {
 
     jQuery('.mfStatusDone.id' + id).html(response);
     jQuery('.mfStatusForm.id' + id).fadeOut(400, function () {
@@ -300,7 +311,7 @@ function hideAndClearStaticFormAfterSend(id, block, status, response, textbutton
                 jQuery('.mfStatusDone.id' + id).fadeOut(400, function () {
                     jQuery('.mfStatusForm.id' + id).fadeIn(400, function () {
                         jQuery('.mfStatusForm.id' + id)[0].reset();
-                        jQuery('#mfForm_' + id + " input[id^=submit]").attr('value', textbutton);
+                        jQuery('#mfForm_' + id + ' input[id^=submit]').button('ready');
                     });
                 });
             }, 8000);// Задержка вывода сообщения для статической формы 
@@ -370,8 +381,8 @@ function mfAjaxDoneSuccess(data, status) {
                         params.id,
                         '#mfForm_' + params.id,
                         '.mfStatusDone.id' + params.id,
-                        data,
-                        jQuery('input#submit' + params.id).attr('value')
+                        data
+                        
                         );
             } else {
                 hideBlockStaticFormAfterSend(
@@ -393,6 +404,8 @@ function mfButtonSubmit_Click(e) {
 //        let params = e.data;
 //        let e = {data:this};
     //console.log('🏆 func_custom', e);
+e.data.deb &&                console.log('--------- --------- Click Send ---------');
+
     //return;
     let params = e.data;
 //        var params = this;
@@ -435,13 +448,14 @@ function mfButtonSubmit_Click(e) {
 //                    + this.defaultShowErrors(),errorMap,errorList);
 //            },
                 invalidHandler: function (event, validator) {
-                    console.log('👎 _validator');
-                    console.log('👎 _validator', validator);
+//this.deb &&                console.log('--------- --------- Validate Faile ---------');
+                    console.log('👎 --------- --------- Validate Faile ---------', validator);
 //                console.log('👎 _validator<FORM>',this);
                 },
                 submitHandler: function (form) {//,event //recaptcha_invisible, recaptcha
                     e.preventDefault();
-                    console.log('(I)  :-)  - submitHandlerValidate!!!!!->  ()  Captcha:',params.captcha?'Yes🌟':'No🚫', params.captcha, params);
+e.data.deb &&         console.log('--------- --------- ---------');
+e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  ()  Captcha:',params.captcha?'Yes🌟':'No🚫', params.captcha, params);
                     if (params.captcha == 'recaptcha'  && params.grecaptcha !== false) {
                         //'dynamic_captcha_'+params.id
                         //grecaptcha.execute(params.grecaptcha)
@@ -479,21 +493,23 @@ function mfButtonSubmit_Click(e) {
                             grecaptcha.execute(params.grecaptcha).then(function(token){
 
                                 params.token = token; 
-                                console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', token,' This:',this,' Module:',params  );
+                                console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', token,' This:',this,' Module:',params  );//,', form:', form
                                 return;
                                 
                                 submitHandler.call(params, form);
                             });
 //                        });
                         return;
+                    }else{
+//e.data.deb &&             console.log('👎 Captcha NULL !!!    <---------');
                     }
                     else if(params.captcha == 'recaptcha_invisible' && params.grecaptcha === false){//
-console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );
+e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );//, ', form:', form
 //                        submitHandler.call(params, form);
                         return;
                     }
                     else if(!params.captcha || params.grecaptcha === false){//Капча не настроена, выполняем без капчи
-console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );
+e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params );//, ', form:', form 
                         submitHandler.call(params, form);
                         return;
                     }
@@ -505,7 +521,7 @@ console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Modul
             });
 
 //    console.log(55555555, "#mfForm_form_" + params.id, params, this);
-//        e.preventDefault();
+        e.preventDefault();
 }
 
 
@@ -519,7 +535,7 @@ function submitHandler(form) {
 //                console.log('capth_exe',capth_exe);
 //                console.log('form',form);
 
-    console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this);
+this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this);
 //    return;
 
 //                jQuery(form).submit(function(e) {
@@ -532,7 +548,7 @@ function submitHandler(form) {
 //                console.log('🏆 Validated!!!! Form', form);
 
 //                throw new Error("Something went badly wrong!");
-    jQuery('#submit_' + this.id).attr('value', jQuery('#submit_' + this.id).data('sending'))
+    jQuery('#submit_' + this.id).button('sending')
             .css('text-transform', 'none').css('transform', 'none').addClass('active'); //Тект кнопки при отправке
 //                return false;
     /*
@@ -629,13 +645,19 @@ function submitHandler(form) {
 
     let url = window.location.origin + '/index.php';
     url = document.baseURI + 'index.php';
-    this.deb && console.log('Ajax request ModuleID:', this.id, ' ', data);
+this.deb && console.log('Url Submit:', url);
+this.deb && console.log('Ajax request ModuleID:', this.id, ' ', data);
+this.deb && console.log(data.getAll());
     jQuery.ajax({type: 'POST', url: url, dataType: 'html', data: data, context: this, cache: false, contentType: false, processData: false})
             .done(mfAjaxDoneSuccess).fail(mfAjaxFailForm);//.fail(mfAjaxFailForm);
 }
-
 // -------- Load F 
-
+/**
+ * 
+ * @param {html} data return html from server
+ * @param {type} status
+ * @returns {undefined}
+ */
 function mfAjaxDoneForm(data, status) {
 //        var id = jQuery(this).data('id');
 //        var deb = jQuery(this).data('deb');
@@ -658,7 +680,7 @@ function mfAjaxDoneForm(data, status) {
         jQuery('#mfOverlay_' + this.id).click(this, mfCloseModal_Click);
         jQuery('.modal-backdrop.show').click(function(){ 
             jQuery('.mfOverlay').fadeOut();
-            jQuery('dialog.mfForm_modal').animate({top: '-50%'}, 400).fadeOut();//.modal('hide'); 
+            jQuery('dialog.mfForm_modal').animate({top: '-50%'}, 400).modal('hide').fadeOut();//.modal('hide'); 
             jQuery(this).hide(); });
         if (this.buttons.length > 0) {
             for (let btn of this.buttons) {
@@ -705,7 +727,7 @@ function mfAjaxDoneForm(data, status) {
 
 function mfAjaxFailForm(jqXHR, status, errorThrown) {//(jqXHR, status, errorThrown)
 console.clear();
-    this.deb && console.log('👎 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Fail! - Disabled button! status:', status, '\n this:', this, ' jqXHR:', jqXHR,'\n errorThrown:',errorThrown);//, errorThrown,jqXHR
+    this.deb && console.log('👎 Module id:' + this.id + ' Tag:(' + this.tag + '), Type:' + this.type + ' - Load form Fail! - Disabled button! status:', status, '\n this:', this, ' jqXHR:', jqXHR,'\n errorThrown:',errorThrown);//, errorThrown,jqXHR
     //this.deb && console.log('👎 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Fail! - Disabled button! status:', status, ' this:', this, ' data:', data);//, errorThrown,jqXHR//
 //        jQuery('.button.id'+this.id).hide();
 
