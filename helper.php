@@ -34,7 +34,8 @@ class modMultiFormHelper {
         if(isset(static::$min))
             return;
         
-        static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+        //static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
+        static::$min = JDEBUG;
         
         
         //JFactory::getDocument()->setBase(JUri::root());
@@ -465,7 +466,7 @@ class modMultiFormHelper {
 //        echo "<pre>allparams <br>". print_r($allparams, true). "</pre>";
         
 //        toPrint($allparams,'$allparams') ;
-        $select_ditor = $allparams->select_ditor ?: 'tinymce' ;
+        $select_editor = $allparams->select_editor ?: 'tinymce' ;
         
         empty($allparams) && $allparams = new stdClass;
         empty($allparams->namefield) && $allparams->namefield = [];
@@ -557,7 +558,7 @@ class modMultiFormHelper {
 //                    $editor = JEditor::getInstance('tinymce');
 //                     toPrint($editor,'Editor') ;
                 //arkeditor, tinymce,  codemirror none   
-            $fieldB = JEditor::getInstance($select_ditor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
+            $fieldB = JEditor::getInstance($select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
             $fieldB .= " $intro";
             if($labelOut){
                 $fieldB = "<div class='form-group mfFieldGroup editor mfEditor $style_field'>"
@@ -570,10 +571,10 @@ class modMultiFormHelper {
             $mask = $paramsfield?:'+999(999) 999-9999';
             if($labelOut){
                 $fieldB = "<div class='form-group mfFieldGroup tel $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' class='form-control input tel' $requiredField  data-inputmask=\"'mask': '$mask'\" pattern=\"[0-9]{3}-[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //data-inputmask='\"mask\": \"$mask\"'
+                $fieldB .= "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' class='form-control input tel' $requiredField  data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //data-inputmask='\"mask\": \"$mask\"'
                 $fieldB .= " $intro</div>";
             }else{
-                $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask=\"'mask': '$mask'\" pattern=\"[0-9]{3}-[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //  data-inputmask='\"mask\": \"$mask\"'
+                $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //  data-inputmask='\"mask\": \"$mask\"'
                 $fieldB .= " $intro";
             }
                         
@@ -590,6 +591,25 @@ class modMultiFormHelper {
                         
                         JFactory::getDocument()->addScriptDeclaration($script);
 		break;
+// Требуется создать JS скрипт который будет генерировать патерн из маски
+//https://htmlweb.ru/html/form/form_input_pattern.php
+//https://webref.ru/html/input/pattern
+//http://htmlbook.ru/html/input/pattern
+//\+?[0-9]{1,3}\d{3}[-][\(]{0,1}[0-9]{3}[\)]{0,1}\s[0-9]{3}\d{3}[-][0-9]{4}
+//
+//\+7			7
+//\+?    		не обязательный +
+//\+			+
+//\d{3}  		3 цифры
+//[-]{0,1} 		-
+//[-]{0,1}		-
+//\-			-
+//\s			пробел
+//\s?			не обязательный пробел
+//
+//[\(]{0,1}		(
+//[\)]{0,1}		)
+//9[0-9]{2}		1-3 цифры
 			
 		case "email":
             if($labelOut){
@@ -1038,7 +1058,7 @@ class modMultiFormHelper {
         
             $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
             foreach ($mod_ids as $i => $m){
-                $mod_ids[$i] = $is4? (int)$m : (string)$m;
+            $mod_ids[$i] = $is4? (string)$m : (string)$m;
             }
                 
             
@@ -1554,7 +1574,7 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
             
             $mail_sended = $mail_sended?'SENDED':'NOT Sended';
             $textsuccesssendAjax .= "<message class='message'>DEBUG-$module->id: $mail_sended</message>";
-            $textsuccesssendAjax .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
+//            $textsuccesssendAjax .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
 //            $textsuccesssendAjax .= "<pre class='message'>Factory::getApplication()->input: ".print_r(($input) ,TRUE)."</pre>";
 //            $textsuccesssendAjax .= "<pre class='message'>Mailer: ".print_r(get_object_vars($mailer) ,TRUE)."</pre>";
             $textsuccesssendAjax .= "<style type=\"text/css\">#mfForm_$module->id{display: block !important;}</style>";
@@ -1588,6 +1608,10 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         
     }
     
+	/**
+	 * Вызывается при загрузке формы
+	 * @return type
+	 */
     public static function getFormAjax(){
         jimport('joomla.application.module.helper'); //подключаем хелпер для модуля
         
