@@ -84,7 +84,7 @@ jQuery(function($){
 //                
 //                        console.log( ' ');
 //	}
-	$(window).load(function(){
+	$(window).ready(function(){
 //		/*Скрытие и показ полей, относящихся к PopUp*/
 //		var popupYesNoLabel = $('#jform_params_popup .active').attr('for');
 //		var popupYesNoInput = $('#'+popupYesNoLabel).val();
@@ -111,10 +111,10 @@ jQuery(function($){
 		
                         
 		/*Открытие списка полей*/
-		$('#jform_params_list_fields_button').live('click',function(){
+		$('#jform_params_list_fields_button').on('click',function(){
 //			
 			/*Смена иконки типа поля*/
-			$('#jform_params_list_fields_modal tbody tr td select[id $=-jform_formfields_typefield]').live('click',function(){//'',mouseout change select
+			$('#jform_params_list_fields_modal tbody tr td select[id $=-jform_formfields_typefield]').on('click',function(){//'',mouseout change select
                             //console.log(":)");
                             $('select[name="platform"] :selected').attr('class');
                             var option_class = $(this).find(':selected').attr('class');
@@ -207,7 +207,7 @@ jQuery(function($){
 //		});
 		
 		/*Подсветка радио кнопок*/
-//		$('#jform_params_list_fields_modal tr td fieldset input[name$=onoff]').live('change',radioValueChanged);
+//		$('#jform_params_list_fields_modal tr td fieldset input[name$=onoff]').on('change',radioValueChanged);
 //		
 //		setInterval(function(){
 //			var RVCh = $("#jform_params_list_fields_modal tr td fieldset input[name$=onoff]");
@@ -228,7 +228,7 @@ jQuery(function($){
 //		}, 1000);
 
 //		/*Добавление нового поля*/
-//		$('#jform_params_list_fields_modal tr th:last-child div a.button').live('click', function(){
+//		$('#jform_params_list_fields_modal tr th:last-child div a.button').on('click', function(){
 ////			sortionTR();
 //			/*var actualType		= $(this)
 //									.parent('div')
