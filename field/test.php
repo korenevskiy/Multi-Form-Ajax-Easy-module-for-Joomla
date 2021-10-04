@@ -17,6 +17,10 @@ use Joomla\CMS\Factory as JFactory;
 use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 
 
+JHtml::_('jquery.framework'); 
+JHtml::_('bootstrap.framework');
+//JHtml::_('bootstrap.loadCss', true);
+
 //        echo "<pre>";
 //        echo 'checkGet:'.print_r(JSession::checkToken('get'), true).'+<br>';
 //        echo 'checkPost:'.print_r(JSession::checkToken('post'), true).'+<br>';
