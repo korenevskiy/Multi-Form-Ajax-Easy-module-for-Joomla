@@ -557,7 +557,7 @@
                 <field name="default" 
                        type="filelist"   
                        hide_default='false' hide_none='true'
-                       default="default.php" filter="default.php" 
+                       default="default.php" filter="default.php" fileFilter="default.php" 
                        directory="modules/mod_multi_form/field/" exclude="" stripext="" 
                        showon="default:1" /> 
                     
@@ -565,7 +565,7 @@
                 <field name="jed" 
                        type="filelist"   
                        hide_default='false' hide_none='true'
-                       default="jed.php" filter="jed.php" 
+                       default="jed.php" filter="jed.php" fileFilter="jed.php" 
                        directory="modules/mod_multi_form/field/" exclude="" stripext="" 
                        showon="jed:1" /> 
                 
@@ -1016,7 +1016,7 @@ ORDER BY lft)t) ;
                 -->
                     
                 <field name="images_folder" type="folderlist" default="" label="JDIRECTORY_FILES" 
-                        description="JDIRECTORY_FILES_DESC"   filter="" exclude="" stripext="" directory="images" multiple="false"
+                        description="JDIRECTORY_FILES_DESC"   filter="" fileFilter=""  exclude="" stripext="" directory="images" multiple="false"
                 /> 
                 <field
                     name="debug"
@@ -1068,6 +1068,7 @@ ORDER BY lft)t) ;
                     name="stylefiles"
                     type="filelist"
                     Xfilter="css"
+                    fileFilter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css" 
                     filter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
                     xxfilter="^(?!(forAdmin.css)|(test.css)).*.css"
                     xfilter="^(?!forAdmin.css).*.css"
