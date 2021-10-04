@@ -72,11 +72,12 @@ if($param->icomoon){
     JHtml::stylesheet('media/jui/css/icomoon.css');
 }
 
-
-$captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
+$min = JDEBUG?'':'.min';//modMultiFormHelper::$min;
+//$captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
 
 $stylefiles = (array)($param->stylefiles ?:'default.css');
 foreach ($stylefiles as $css_file){
+	   $css_file = $min ?  $css_file : str_replace('.css', '.min.css', $css_file);
     JHtml::stylesheet("modules/$module->module/css/$css_file");
 }
 $style = substr(reset($stylefiles), 0, -4);
@@ -100,14 +101,15 @@ JHtml::script("modules/$module->module/js/messages.min.js",[],['defer' => 'defer
 //JHtml::script("modules/$module->module/js/inputmask.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/js/jquery.inputmask$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 //JHtml::script("modules/$module->module/js/jquery.inputmask.bundle.min.js",[],['defer' => 'defer']); //'async' => 'async',
-JHtml::script("modules/$module->module/js/url$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+JHtml::script("modules/$module->module/js/url$min.js",[],[ 'defer' => TRUE]);//'async' => 'async',
 
 $param->scriptver = $param->script?:1;
-JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",[],[ ]); //'async' => 'async','defer' => 'defer'
+JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",['detectDebug'=>true],[ 'defer' => 'defer' ]); //'async' => 'async','defer' => 'defer'
 //JHtml::script("modules/$module->module/js/typed.js"); 
 
 
-JFactory::getDocument()->addStyleDeclaration($param->css);
+if($param->css)
+    JFactory::getDocument()->addStyleDeclaration($min?:"/* Mod$module->id */ ".$param->css);
 
 $param->debug &&  JFactory::getDocument()->addScriptDeclaration("console.log('ModMultiForm ID: $module->id');");
 $style_not = in_array($param->style, [NULL,'','0','System-none','none']);
@@ -119,10 +121,12 @@ $module_tag	= $style_not?$param->module_tag:'div';
 
 $form_use_id = $param->form_use_id ?: $module->id;
 //Список плей.
-$ajaxListFields = modMultiFormHelper::ajaxListFields($param->list_fields,$module->id);
+$ajaxListFields = modMultiFormHelper::ajaxListFields($param->list_fields??false,$module->id);
 
 $params->set('moduleclass_sfx', "$param->moduleclass_sfx modMF $popup id$module->id mod_$module->id pos_$module->position $style $param->style ");
 
+
+$captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
 
 
 //if($module->id == 133)
@@ -140,12 +144,12 @@ if($param->textBeforeModule_show && ($param->textBeforeModule_1 || $param->textB
   
 
 if($param->popup && empty($param->form_use_id)){
-    echo "<button id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type' " 
+    echo "<button id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type'   rel='modal:open' " 
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}'  data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</button>";
 }
 if($param->form_use_id){
-    echo "<a id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title'  "
+    echo "<a id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title'   rel='modal:open'  "
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}' data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</a>";
 }
