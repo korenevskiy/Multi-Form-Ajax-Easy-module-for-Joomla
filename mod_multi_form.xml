@@ -6,13 +6,12 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-    <modificationDate>2021-10-17</modificationDate>
+    <modificationDate>2021-10-20</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
-    <license>GNU General Public License version 2, or later.</license>
-    <oldversion>4.00.07</oldversion>
-    <version>4.00.10</version>
+    <license>GNU General Public License version 2, or later.</license>    
+    <version>4.00.11</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
@@ -178,13 +177,14 @@
                     label="MOD_MULTI_FORM_TEXT_CALL_POPUP_LABEL"
                     description="MOD_MULTI_FORM_TEXT_CALL_POPUP_DESC"
                     default="MOD_MULTI_FORM_TEXT_CALL_POPUP_DEF"
+                    translate_default="true"
                     class="call-popup" />
                 
                 
                 <field
                     name="textsubmit"
-                    translate_default="true"
                     type="textTranslate"
+                    translate_default="true"
                     addfieldpath="modules/mod_multi_form/fields/"
                     default="MOD_MULTI_FORM_TEXT_SUBMIT_DEF"
                     label="MOD_MULTI_FORM_TEXT_SUBMIT_LABEL"
@@ -1164,8 +1164,7 @@ ORDER BY lft)t) ;
                     name="stylefiles"
                     type="filelist"
                     Xfilter="css"
-                    fileFilter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css" 
-                    filter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
+                    fileFilter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
                     xxfilter="^(?!(forAdmin.css)|(test.css)).*.css"
                     xfilter="^(?!forAdmin.css).*.css"
                     hide_default="true"

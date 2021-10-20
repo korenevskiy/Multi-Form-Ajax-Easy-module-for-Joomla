@@ -20,7 +20,7 @@ use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 use Joomla\CMS\Filter\InputFilter as JFilterInput; 
 use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\Router\Route as JRoute;
-use \Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
+use Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
 use Joomla\CMS\Session\Session as JSession;
 use Joomla\CMS\Captcha\Captcha as JCaptcha;
 
@@ -37,6 +37,9 @@ class modMultiFormHelper {
         //static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
         static::$min = JDEBUG;
         
+        
+//        echo "<pre>".JFactory::getConfig()->get('error_reporting','default')."</pre>";
+//        echo "<pre>".static::$min."</pre>";
         
         //JFactory::getDocument()->setBase(JUri::root());
         //JUri::root();
@@ -577,7 +580,7 @@ class modMultiFormHelper {
                 $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //  data-inputmask='\"mask\": \"$mask\"'
                 $fieldB .= " $intro";
             }
-                        
+         
             $script = "jQuery(function($){";
             if(!$labelOut){
                 $script .= " $('#$nameforfield').mask('$mask'); ";
@@ -1053,21 +1056,21 @@ class modMultiFormHelper {
 	 */
     public static function &getModules($mod_ids)
     {
-
+        
         $is4 = \Joomla\CMS\Version::MAJOR_VERSION > 3;
         
-            $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
-            foreach ($mod_ids as $i => $m){
+        $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
+        foreach ($mod_ids as $i => $m){
             $mod_ids[$i] = $is4? (string)$m : (string)$m;
-            }
-                
+        }  
+
             
-            $results = [];//Массив объектов модулей для возрвата
+        $results = [];//Массив объектов модулей для возрвата
 //            $ids = [];//ID для которых нужно инициализировать объекты модулей
             
-            static $mods;//Массив объектов модулей уже инициализированныъх прежде
+        static $mods;//Массив объектов модулей уже инициализированныъх прежде
             
-            if(isset($mods)){
+        if(isset($mods)){
                 foreach ($mod_ids as $i => $id){
                     if(isset($mods[$id])){
                         $results[$id] = $mods[$id];
@@ -1077,21 +1080,29 @@ class modMultiFormHelper {
 //                        $ids[] = $id;
 //                    }
                 }
-            }
-            else{
+        }
+        else{
 //                $ids = $mod_ids;
                 $mods = [];
-            }
+        }
                
-            if(empty($mod_ids) ){//&& empty($ids)
+        if(empty($mod_ids) ){//&& empty($ids)
                 return $results;
-            }
-            
+        }
+
+
+//$mods = JModuleHelper::getModuleList(); 
+//$mods = JModuleHelper::cleanModuleList($mods);
+//echo "<pre>1095\n". print_r($mods, true). "</pre><br>\n\n";
+//echo "<pre>1097\n". print_r(gettype($mods[0]->id), true). "</pre><br>\n\n"; 
+
             jimport('joomla.application.module.helper');
         foreach ($mod_ids as $id){
             //$id = (int)$id;
             $mod = JModuleHelper::getModuleById($id); 
             
+//echo "<pre>1102\n". print_r($mod, true). "</pre><br>\n\n";
+//echo "<pre>1103\n". print_r($id, true).':'.gettype($id). "</pre><br>\n\n";
 //        echo "<pre>Проверка - ";
 //        echo  print_r($id,true);
 //        echo "<br>";
@@ -1165,7 +1176,7 @@ class modMultiFormHelper {
         
 	$moduleid = JFactory::getApplication()->input->getInt('id');// module id
     
-        
+	
         $moduleid = (int)$moduleid;
 	$moduleDeb = JFactory::getApplication()->input->getString('deb');// module id
 //echo "<script type='text/javascript'>console.log('helper id',$moduleid);</script>";
@@ -1176,10 +1187,12 @@ class modMultiFormHelper {
 
     
         
+//echo "<pre>". print_r($moduleid, true). "</pre>";
         
         $modules = self::getModules($moduleid);
         
         
+//echo "<pre>". print_r($modules, true). "</pre>";
 
 
         
@@ -1410,8 +1423,8 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 
 
         
-	$currentPage	= JFilterInput::getInstance(null, null, 1, 1)->clean($input->get('page','','RAW'), 'RAW');
-	$currentTitle	= JFilterInput::getInstance(null, null, 1, 1)->clean($input->get('title','','STRING'), 'STRING');
+	$currentPage	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('page','','RAW'), 'RAW');
+	$currentTitle	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('title','','STRING'), 'STRING');
 //	currentPage	 JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html');
 		//$bodymail	 = '<table cellpadding="10">'.$textsuccesssendAjax;
           
@@ -1451,7 +1464,7 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         if($field['type']=='editor')
 //                $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','HTML')."</td>";
 //                $bodymail .= "<td>".strip_tags($input->post->getRaw($field["nameforfield"]))."</td>";
-            $bodymail .= "<td>".JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
+            $bodymail .= "<td>".JFilterInput::getInstance([], [], 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
         else
             $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
         $bodymail .= "</tr>";
@@ -1519,16 +1532,18 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
                 $param->recipient_show='custom';
         }
         if($param->recipient_show=='custom'){
-            if($param->sendtoemail){
 //toPrint($param->sendtoemail,'$param->sendtoemail User',0,'pre',TRUE);     
-                $mailer->addRecipient( $param->sendtoemail );
-                //добавляем получателя копии
-                $mailer->addCc( $param->sendtoemailcc );
-                //добавляем получателя копии
-                $mailer->addBcc( $param->sendtoemailbcc );
-            }
+			if($param->sendtoemail)
+				$mailer->addRecipient( $param->sendtoemail );
             else 
                 $param->recipient_show='';
+            //добавляем получателя копии
+			if($param->sendtoemailcc)
+				$mailer->addCc( $param->sendtoemailcc );
+            //добавляем получателя копии
+			if($param->sendtoemailbcc)
+				$mailer->addBcc( $param->sendtoemailbcc );
+            
         }
         if($param->recipient_show==''){
 //toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
@@ -1616,12 +1631,14 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         jimport('joomla.application.module.helper'); //подключаем хелпер для модуля
         
         
+//toPrint(static::$debugs,'static::$debugs',0,'pre');
 //        $url = JFactory::getApplication()->input->getArray(); 
 //        toPrint($url,'$url',0,'pre',true);
         
         $modeles = self::getParams();
         
 
+//echo "<pre>". print_r($modeles, true). "</pre>";
         
 //        toPrint($modeles,'$modeles',0,'pre',true);
 //        $modult_id = JFactory::getApplication()->input->getInt('id');
@@ -1651,9 +1668,14 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
     //$params->set('debug',true);
 }
         
+//echo '123';
+//return;
 //        echo "<pre>". print_r($module, true). "</pre>";
         $list_fields = $params->get('list_fields');
             
+//echo "<pre>". print_r($params, true). "</pre>";
+//echo "<pre>". print_r($params, true). "</pre>";
+
         if(is_null($list_fields))
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         if(is_string($list_fields))
@@ -1680,7 +1702,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         
 //        return __DIR__."/../tmpl/$form";
         
-                           
+              
         
         
         $fields = self::buildFields($list_fields, $module->id, $params->get('nameInOut'), $params->get('style_field'));
@@ -1862,7 +1884,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
      * html attribute for html element captcha/ Строка атрибутоов для html элементов капчи
      * @return object Objec plugin captcha width 'atrubutes' properties string html attribute / объект плагина капчи с 'atrubutes' свойство Строка html атрибутоов 
      */
-    public static function captcha_element_attribute($mod_id,$class='') {
+    public static function captcha_element_attribute($mod_id, $class='') {
         
         $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0
         if(empty($captcha_type)|| $captcha_type == "0")
@@ -1878,13 +1900,14 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         
         $default = ['public_key'=>'','badge'=>'inline','theme2'=>'light','size'=>'normal','tabindex'=>'0','callback'=>'','expired_callback'=>'','error_callback'=>'',];
         $params = new JRegistry($default);
+		$params->set('class', $params->get('class', " $class g-recaptcha ".(in_array($captcha_type,['recaptcha','recaptcha_invisible']))));
         $params->loadString($plugin->params);
         $param = $params->toObject();
         $param->attributes = '';
         
 //echo '<pre style"color: green;">'. count([]).'----'. strlen($atributes).'------'.print_r($param,true).'</pre>';//return'';
 		
-		$param->class .= " $class g-recaptcha ".(in_array($captcha_type,['recaptcha','recaptcha_invisible']));
+//		$param->class .= " $class g-recaptcha ".(in_array($captcha_type,['recaptcha','recaptcha_invisible']));
 		//$param->attributes .= " class=' $class g-recaptcha'";
         $param->attributes .= " data-sitekey='$param->public_key'";
         $param->attributes .= " data-badge='$param->badge'";
@@ -1936,13 +1959,13 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 	
 	public static function isJ4() {
         return JVersion::MAJOR_VERSION > 3; 
-    }
-
+	}
+    
 //    public static $debugs = [];
     public static function event(...$arg){
 		return;
         $file =         JPATH_ROOT. '/events.txt';
-		
+        
 //        toPrint(JPATH_ROOT. '/events.txt','Event $file',0,'pre');
         
         $data = print_r($arg,true);
@@ -1955,7 +1978,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        static::$debugs[] = $arg;
 //        toPrint($arg,'Event Module',0,'pre');
 //        toPrint(static::$debugs,'static::$debugs',0,'pre');
-}
+    }
     public  function onBeforeRender($arg){
         toPrint($arg,'Event Module',0,'pre');
     }
@@ -1978,9 +2001,9 @@ abstract class mfModuleHelper extends JModuleHelper{
         }
         $modules = &static::getModules($module->position); 
         
-        $module->published = FALSE; 
-        $module->position = FALSE; 
-        $module->module = FALSE; 
+        $module->published = FALSE;
+        $module->position = FALSE;
+        $module->module = FALSE;
         $module->style = 'System-none';//System-none
         return $modules;
     }

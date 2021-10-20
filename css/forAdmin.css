@@ -4,6 +4,7 @@
 .alert-info b{
   font-weight: bold;
 }
+
 .poryadok{width: 30px;}
 .table-striped tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th {
     background-color: #ffffff;

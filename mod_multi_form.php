@@ -25,7 +25,7 @@ use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 if(file_exists(__DIR__ . '/functions.php'))
 	require_once  __DIR__ . '/functions.php';
 // Include the helper.
-require_once __DIR__ . '/helper.php'; 
+require_once __DIR__ . '/helper.php';
 //require_once JPATH_BASE . '/components/com_content/helpers/route.php'; 
 
 
@@ -56,6 +56,7 @@ else{
 }
 endif;// </editor-fold>
 
+//if($module->id == 112)
 //toPrint($module,'$module->moduleclass_sfx',0,'pre',true);
 
 
@@ -265,7 +266,7 @@ $Itemid = " data-Itemid='$menu_id' ";
 //    JFactory::getDocument()->addScriptDeclaration($js);
 //}
 if(empty(modMultiFormHelper::isJ4()))
-JHtml::stylesheet(JUri::base().'/media/jui/css/icomoon.css');
+	JHtml::stylesheet(JUri::base().'/media/jui/css/icomoon.css'); 
 
 //if($params->get( 'popup' )){ 
 require JModuleHelper::getLayoutPath($module->module, '_form');

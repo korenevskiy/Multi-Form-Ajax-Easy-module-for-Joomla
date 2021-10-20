@@ -63,7 +63,7 @@ function mfScrollStatic_Click(event) {
  * @returns {undefined} 
  */
 function mfOpenModal_Click(event) {
-    event.preventDefault();
+  event.preventDefault();
 //    console.log('event -> ', event);
 //    console.log('event.data.fields -> ', event.data.fields);
 //    console.log('this -> ', this);
@@ -72,7 +72,7 @@ function mfOpenModal_Click(event) {
 //this - Модуль с датой
 
 
-    for (let field of event.data.fields) {
+  for (let field of event.data.fields) {
 //            console.log(field,this[field]);
         if (this[field]) {
             document.getElementById(field).value = this[field].replace('_', ' ');
@@ -82,13 +82,13 @@ function mfOpenModal_Click(event) {
             document.getElementById(field).value = '';
         }
 
-    }
+  }
 
-    let id = event.data.id;
-    let modal_id = 'mfForm_' + id; 
+  let id = event.data.id;
+  let modal_id = 'mfForm_' + id; 
 
-    let heightpage = jQuery(window).height();
-    let heightpopupblock = jQuery('#' + modal_id).height();
+  let heightpage = jQuery(window).height();
+  let heightpopupblock = jQuery('#' + modal_id).height();
 
 
 //    console.log('heightpopupblock -> ', heightpopupblock,'>=',heightpage,'heightpage-',heightpopupblock >= heightpage);
@@ -103,42 +103,62 @@ function mfOpenModal_Click(event) {
 //    console.log('modal -> ', '#' +modal_id);
 
 
-    jQuery('#mfOverlay_' + id).fadeIn(400, // сначала плавно показываем темную подложку
-            function () { // после выполнения предыдущей анимации
+  jQuery('#mfOverlay_' + id).fadeIn(400, // сначала плавно показываем темную подложку
+    function () { // после выполнения предыдущей анимации
                 
 //                document.getElementById(modal_id).showModal();
-    let scrollFT = 0;     
-    let positiOnScroll = 0;
+      let scrollFT = 0;     
+      let positiOnScroll = 0;
     
-    if (heightpopupblock + 50 >= heightpage) {
+//console.log(123,'HaHa');
+      if (heightpopupblock + 50 >= heightpage) {
         scrollFT = scrollFromTop();//положение прокрутки страницы 
         positiOnScroll = 50;// + scrollFT;
 //        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-    } else {
+      } else {
         scrollFT = 0;//scrollFromTop();//положение прокрутки страницы 
         positiOnScroll = heightpage / 2 - heightpopupblock / 2 + scrollFT;
 //        var positiForOK = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-    }
-                 
-    let modal = jQuery('#' +modal_id);//.css('padding',0);    
-    modal.css('display', 'block').animate( {opacity: 1, top: positiOnScroll, opacity: 1, visibility: 'visible', }, 400, ()=>{
-          let overlay = jQuery(this).next('.mfOverlay');//.css('padding',0).css('padding-right',0);
-console.log(overlay,'HaHa 2');
-          jQuery(this).modal('show').css('padding',0).css('padding-right',0);
-          //overlay.css('padding',0).css('padding-right',0);
-console.log(overlay,'HaHa 4');
-            }
-        ).css('opacity',1).css('top','200');
-        
-        
+      }
+//let sleep = function (ms) {
+//  return new Promise(
+//    resolve => setTimeout(resolve, ms)
+//  );
+//}           
+              
+                
+//console.log(jQuery('#' +modal_id),'HaHa');  
 //                document.getElementById(modal_id).showModal();
                 //this.closest('#' + modal_id).close();
                 //document.getElementById("mfForm_" + id).close();
-                jQuery('#' +modal_id).fadeIn().modal('show').css('padding',0)
+      let modal = jQuery('#' +modal_id);//.css('padding',0);     
+//console.log(modal,'HaHa');      
+//      modal.modal('show').css('padding-right',0);
+//      jQuery('#' +modal_id).css('display','none').css('opacity',0).css('top','-50%');
+//      modal.fadeIn(400, ( mod )=>{
+//console.log(this, 'HaHa 1'); 
+//      });    
+      modal.css('display', 'block').animate({opacity: 1, top: positiOnScroll, opacity: 1, visibility: 'visible', }, 400, ()=>{
+          let overlay = jQuery(this).next('.mfOverlay');//.css('padding',0).css('padding-right',0);
+//console.log(overlay,'HaHa 2');
+          jQuery(this)//.modal('show')
+            .css('padding',0).css('padding-right',0);
+          //overlay.css('padding',0).css('padding-right',0);
+//console.log(overlay,'HaHa 4');
+      }).css('opacity',1).css('top','200');
+//      jQuery('#' +modal_id).css('display','block').css('opacity',1).css('top','50%').css('padding-right',0);
+//      sleep(2000);
+//      jQuery('#' +modal_id).modal().css('padding-right',0);
+//console.log(123,'HaHa'); 
+//      jQuery('#' +modal_id).modal('show').css('padding-right',0);
+//console.log(123,'HaHa');
+//      jQuery('#' +modal_id).css('padding',0);
                         //.css('display', 'block') // убираем у модального окна display: none;
-                        .animate({opacity: 1, top: positiOnScroll}, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
-            });
-    return false;
+//      modal.animate({opacity: 1, top: positiOnScroll}, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
+//jQuery('#mfForm_111').fadeIn().modal('show').modal();
+//console.log(123,'HaHa');
+    });
+  return false;
 }
 
 //ОК!
@@ -152,7 +172,7 @@ function mfCloseModal_Click(event) {
     event.preventDefault();
     let id = event.data.id;
     let param = this;
-                jQuery("#mfOverlay_" + id).fadeOut(); // скрываем подложку
+    jQuery("#mfOverlay_" + id).fadeOut(); // скрываем подложку
     jQuery("#mfForm_" + id)//.fadeOut(400,'swing',{})
             .animate({top: '-50%'}, 400)//.delay(800)
             .animate({opacity: 0}, 400, function () { // после анимации
@@ -186,6 +206,7 @@ console.log(overley,'HaHa');
             jQuery(modal).animate({top: 0}, 200);
             jQuery(modal)
                     .animate({opacity: 0}, 300, function () { // после анимации
+//console.log(overley,'HaHa');
                         jQuery(this).css('display', 'none'); // делаем ему display: none;
                         jQuery(overley).fadeOut(400); // скрываем подложку
                     }
@@ -245,7 +266,7 @@ function hideBlockFormAfterSend(id, modal, overley, status, response) {
  * @param {string} textbutton 
  * @returns {undefined}
  */
-function hideAndClearFormAfterSend(id, modal, overley, status, response, textbutton) {
+function hideAndClearFormAfterSend(id, modal, overley, status, response) {
 
     jQuery('.mfStatusDone.id' + id).html(response);
 
@@ -266,7 +287,7 @@ function hideAndClearFormAfterSend(id, modal, overley, status, response, textbut
                                     jQuery('.mfStatusDone.id' + id).fadeOut();
                                     jQuery('.mfStatusForm.id' + id).fadeIn();
                                     jQuery('.mfStatusForm.id' + id).get(0).reset();
-                                    jQuery('#mfForm_' + id + ' input[id^=submit]').attr('value', textbutton);
+                                    jQuery('#mfForm_' + id + ' input[id^=submit]').button('ready');
                                 });
 
                             }
@@ -293,16 +314,15 @@ function hideBlockStaticFormAfterSend(id, block, status, response) {
     }); // делаем ему display: none; 
 }
 /**
- * Скрыть и очистить форму после отправки 
+ * Скрыть и очистить форму перед отправкой
  * @param {int} id
- * @param {html} modal
- * @param {string} overley
- * @param {string} status
- * @param {html} response 
- * @param {string} textbutton 
+ * @param {string} block
+ * @param {html} status
+ * @param {string} response
+ * @param {string} textbutton
  * @returns {undefined}
  */
-function hideAndClearFormAfterSend(id, modal, overley, status, response) {
+function hideAndClearStaticFormAfterSend(id, block, status, response, textbutton) {
 
     jQuery('.mfStatusDone.id' + id).html(response);
     jQuery('.mfStatusForm.id' + id).fadeOut(400, function () {
@@ -353,8 +373,7 @@ function mfAjaxDoneSuccess(data, status) {
                             '#mfForm_' + params.id,
                             '#mfOverlay_' + params.id,
                             '.mfStatusDone.id' + params.id,
-                            data,
-                            jQuery('input#submit' + params.id).data('ready')//textSubmitButton
+                            data
                             );
                 } else {
 
@@ -381,8 +400,8 @@ function mfAjaxDoneSuccess(data, status) {
                         params.id,
                         '#mfForm_' + params.id,
                         '.mfStatusDone.id' + params.id,
-                        data
-                        
+                        data,
+                        jQuery('input#submit' + params.id).attr('value')
                         );
             } else {
                 hideBlockStaticFormAfterSend(
@@ -405,7 +424,6 @@ function mfButtonSubmit_Click(e) {
 //        let e = {data:this};
     //console.log('🏆 func_custom', e);
 e.data.deb &&                console.log('--------- --------- Click Send ---------');
-
     //return;
     let params = e.data;
 //        var params = this;
@@ -423,14 +441,17 @@ e.data.deb &&                console.log('--------- --------- Click Send -------
     if (func_custom && typeof func_custom === 'function') {
         func_custom.apply(params);
     }
-// console.log('🏆 mfButtonSubmit_Click ', "#mfForm_form_"+e.data.id, e.data); 
+ console.log('🏆 mfButtonSubmit_Click ', "#mfForm_form_"+e.data.id, e.data, jQuery("#mfForm_form_" + params.id)); 
+// console.log('🏆 e.first' ,e.first ); 
+// console.log('🏆 e.data' ,e.data ); 
+// console.log('🏆 e' ,e ); 
+// console.log('🏆 this' ,this ); 
 //        jQuery( "#mfForm_form_"+params.id ).validate();
-//        
-//        return;
+//        return false;
 //console.log('jQuery.validator.messages',jQuery.validator.messages);
 
 //this.deb &&                console.clear();
-//        console.log(11111111,"#mfForm_form_"+params.id,params,this);
+//console.log(11111111,"#mfForm_form_"+params.id,params,this);
     jQuery("#mfForm_form_" + params.id)
 //                .each(function(callback){
 //            //this.deb && 
@@ -445,23 +466,25 @@ e.data.deb &&                console.log('--------- --------- Click Send -------
 //                console.log("Your form contains "
 //                    + this.numberOfInvalids()
 //                    + " errors, see details below."
-//                    + this.defaultShowErrors(),errorMap,errorList);
+//                    + this.defaultShowErrors(),errorMap,errorList,this);
 //            },
-                invalidHandler: function (event, validator) {
+            invalidHandler: function (event, validator) {
+                  
 //this.deb &&                console.log('--------- --------- Validate Faile ---------');
                     console.log('👎 --------- --------- Validate Faile ---------', validator);
 //                console.log('👎 _validator<FORM>',this);
                 },
-                submitHandler: function (form) {//,event //recaptcha_invisible, recaptcha
-                    e.preventDefault();
+            submitHandler: function (form) {//,event //recaptcha_invisible, recaptcha
 e.data.deb &&         console.log('--------- --------- ---------');
 e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  ()  Captcha:',params.captcha?'Yes🌟':'No🚫', params.captcha, params);
+//console.log('🏆 Captcha !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha);
+                    e.preventDefault();
                     if (params.captcha == 'recaptcha'  && params.grecaptcha !== false) {
                         //'dynamic_captcha_'+params.id
                         //grecaptcha.execute(params.grecaptcha)
                         //grecaptcha.execute('widget_captcha_'+params.id)
 //                        grecaptcha.ready(function() {
-                            //console.log('22222222222')
+//                            console.log('22222222222')
                             let rdy = this;
                             params.response = grecaptcha.getResponse(params.WidgetId);
                             if(params.response){
@@ -477,7 +500,6 @@ e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  () 
                                     }catch(e){
                                     }
                                 }
-                                
                             }
                         return false;
 //                        });
@@ -487,7 +509,7 @@ e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  () 
                         //grecaptcha.execute(params.grecaptcha)
                         //grecaptcha.execute('widget_captcha_'+params.id)
 //                        grecaptcha.ready(function() {
-                            //console.log('22222222222')
+//                            console.log('3333333333333')
                             let rdy = this;
                             
                             grecaptcha.execute(params.grecaptcha).then(function(token){
@@ -500,20 +522,21 @@ e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  () 
                             });
 //                        });
                         return;
-                    }else{
-//e.data.deb &&             console.log('👎 Captcha NULL !!!    <---------');
                     }
                     else if(params.captcha == 'recaptcha_invisible' && params.grecaptcha === false){//
 e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );//, ', form:', form
+//                            console.log('4444444444')
 //                        submitHandler.call(params, form);
                         return;
                     }
                     else if(!params.captcha || params.grecaptcha === false){//Капча не настроена, выполняем без капчи
 e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params );//, ', form:', form 
+//                            console.log('555555555555')
                         submitHandler.call(params, form);
                         return;
                     }
                     else{
+e.data.deb && console.log('👎 Captcha NULL !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha );
                         /* Message ERROR! Alert: Please Please contact us in another way in contacts.*/
                         /* Message ERROR! Alert: Пожалуйста обратитесь другим способом в контактах.*/
                     }
@@ -521,12 +544,13 @@ e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:
             });
 
 //    console.log(55555555, "#mfForm_form_" + params.id, params, this);
-        e.preventDefault();
+//        e.preventDefault();
+//    return false;
 }
 
 
 // -------- Submit Form
-function submitHandler(form) {
+function submitHandler(form){
 
 //                let data = this;//form.dataset;
 
@@ -567,10 +591,17 @@ this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this
         }
     }
 
+//form.addEventListener('formdata', (e) => {
+//  let data = e.formData;
+//  for (var value of data.values()) {
+//  }
+//});
 //                var form = document.getElementById('mfForm_form_'+e.data.id)
 //                console.log('form',form);
     var data = new FormData(form);//  mfForm_form_249
 
+//this.deb &&         console.log(' Form :', form);
+//this.deb &&         console.log('Data Form :', data);
 //                data.append('method     ', 'getForm');
     data.append('option', 'com_ajax');
     data.append('module', 'multi_form');
@@ -593,6 +624,8 @@ this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this
         data.append('g-recaptcha-response', this.response);// 
         //data.set('g-recaptcha-response', this.response);//         
     }
+    
+//this.deb &&         console.log('Data Form :', data);
 //                console.log('Itemid', itemid);
 //                var data = {
 //                                //'method':'getForm',
@@ -609,7 +642,8 @@ this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this
 
 //            for(let k in data.values())
 //                console.log('key',k);
-            console.log('---------');
+//            console.log('---------');
+this.deb &&         console.log('--------- --------- ---------');
 //            for(let v of data.values())
 //                console.log('val:',v);
 //            return;
@@ -640,17 +674,22 @@ this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this
 
     // $( this ).serializeArray() ); // https://api.jquery.com/serializeArray/
 //                console.log('e.data.fields',e.data.fields); 
+let vals = data.values();
+let etrs = data.entries();
+console.log('data:',vals,' etrs:',etrs); 
+//return false;
+//window['data'+this.id] = data;
+ 
 
-
-
-    let url = window.location.origin + '/index.php';
+let url = window.location.origin + '/index.php';
     url = document.baseURI + 'index.php';
 this.deb && console.log('Url Submit:', url);
 this.deb && console.log('Ajax request ModuleID:', this.id, ' ', data);
-this.deb && console.log(data.getAll());
+this.deb && console.log(data);
     jQuery.ajax({type: 'POST', url: url, dataType: 'html', data: data, context: this, cache: false, contentType: false, processData: false})
             .done(mfAjaxDoneSuccess).fail(mfAjaxFailForm);//.fail(mfAjaxFailForm);
 }
+
 // -------- Load F 
 /**
  * 
@@ -680,8 +719,8 @@ function mfAjaxDoneForm(data, status) {
         jQuery('#mfOverlay_' + this.id).click(this, mfCloseModal_Click);
         jQuery('.modal-backdrop.show').click(function(){ 
             jQuery('.mfOverlay').fadeOut();
-            jQuery('dialog.mfForm_modal').animate({top: '-50%'}, 400).modal('hide').fadeOut();//.modal('hide'); 
-            jQuery(this).hide(); });
+            jQuery('dialog.mfForm_modal').animate({top: '-50%'}, 400).fadeOut().modal('hide');//.modal('hide');
+            jQuery(this).hide();});
         if (this.buttons.length > 0) {
             for (let btn of this.buttons) {
 //                 console.log(btn);
@@ -709,7 +748,7 @@ function mfAjaxDoneForm(data, status) {
         }
     }
     this.deb && console.log('🏆 ButtonSubmit.Click(f()) id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Success! - Done! status:', status, ' ', this);
-    //Инициализация Validator'а на форме при первого запуска
+    //Инициализация Validator'а на форме при первом запуске
     mfButtonSubmit_Click.call(this, {data: this, first: true, preventDefault: function () {
         this.deb && console.log('🏆 mfButtonSubmit_Click ', "#mfForm_form_" + this.id, this);
         return true;
@@ -726,7 +765,8 @@ function mfAjaxDoneForm(data, status) {
 }
 
 function mfAjaxFailForm(jqXHR, status, errorThrown) {//(jqXHR, status, errorThrown)
-console.clear();
+//console.clear();
+    console.log(jqXHR.responseText);
     this.deb && console.log('👎 Module id:' + this.id + ' Tag:(' + this.tag + '), Type:' + this.type + ' - Load form Fail! - Disabled button! status:', status, '\n this:', this, ' jqXHR:', jqXHR,'\n errorThrown:',errorThrown);//, errorThrown,jqXHR
     //this.deb && console.log('👎 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Fail! - Disabled button! status:', status, ' this:', this, ' data:', data);//, errorThrown,jqXHR//
 //        jQuery('.button.id'+this.id).hide();

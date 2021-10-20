@@ -1,12 +1,15 @@
 /*!
  * jQuery Form Plugin
- * version: 4.2.2
+ * version: 4.3.0
  * Requires jQuery v1.7.2 or later
  * Project repository: https://github.com/jquery-form/form
+
  * Copyright 2017 Kevin Morris
  * Copyright 2006 M. Alsup
+
  * Dual licensed under the LGPL-2.1+ or MIT licenses
  * https://github.com/jquery-form/form#license
+
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -54,6 +57,7 @@
 		Do not use both ajaxSubmit and ajaxForm on the same form. These
 		functions are mutually exclusive. Use ajaxSubmit if you want
 		to bind your own submit handler to the form. For example,
+
 		$(document).ready(function() {
 			$('#myForm').on('submit', function(e) {
 				e.preventDefault(); // <-- important
@@ -62,19 +66,24 @@
 				});
 			});
 		});
+
 		Use ajaxForm when you want the plugin to manage all the event binding
 		for you. For example,
+
 		$(document).ready(function() {
 			$('#myForm').ajaxForm({
 				target: '#output'
 			});
 		});
+
 		You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
 		form does not have to exist when you invoke ajaxForm:
+
 		$('#myForm').ajaxForm({
 			delegation: true,
 			target: '#output'
 		});
+
 		When using ajaxForm, the ajaxSubmit function will be invoked for you
 		at the appropriate time.
 	*/
@@ -127,7 +136,7 @@
 		}
 
 		/* eslint consistent-this: ["error", "$form"] */
-		var method, action, url, $form = this;
+		var method, action, url, isMsie, iframeSrc, $form = this;
 
 		if (typeof options === 'function') {
 			options = {success: options};
@@ -156,12 +165,16 @@
 			// clean url (don't include hash vaue)
 			url = (url.match(/^([^#]+)/) || [])[1];
 		}
+		// IE requires javascript:false in https, but this breaks chrome >83 and goes against spec.
+		// Instead of using javascript:false always, let's only apply it for IE.
+		isMsie = /(MSIE|Trident)/.test(navigator.userAgent || '');
+		iframeSrc = (isMsie && /^https/i.test(window.location.href || '')) ? 'javascript:false' : 'about:blank'; // eslint-disable-line no-script-url
 
 		options = $.extend(true, {
 			url       : url,
 			success   : $.ajaxSettings.success,
 			type      : method || $.ajaxSettings.type,
-			iframeSrc : /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank'		// eslint-disable-line no-script-url
+			iframeSrc : iframeSrc
 		}, options);
 
 		// hook for manipulating the form data before it is extracted;
@@ -1001,6 +1014,10 @@
 				.on('click.form-plugin', this.selector, options, captureSubmittingElement);
 
 			return this;
+		}
+
+		if (options.beforeFormUnbind) {
+			options.beforeFormUnbind(this, options);
 		}
 
 		return this.ajaxFormUnbind()

@@ -145,11 +145,11 @@ if($captcha_type){
 //        JFactory::getApplication()->triggerEvent('onInit',$captcha_id);
         
 //    if($captcha_type == 'recaptcha') {
-//        echo "<div id='dynamic_captcha_$module->id' class='-form-control captcha g-recaptcha $captcha_type $plugin_badge'  $plugin->attributes style='transform: scale(0.8);'></div>";
+//        echo "<div id='dynamic_captcha_$module->id' class='-form-control captcha g-recaptcha $captcha_type '  $plugin->attributes style='transform: scale(0.8);'></div>";
 //    }   
 //    if($captcha_type == 'recaptcha_invisible') {
 //        $captcha_class = " g-recaptcha ";
-//        echo "<div id='dynamic_captcha_$module->id' class='-form-control captcha g-recaptcha $captcha_type $plugin_badge'  $plugin->attributes style='transform: scale(0.7);'></div>";
+//        echo "<div id='dynamic_captcha_$module->id' class='-form-control captcha g-recaptcha $captcha_type '  $plugin->attributes style='transform: scale(0.7);'></div>";
 //    }   
     //////////////echo "<div id='dynamic_captcha_$module->id' class='-form-control $captcha_class'  $captcha_attr style='transform: scale(0.7);'></div>";
     
@@ -168,14 +168,14 @@ echo  "<div class='mfStatusError {$class_form}-body id$module->id ' style='displ
 echo  "<div class='mfStatusDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
  
 echo  "<div class='mfFieldGroup {$class_form}-footer id$module->id '>  "
-    . "<div id='dynamic_captcha_$module->id' class='-form-control $captcha_class ' {$captcha_attr}  style='transform: scale(0.8);'></div>"
+    . "<div id='dynamic_captcha_$module->id' class='-form-control $captcha_class' {$captcha_attr}  style='transform: scale(0.8);'></div>"
     . " <input type='submit' form='mfForm_form_$module->id' value='$param->textsubmit' id='submit_$module->id' " 
-        . " class='$param->classbuttonsubmit  submit $captcha_class' {$captcha_attr} data-ready-text='$param->textsubmit' data-sending='$param->textwhensending'/>"
+        . " class='$param->classbuttonsubmit  submit $captcha_class' {$captcha_attr} data-ready-text='$param->textsubmit' data-sending-text='$param->textwhensending'/>"
     . "</div>"; // $captcha_class $captcha_attr
 
 if($param->popup ){    
     echo "<label class='mfCloseLabel' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'>
-            <button class='close mfClose  btn button' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'  rel='modal:close'   >"
+            <button class='close mfClose  btn button' id='mfClose_$module->id' data-id='$module->id' data-dismiss='modal' type='button' aria-label='".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."'  rel='modal:close'  >"
         . ($param->icomoon?"<span class='icon-delete large-icon fa fa-lg fas fa-times' aria-hidden='true' > </span>":"<span aria-hidden='true'>&times;</span>")
         . "</button></label>";
 }

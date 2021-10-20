@@ -1,0 +1,836 @@
+
+.mfForm.static{
+	width: 100%;
+	max-width: 460px;
+	margin: 0 auto;
+}
+.mfForm.margin,
+.mfForm.padding,
+.modMF.moduletable.margin > .mfForm,
+.modMF.moduletable.padding > .mfForm{ 
+    padding: 0 12px;
+}
+.mfForm.margin-top,
+.modMF.margin-top > .mfForm{
+    margin-top: 1.3rem;
+}
+.mfForm.margin-bottom,
+.modMF.margin-bottom > .mfForm{
+    margin-bottom: 1.3rem;
+}
+.mfForm.center,
+.modMF.moduletable.center > .mfForm { 
+    margin-left: auto;
+    margin-right: auto;
+}
+.mfForm.left,
+.modMF.moduletable.left > .mfForm { 
+    margin-left: 0;
+    margin-right: auto;
+}
+.mfForm.right,
+.modMF.moduletable.right > .mfForm { 
+    margin-left: auto;
+    margin-right: 0;
+}
+.mfForm.fluid,
+.modMF.moduletable.fluid > .mfForm{ 
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+}
+.modMF{
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    position: static;
+    background-color: transparent;
+    margin: auto;
+    /*border: 0;*/
+}
+
+.mfForm {
+    text-align: center;
+    text-align-last: center;
+    padding-bottom: 20px;   
+    /*color: inherit;*/
+}
+.mfForm_modal .modal-content{
+    border: 0 none transparent;
+    background-color: inherit;
+    background-color: #8883;
+}
+.mfStatusForm,
+.mfForm_modal .modal-body,
+.mfForm_modal .modal-header,
+.mfForm_modal .modal-footer{
+    padding: 0 20px;
+    padding: 0 1rem;
+    padding: 0 1.3rem;
+    padding: 0;
+    margin: auto;
+    margin-bottom: 0; 
+    border: 0 none transparent;
+    display: flex;
+    flex-direction: column;
+    /*width: max-content;*/
+    /*max-width: 100%;*/
+    width: inherit;
+    width: 100%;
+    align-items: center;
+    display: table;
+}
+.mfForm_modal .modal-body{
+    border-bottom: 1px solid #8888;
+}
+.mfForm_modal .mfBeforeForm,
+.mfForm_modal .modal-header,
+.mfForm_modal .modal-body,
+.mfForm_modal .modal-footer{
+    padding: 1.3rem 1.3rem 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+.mfForm_modal .mfBeforeForm{
+    padding-bottom: 0;
+}
+.mfForm_modal .modal-footer{
+    padding-bottom: 1.3rem;
+    background-color: #8883;
+    background-color: transparent;
+    background-color: initial;
+}
+
+
+.mfForm .form-control{
+    /*?????*/
+    /*max-width: 240px;*/
+    max-width: 256px;
+    /*margin: auto;*/
+    /*margin: 4px auto 10px;*/
+}
+.mfGo,
+.mfFieldGroup .form-control.submit  {
+    /*padding:  0 20px 20px;*/
+    /*padding:  0 1rem 1rem;*/
+    /*margin:  0 10px ;*/
+	display: block;
+    padding: 8px 5px 5px 5px;
+    padding: 4px 12px;
+    line-height: initial;
+	max-width: 260px;
+    width: 12rem; 
+    width: -webkit-fill-available;
+    text-align-last: center;
+    text-align: center;
+	text-decoration: none;
+    margin: 0 auto;
+    /*font-size: 14px;*/
+    /*font-size: 1rem;*/
+    transition: 0.3s 0.1s;
+}
+.mfGo{     
+    /*text-transform: uppercase;*/ 
+    
+} 
+.mfGo:hover, .mfGo:focus, .mfGo.active,
+.mfFieldGroup .form-control.submit.active,
+.mfFieldGroup .form-control.submit:hover ,
+.mfFieldGroup .form-control.submit:focus { 
+    text-decoration: none;
+    background-position: 0 -20px , 0 0px;
+    transform: scaleX(1.05);
+}
+.mfForm_modal .modal-title{
+    /*margin: auto;*/
+    /*color: var(--menu-text-color, black);*/
+    font-size: x-large;
+    font-size: xx-large;
+    
+    margin-block-start: 0;
+    margin-block-end: 0;
+    line-height: 1em;
+}
+.mfForm_modal h4.modal-title{ 
+    font-size: x-large;
+}
+.mfForm_modal h5.modal-title{ 
+    font-size: large;
+}
+.mfForm_modal p{ 
+    margin: auto;
+}
+.mfFieldGroup {
+    justify-content: space-around;
+    place-content: center; 
+    display: flex;
+    place-content: space-between;
+}
+.mfForm_modal .modal-footer,
+.mfForm_static .static-footer {
+    justify-content: space-around;
+    place-content: center; 
+}
+.mfForm_modal .modal-footer,
+.mfForm_static .static-footer{
+    flex-direction: column;
+    place-items: center;
+    gap: 8px;
+}
+.mfForm_modal .modal-header{
+    border: 0 none transparent;
+    /*color: rgb(33, 37, 41);*/
+}
+
+.mfForm_modal {
+    margin: auto;
+	width: 280px;
+	border: 1px solid;
+	/*background: #fff;*/
+    background-color: inherit;
+	/*position: absolute;*/
+	position: fixed;
+	/*left: 50%;*/
+	/*margin-left: -150px;*/
+	/*display: none;*/
+/*	opacity: 0;*/
+	z-index: 1050;
+	/*padding: 5px 10px 0px;*/
+    padding: 0;
+    /*padding: 20px 30px 30px;*/ 
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 0 10px;
+}
+
+dialog.mfForm_modal  .mfCloseLabel{ 
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    top: -1rem;
+    right: -0.3rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    cursor: pointer;
+}
+dialog.mfForm_modal  .mfClose{
+    z-index: 1;
+    width: 1.4em;
+    height: 1.4em;
+        display: block;
+    padding: 0.04em 0 0;
+    /*position: absolute;*/
+    -cursor: pointer;
+	display: block;
+	text-align: center;
+    line-height: 20px;
+	border-radius: 3px;
+    /*border: none;*/
+    /*color: transparent;*/
+    top: 3px;
+    top: -6px;
+    right: 7px;
+    right: 0px;
+    top: -9px;
+     top: -6px;
+    top: 3px;
+    right: 4px;
+     right: 0px;
+    right: 2px;
+    border-radius: 3px;
+    opacity: .8;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    margin: auto;
+    /*border-radius: 4px;*/
+    
+    font-size: initial;
+        font-size: large;
+    font-size: inherit;
+        
+    background-color: transparent;
+    opacity: 1;
+    border: 0 none transparent;
+    color: #D04A10;
+    color: black;
+    border: 3px solid #ed8714;
+    border: 0 none transparent;
+    background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);
+    background-repeat: no-repeat;
+    background-position: 0 1.5rem;
+    /*box-shadow: 0 0 5px black, 0 0 3px inset black;*/
+    /*box-shadow: none;*/
+    /*border-radius: 8px !important;*/
+    text-shadow: 0 0 2px black;
+    /*height: 2.4em !important;*/
+    height: 1.5rem;
+    /*width: 2.4em!important;*/
+    width: 3rem;
+    /*height: 3rem !important;*/
+    /*width: 3rem!important;*/
+        padding-top: 2px ;
+    transition: transform .5s; 
+}
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):focus,
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover
+{
+    outline: 0;
+    box-shadow: 0 0 0 gray;
+    box-shadow: 0 1px 2px #8888;
+    color: var(--button-text-color-select,black);
+    background-color: transparent;
+    opacity: 1;
+    -color: transparent;
+    border: 1px solid #ccc;
+    background-position-y: 0rem;
+}
+dialog.mfForm_modal .mfClose span{
+    display: block; 
+    margin: 0;
+    /*line-height: 0;*/
+    /*line-height: 1.11em;*/ 
+    /*line-height: 1em;*/ 
+    /*line-height: 0.9em;*/  
+    
+    /*box-shadow: 0 0 2px grey;*/
+    /*height: auto;*/
+    /*width: auto;*/    
+    /*background-color: yellow;*/
+    padding: 3px 8px;
+    /*border-radius: 5px;*/
+    /*border-radius: 3px;*/
+    /*border: 1px solid #ccc;*/
+    /*border: 1px solid transparent;*/
+/*    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;*/
+        /*width: 100%;*/
+    /*height: 40%;*/
+    /*height: 50%;*/
+    height: inherit;
+    width: inherit;
+    padding: 5px 8px 0px;
+    padding: 0 8px;
+    margin: 0px 0px 0 0;
+    transition: .5s; 
+    /*background-image: none;*/
+    /*background-color: transparent;*/
+    /*background-image: linear-gradient(to bottom,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to top,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to bottom,#e6e6e6,#fff);*/
+    /*background-image: linear-gradient(to bottom,#8882,#fff0);*/
+    /*background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 0 1.5rem;*/
+    box-sizing: initial; 
+    line-height: inherit;
+    display: flex;
+    place-content: center;
+    position: relative;
+}
+
+dialog.mfForm_modal .mfClose:hover span,
+dialog.mfForm_modal .mfClose:focus span{
+    /*background-color: #e6e6e6;*/
+    /*background-position-y: -1.5rem;*/
+    /*border: 1px solid #ccc;*/
+    /*background-position-y: 0rem;*/
+}
+dialog.mfForm_modal .mfClose span::before {
+    position: absolute; 
+     top: 0; 
+    /* left: 0; */
+    /* right: 0; */
+     bottom: 0; 
+    /*margin: auto;*/
+    /*margin: 2px auto;*/
+    /*margin: 0.05rem auto;*/
+    margin: 0.1rem auto;
+    line-height: initial;
+    /*line-height: inherit;*/
+    display: flex;
+    place-items: center;
+    place-content: center;
+    /* text-align: center; */
+    /* text-align-last: center; */
+    transition: transform .5s; 
+}
+dialog.mfForm_modal .mfClose:hover span::before { 
+    transform: rotate(180deg);
+} 
+
+/* РџРѕРґР»РѕР¶РєР° */
+
+.mfForm_modal + .modal-backdrop{
+    display: none;
+}
+.mfForm_modal ~ .modal-backdrop,
+.mfForm_modal::backdrop,
+.mfOverlay {
+	z-index: 1040;
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0; 
+	left: 0;
+	background-color: #000B;
+	opacity: 0.8;
+	cursor: pointer;
+}
+.mfBeforeText, .mfBeforeButton {
+	padding: 10px;
+	text-align: center;
+	border-bottom: 1px solid;
+	font-size: 20px;
+	color: inherit;
+}
+
+.mfBeforeText {
+    border: none;
+    text-align: left;
+    text-align-last: start;
+}
+
+.mfBeforeButton{
+	border: none;
+}
+.mfBeforeText p, .mfBeforeButton p{
+	margin: 0;
+	font-size: 16px;
+    color: #929292;
+}
+
+form.mfStatusForm  input.radio,
+form.mfStatusForm  input.checkbox,
+form.mfStatusForm  input.color{
+    float: left;
+    width: auto;
+	margin: 2px 6px 0 0;
+    height: auto;
+}
+
+form.mfStatusForm  label.rad,
+form.mfStatusForm  label.chk,
+form.mfStatusForm  label.col{
+    float: left;
+    width: auto;
+	margin: 5px 10px 0 0;
+    height: auto;
+    cursor: pointer;
+}
+form.mfStatusForm  .color p{
+	display: inline-block;
+}
+form.mfStatusForm   input.color{
+	width: 40px;
+    height: 30px;
+    float: none;
+    margin: 0px 10px 0 0;
+    padding: 0px;
+    box-shadow: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/*form.mfStatusForm  input:not(.submit):not([type=radio]):not([type=checkbox]),
+form.mfStatusForm  select,
+form.mfStatusForm  textarea,*/
+form.mfStatusForm  .input { 
+    width: 100%;
+    min-width: 140px;
+    margin: 10px 0;
+    margin: 0 0 10px 6px;
+    margin: 4px 0 10px 0px;
+    margin: 4px auto 10px;
+    font-size: 14px;
+    line-height: normal;
+    padding: 5px;
+    color: inherit;
+    /*display: table-row-group;*/
+    box-sizing: border-box;
+    box-shadow: none;
+	height: auto;
+    transition: box-shadow 0.6s; 
+  border-radius: 3px;
+  /*border: 1px solid #ccc;*/
+    border: 1px solid #8886;
+  /*background-color: #fff8;*/
+      justify-self: center;
+}
+.mfStatusForm .form-group.input{
+    /*max-width: 200px;*/
+    border: none;
+    align-items: center;
+    justify-content: start;
+}
+
+form.mfStatusForm  .mfEditor{/* arkeditor codemirror none tinymce */
+    margin: 10px 0;
+}
+form.mfStatusForm  .mfEditor .toggle-editor{/* arkeditor codemirror none tinymce */
+    display: none;
+}
+
+form.mfStatusForm  textarea {
+    min-height: 55px!important;
+	outline: none;
+}
+form.mfStatusForm  input{ 
+}
+form.mfStatusForm  input:focus,
+form.mfStatusForm  select:focus,
+form.mfStatusForm  textarea:focus{
+    -border-color: inherit;
+    -border-color: transparent;
+        -border-radius: 3px;
+	box-shadow: none;
+	outline: none;
+    box-shadow: 0 0 3px gray, 0 0  5px inset gray;
+}
+.mfStatusForm  input.submit { 
+    margin: 20px 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    /*-transition: color 0.4s ease 0s, background-color 0.4s ease 0s, border-color 0.4s ease 0s;*/
+    text-align: center;
+    text-align-last: center;
+    min-height: 0px;
+    min-width: 0px;
+    -margin-top: 10px;
+    -line-height: 39px;
+    -border-width: 0px 0px 3px;
+    -margin: 0px;
+    -letter-spacing: 0px;
+    -font-size: 16px;
+	-border: none;
+    -border-bottom: 3px solid rgb(125, 0, 177);
+    -background-color: rgb(156, 0, 187);
+    -border-color: rgb(90, 0, 117);
+    -border-radius: 0;
+    -line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 600;
+    -color: #fff;
+    transition:  0.6s ;
+/*    -webkit-transition: color 400ms, background-color 400ms, border-color 400ms;
+    -o-transition: color 400ms, background-color 400ms, border-color 400ms;
+    -transition: color 400ms, background-color 400ms, border-color 400ms;*/
+}
+.mfForm .g-recaptcha:not(.btn){
+    max-width: 240px;
+    max-width: 256px;
+    margin: auto;
+    margin: 4px auto 10px;
+    
+    display: flex;
+    place-content: center;
+    transform: scale(0.8);
+}
+.mfForm_modal  input.fluid.submit {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+.mfForm_static  input.fluid.submit {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    margin: auto;
+    max-width: 240px;
+    max-width: 256px;
+    place-content: center;
+}
+.mfStatusForm  .form-group{
+    display: flex;
+    place-content: center;
+    place-content: space-between;
+    text-align: initial;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 100%;
+    justify-content: space-between;
+/*    display: table-row;*/
+} 
+form.mfStatusForm .form-group.rad,
+form.mfStatusForm .form-group.chk,
+form.mfStatusForm .form-group.col {
+    min-height: 20px;
+    padding: 0!important;
+    margin: 0px auto 0px;
+    margin: 4px auto 10px;
+    place-content: flex-start;
+    justify-self: center;
+    max-width: 240px;
+    max-width: 256px;
+    display: flex;
+    justify-items: stretch;
+    flex-wrap: nowrap;
+}
+
+.mfStatusForm  input.submit:focus,
+.mfStatusForm  input.submit:hover,
+.mfStatusForm  input.submit:active {
+	-border: 0 solid transparent;
+    -border-bottom: 3px solid rgb(96, 0, 136);
+    -background-color: rgb(127, 0, 152);
+    -border-color: rgb(66, 0, 86);
+	-color: white;
+    padding-left: 30px;
+    padding-right: 30px;
+    transform: scaleX(1.1);
+}
+
+.mfStatusForm  .input {
+    text-align: left;
+    text-align-last: left;
+  -border: 0 solid transparent;
+  -border-bottom: 1px solid #7a8188;
+  -border-radius: 0;
+  -border-radius: 5px;
+   transition: 0.4s 0.1s;
+}
+
+.mfStatusForm  textarea {
+  border: 1px solid transparent;
+  border-radius: 0;
+  /*background-color: rgba(204,204,204,0.3);*/
+  margin-top: 15px;
+  resize: vertical;
+}
+.mfStatusForm  .input.error{
+    box-shadow: 0 0 5px inset red, 0 0 5px red;
+    border: 1px solid red;
+} 
+.mfStatusForm  .mfFieldGroup>label{
+    max-width: 160px;
+    max-width: 180px;
+    width: 100%;
+    text-align: left;
+    text-align-last: left;
+    padding-top: 2px;
+    margin-bottom: 0px;
+    transition: 0.3s 0.1s;
+        display: block;
+}
+.mfStatusForm  .mfFieldGroup> label,
+.mfStatusForm  .mfFieldGroup> label{
+    text-align: left;
+    text-align-last: left;
+}
+.mfStatusForm.modal-body  .mfFieldGroup>label{
+    max-width: 240px;
+    max-width: 256px;
+    width: auto;
+}
+.mfFieldGroup p{
+    margin: 10px 0 -5px 0px;
+    margin: 3px 0 2px 0px;
+}
+form.mfStatusForm  legend {
+	margin-bottom: 5px;
+	font-size: inherit;
+}
+.mfForm_modal .mfStatusError{
+	padding: 15px 10px;
+	text-align: center;
+	font-size: 22px;
+	color: red;
+}
+.mfForm_modal .mfStatusDone{
+	padding: 15px 10px;
+	text-align: center;
+	font-size: 18px;
+	color: inherit;
+}
+.mfForm_modal .mfStatusError p,
+.mfForm_modal .mfStatusDone p{
+	margin: 0;
+}
+.mfStatusForm  label.error{ 
+    text-shadow: 0 0 10px white;
+    /*box-shadow: 0 0 10px red;*/
+    text-align: center;
+    text-align-last: center;
+    display: block;
+    background-color: transparent;
+    /*background-color: rgba(255,255,255, 0.8);*/
+    border-radius: 4px;
+    margin-top: -10px;
+    margin-bottom: -0px;
+    color: red;
+    font-size: 14px;
+    /* width: 100%; */
+    max-width: 100%;
+    float: none;
+    clear: both;
+    padding: 0;
+    padding: 1px 5px;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+/*form.mfStatusForm  fieldset.radio,
+form.mfStatusForm  fieldset.checkbox{
+    position:relative;
+    display: flex;
+}*/
+form.mfStatusForm  label.error{
+	/*position: absolute;*/
+	/*bottom: 0;*/
+     position: initial;
+    justify-self: baseline;
+}
+
+
+.mfForm.static.grid{
+    max-width: inherit;
+}    
+.mfForm.static .mfEditor iframe{
+    /*height: 250px !important;*/
+}
+/** ------------------------------- Разметка для Представления Grid            */
+
+    .mfForm.static.grid form,
+    .mfForm.static.grid .mfStatusDone,
+    .mfForm.static.grid .mfStatusDone h3 ,
+    .mfForm.static.grid .mfStatusError h3,
+    .mfForm.static.grid .mfStatusError{
+        text-align: center;
+        text-align-last: center;
+        padding: 10px;
+    }
+    .mfForm.static.grid form > *{
+        text-align: left;
+        text-align-last: left;
+    }
+    .mfFieldGroup.grid{
+        display: grid;
+        grid-template-columns: 40% auto;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 
+        "title title"
+        "field intro";
+        -border-top: 1px solid #ddd;
+        grid-column-gap: 20px;
+        text-align: left;
+        text-align-last: left;
+        place-content: initial;
+    }
+    .mfFieldGroup.grid {
+         text-align: left;
+         text-align-last: left;
+    }
+    .mfFieldGroup.grid.legend{
+        grid-template-areas: 
+        "title title"
+        "intro intro"; 
+    }
+    .mfFieldGroup.grid .article{
+        display: block;
+        clear:both;
+    }
+    .mfFieldGroup.grid intro{ 
+        clear:both;
+        display: block;
+    }
+    .mfFieldGroup.grid intro{
+        text-align: left;
+        text-align-last: left;
+        display: block;
+        clear:both;
+    }
+    .mfFieldGroup.grid > *{
+         text-align: left;
+         text-align-last: left;
+        display: block;
+    }
+    .mfFieldGroup.grid > p{
+        grid-area: title;
+        font-weight: bold;
+        color: #555555;
+    }
+    .mfFieldGroup.grid > label{
+        grid-area: title;
+        font-weight: bold;
+        color: #555555;    
+        margin: 10px 0 -5px 0px;
+        max-width: none;
+    }
+    .mfFieldGroup.grid > h5{  
+        grid-area: title; 
+        color: #555555; 
+        margin: 10px 0 -5px 0px;
+    }
+    .mfFieldGroup.grid intro{ 
+        grid-area: intro;
+        margin: 0px 0 10px;
+    }
+    .mfFieldGroup.grid > input,
+    .mfFieldGroup.grid > textarea,
+    .mfFieldGroup.grid > button,
+    .mfFieldGroup.grid > .mfEditor
+    .mfFieldGroup.grid > .input{
+        grid-area: field;
+        max-width: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .mfFieldGroup.grid > .mfEditor{
+        text-align: justify; 
+        border: 0 none;
+    }
+    .mfFieldGroup.grid input.submit{
+        
+/*        text-align: center;
+        text-align-last: center;
+        background-image: linear-gradient(to bottom, #FFCC66, #FF6600);
+        background: -webkit-linear-gradient(#FFCC66, #FF6600);
+        -margin: auto !important;
+        margin: 10px auto;
+        -font-size: 14px !important;
+        font: bolder 26px 'Poiret One', 'Helvetica', arial, sans-serif;
+        font-size: 18px !important;
+        height: auto;
+        transition: 0.3s;
+            border: 1px solid #ccc;
+        border-color: rgba(200, 200, 200, 0.6) rgba(0, 0, 0, 0.0980392) #B3B3B3; 
+        text-shadow: 0 0 0 rgba(255, 255, 255, 1), 0 1px 1px rgba(255, 255, 255, 0.5), 0 0px 1px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+        text-indent: 0;
+        width: auto;
+        border-radius: 4px;
+        padding: 4px 12px;
+        padding: 4px 32px;
+        text-transform: none;*/
+    }
+    .mfFieldGroup.grid input.submit:hover{
+/*        background-color: #FF6600;
+        background: -webkit-linear-gradient(top, #FF6600, #FF6600) #FF6600;
+        border-width: 1px;*/
+    }
+     
+
+/** ----------------------------------------------------   Стили для таблицы расположеной в материале    -------*/    
+.mfFieldGroup intro .table , .mfFieldGroup intro .table  ,
+.mfFieldGroup intro .tbl , .mfFieldGroup intro .tbl  {
+    border: 1px solid #ddd;
+    margin-top: 2px;
+}
+.mfFieldGroup intro .table th, .mfFieldGroup intro .table td ,
+.mfFieldGroup intro .tbl th, .mfFieldGroup intro .tbl td {
+    padding: 1px;
+    -line-height: 20px;
+    -text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.mfFieldGroup intro .table th, .mfFieldGroup intro .tbl th  {
+    background-color: #8882;
+}

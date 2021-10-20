@@ -72,12 +72,13 @@ if($param->icomoon){
     JHtml::stylesheet('media/jui/css/icomoon.css');
 }
 
+
 $min = JDEBUG?'':'.min';//modMultiFormHelper::$min;
 //$captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
 
 $stylefiles = (array)($param->stylefiles ?:'default.css');
 foreach ($stylefiles as $css_file){
-	   $css_file = $min ?  $css_file : str_replace('.css', '.min.css', $css_file);
+	$css_file = $min ?  $css_file : str_replace('.css', '.min.css', $css_file);
     JHtml::stylesheet("modules/$module->module/css/$css_file");
 }
 $style = substr(reset($stylefiles), 0, -4);
@@ -108,6 +109,10 @@ JHtml::script("modules/$module->module/js/form$param->scriptver$min.js",['detect
 //JHtml::script("modules/$module->module/js/typed.js"); 
 
 
+//        echo "<pre>Min-".modMultiFormHelper::$min."</pre>";
+//        echo "<pre>"."modules/$module->module/js/form$param->scriptver$min.js"."</pre>";
+//echo '<style type="text/css">.debug.pre{grid-column: 1/5;}</style>';
+
 if($param->css)
     JFactory::getDocument()->addStyleDeclaration($min?:"/* Mod$module->id */ ".$param->css);
 
@@ -128,7 +133,6 @@ $params->set('moduleclass_sfx', "$param->moduleclass_sfx modMF $popup id$module-
 
 $captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
 
-
 //if($module->id == 133)
 //toPrint($param,'$param',0,'pre',true);
 
@@ -144,12 +148,12 @@ if($param->textBeforeModule_show && ($param->textBeforeModule_1 || $param->textB
   
 
 if($param->popup && empty($param->form_use_id)){
-    echo "<button id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type'   rel='modal:open' " 
+    echo "<button id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type'  rel='modal:open' " 
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}'  data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</button>";
 }
 if($param->form_use_id){
-    echo "<a id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title'   rel='modal:open'  "
+    echo "<a id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title'  rel='modal:open'  "
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}' data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</a>";
 }

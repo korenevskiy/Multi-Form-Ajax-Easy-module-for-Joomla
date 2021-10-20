@@ -176,6 +176,7 @@
     flex-direction: column;
     place-items: center;
     gap: 8px;
+    display: flex;
 }
 .mfForm_modal .modal-header{
     border: 0 none transparent;
@@ -331,7 +332,7 @@ dialog.mfForm_modal .mfClose span{
     line-height: inherit;
     display: flex;
     place-content: center;
-	position: relative;
+    position: relative;
 }
 
 dialog.mfForm_modal .mfClose:hover span,
