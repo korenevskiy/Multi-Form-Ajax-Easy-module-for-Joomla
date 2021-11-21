@@ -1,13 +1,11 @@
-/mod_multi_form-update.xml
-/README.md
-/LICENSE
-/mod_multi_form-update.xml
-
-
-
 <<<<<<< OURS
 # Created by https://www.toptal.com/developers/gitignore/api/netbeans
 # Edit at https://www.toptal.com/developers/gitignore?templates=netbeans
+
+mod_multi_form-update.xml
+README.md
+LICENSE
+mod_multi_form-update.xml
 
 ### NetBeans ###
 **/nbproject/private/
