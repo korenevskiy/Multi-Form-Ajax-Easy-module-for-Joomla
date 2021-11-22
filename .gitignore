@@ -1,4 +1,4 @@
-<<<<<<< OURS
+# <<<<<<< OURS
 # Created by https://www.toptal.com/developers/gitignore/api/netbeans
 # Edit at https://www.toptal.com/developers/gitignore?templates=netbeans
 
@@ -42,8 +42,8 @@ nbdist/
 
 
 
-=======
->>>>>>> THEIRS
+# =======
+# >>>>>>> THEIRS
 /.htaccess
 # /README.md
 /futureFunc.txt
