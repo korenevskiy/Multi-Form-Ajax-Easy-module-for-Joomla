@@ -11,6 +11,7 @@
  * mod_multi_form 
  */
 
+use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\Text as JText;
 use Joomla\CMS\Factory as JFactory;
@@ -30,6 +31,13 @@ require_once __DIR__ . '/helper.php';
 
 
 $param = $params->toObject();
+
+//new Joomla\CMS\Table\Table;
+//$tbl = Joomla\CMS\Table\Table::getInstance('Content');
+//$tbl->load(16);
+//$tbl->test();
+//echo $tbl->introtext;	//a.introtext, a.fulltext,
+//echo $tbl->fulltext;	//a.introtext, a.fulltext,
 
 //Проверка условий показов
 // <editor-fold defaultstate="collapsed" desc="Проверка условий показов">
