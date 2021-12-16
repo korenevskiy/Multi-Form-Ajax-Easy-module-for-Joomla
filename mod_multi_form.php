@@ -73,8 +73,8 @@ $params->set('module_tag', $params->get('mod_tag'));
 
 $param = $params->toObject();
 
-//toPrint($param->module_tag,'module_tag'); 
-//toPrint($param->mod_tag,'mod_tag'); 
+//toPrint($param->module_tag,'module_tag');
+//toPrint($param->mod_tag,'mod_tag');
 
  modMultiFormHelper::constructor($param);
  
@@ -83,7 +83,7 @@ $param = $params->toObject();
 //$params->set( 'moduleclass_sfx', $params->get( 'moduleclass_sfx' ). ' mfForm ' );
  
 
-if($param->popup){
+if($params['popup']){
     $module->showtitle = false;
 }
 
@@ -168,7 +168,7 @@ jimport( 'joomla.application.application' );
 
 //$colorscheme 			= $params->get( 'colorscheme' );
  
-$allparams  = $params->get( 'list_fields' );//json_decode($params->get( 'list_fields' ));
+$allparams  = $params['list_fields'];//json_decode($params->get( 'list_fields' ));
 //$allparams->select_editor = $param->select_editor || 'tinymce';   
 if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
     
@@ -227,11 +227,11 @@ if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
 //                                    $editor = JEditor::getInstance('tinymce');
 //                                     toPrint($editor,'Editor') ;
                                 //arkeditor, tinymce,  codemirror none   
-if($param->jsbeforesend){
+if($param->jsbeforesend ?: false){
     $jssend  = "function funcBefore$module->id(id){ $param->jsbeforesend }";
     JFactory::getDocument()->addScriptDeclaration($jssend);
 } 
- if($param->jsaftersend){
+ if($param->jsaftersend ?: false){
     $jssend  = "function funcAfter$module->id(id){ $param->jsaftersend }";
     JFactory::getDocument()->addScriptDeclaration($jssend);
  }
