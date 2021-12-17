@@ -11,8 +11,8 @@
  * mod_multi_form 
  */
 
-use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
+use Joomla\CMS\Uri\Uri as JUri;
 use Joomla\CMS\Language\Text as JText;
 use Joomla\CMS\Factory as JFactory;
 use Joomla\Registry\Registry as JRegistry;
@@ -67,14 +67,13 @@ endif;// </editor-fold>
 //if($module->id == 112)
 //toPrint($module,'$module->moduleclass_sfx',0,'pre',true);
 
-
 $params->set('header_tag', $params->get('head_tag'));
 $params->set('module_tag', $params->get('mod_tag'));
 
 $param = $params->toObject();
 
-//toPrint($param->module_tag,'module_tag');
-//toPrint($param->mod_tag,'mod_tag');
+//toPrint($param->module_tag,'module_tag'); 
+//toPrint($param->mod_tag,'mod_tag'); 
 
  modMultiFormHelper::constructor($param);
  
@@ -83,7 +82,7 @@ $param = $params->toObject();
 //$params->set( 'moduleclass_sfx', $params->get( 'moduleclass_sfx' ). ' mfForm ' );
  
 
-if($params['popup']){
+if($param->get('popup')){
     $module->showtitle = false;
 }
 
@@ -168,7 +167,7 @@ jimport( 'joomla.application.application' );
 
 //$colorscheme 			= $params->get( 'colorscheme' );
  
-$allparams  = $params['list_fields'];//json_decode($params->get( 'list_fields' ));
+$allparams  = $param->list_fields ?: null;//s->get( 'list_fields' );//json_decode($params->get( 'list_fields' ));
 //$allparams->select_editor = $param->select_editor || 'tinymce';   
 if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
     
