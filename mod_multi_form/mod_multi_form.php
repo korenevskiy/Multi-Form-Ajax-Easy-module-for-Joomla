@@ -82,7 +82,7 @@ $param = $params->toObject();
 //$params->set( 'moduleclass_sfx', $params->get( 'moduleclass_sfx' ). ' mfForm ' );
  
 
-if($param->get('popup')){
+if($params->get('popup')){
     $module->showtitle = false;
 }
 
