@@ -6,12 +6,12 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-    <modificationDate>2021-11-01</modificationDate>
+    <modificationDate>2022-11-22</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
     <license>GNU General Public License version 2, or later.</license>    
-    <version>4.00.12</version>
+    <version>4.02.13</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
@@ -373,7 +373,7 @@
                     type="editorTranslate"
                     buttons="true"
                     hide="readmore,pagebreak,module"
-                    width="300px"
+                    Xwidth="300px"
                     height="350"
                     filter="raw"
                     label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
@@ -395,7 +395,7 @@
                     addfieldpath="modules/mod_multi_form/fields/"
                     buttons="true"
                     hide="readmore,pagebreak,module"
-                    width="300px"
+                    Xwidth="300px"
                     height="350"
                     filter="raw"
                     label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
