@@ -1,26 +1,14 @@
-<?php defined('_JEXEC') or die;
-
-/**------------------------------------------------------------------------
- * @name		Field - Table Conatinier data fields
- * ------------------------------------------------------------------------
- * @author		Sergei Borisovich Korenevskiy
- * @copyright	(C) 2021 //explorer-office.ru. All Rights Reserved.
- * @package		GridFields
- * @license		GPL   GNU General Public License version 2 or later;
- * @creationDate	2022-03-25
- * @modifed			2022-06-22
- * @introduced		2022-06-22
- * @created
- * @package     joomla fields
- * @subpackage  GridFields
- * @version  4
- * Websites: http://explorer-office.ru/download/
- * Technical Support:  Forum - http://vk.com/korenevskiys
- */ 
-
+<?php
+/**
+ * @package     Multi.Form
+ * @subpackage  Layout
+ *
+ * @copyright   2021 Korenevskiy Sergei Borisovich
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 //return;
-
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text as JText;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
@@ -28,13 +16,7 @@ use Joomla\CMS\Factory as JFactory;
 use Joomla\Input\Input as JInput;
 use Joomla\CMS\Uri\Uri as JUri;
 
-extract($displayData); 
-
-if(isset($fields) == false || isset($columns) == false || is_array($fields) == false || is_array($columns) == false){
-	echo '<div>Not data columns in layout file!</div>';
-	return '';
-}
-
+extract($displayData);
 /**
  * Layout variables
  * -----------------
@@ -74,8 +56,7 @@ if(isset($fields) == false || isset($columns) == false || is_array($fields) == f
  * @var   bool     $___; 
  * @var   bool     $___;
  */
-
-//	JHtml::_('jquery.framework');
+JHtml::_('jquery.framework');
 //HTMLHelper::_('draggablelist.draggable');
 // /media/vendor/jquery-ui/js/jquery.ui.sortable.js     J4
 //    JHtml::script(JUri::root(). '/media/legacy/js/sortablelist.js');
@@ -83,96 +64,17 @@ if(isset($fields) == false || isset($columns) == false || is_array($fields) == f
 // /media/jui/js/jquery.ui.sortable.js                  J3
 if($isJ4){
 //    JHtml::script('media/vendor/jquery/js/jquery.js');
-//    JHtml::script('media/vendor/jquery-migrate/js/jquery-migrate.js');
-//    JHtml::script('media/vendor/jquery-ui/js/jquery.ui.core.js');
-//    JHtml::script('media/vendor/jquery-ui/js/jquery.ui.sortable.js');
-	
-	JHtml::_('draggablelist.draggable');
-//	JHtml::_('draggablelist.draggable', $id.'_field', 'adminForm','Asc','index.php');//'itemsList','adminForm',
-//	Joomla\CMS\HTML\Helpers\DraggableList::draggable($id.'_field');
-	
-
-				
-//	 
-	JFactory::getApplication()->getDocument()->getWebAssetManager()
-		->usePreset('dragula')
-		->useScript('joomla.draggable');
-//    JHtml::script('media/vendor/dragula/js/dragula.js');
-//    JHtml::script('media/system/js/draggable.js');
-
-	//https://github.com/bevacqua/dragula
-	JFactory::getApplication()->getDocument()->addScriptDeclaration("
-	(function() {
-	/* table GridFields load,DOMContentLoaded */
-	window.addEventListener('load', function(){
-		let props = {};
-		// .gu-transit - Класс перемещаемого элемента, - полупрозрачный элемент
-//		props = {
-//			revertOnSpill: false,	//проливание вернет элемент туда, откуда он был перетащен, если это верно
-//			removeOnSpill: false,	//удаление элемента `.remove`, если true
-//			copy:false,				//элементы перемещаются по умолчанию, а не копируются
-//			copySortSource: true	//элементы в контейнерах источника копирования могут быть переупорядочены
-//		};
-		let c = dragula([...document.querySelectorAll('.js-draggable')],props)
-			.on('dragend', rowTR => { let countROW = updateIndexis(rowTR.parentElement.parentElement);		/*console.log('dragend',countROW,rowTR);*/ return false;});
-//			.on('drop', rowTR => {  	console.log('drop', rowTR);/**/ return false;})//Завершение перемещения.
-//			.on('drag', rowTR => {  	console.log('drag', rowTR);/**/ return false;})//Начало перемещения
-//			; //.gu-transit
-		//.gridFields tbody,.js-draggable
-		console.log(true,props,c);
-	})
-	})()
-	;");
-		
-//		JFactory::getApplication()->getDocument()->addScriptDeclaration("
-//	(function() {
-//	/* table GridFields load,DOMContentLoaded */	
-//	window.addEventListener('load', function(){
-//		//console.log(55555);
-//		//dragula([document.querySelector('.gridFields tbody')]); 
-//		dragula([document.querySelector('#{$id}_field tbody')]); 
-//		// '$id','$isJ4' getElementById
-//		// {$id}_field 
-//		console.log(66666, 'dragula([document.querySelector(\'#{$id}_field tbody\')]);'); 
-//		jform_fieldparams_list_fields_0_field
-//		jform_fieldparams_subFields_0_field
-//	})})();");
-		
-//	JFactory::getApplication()->getDocument()->addScriptDeclaration("
-//	(function() {
-//	/* table GridFields load,DOMContentLoaded */	
-//	window.addEventListener('load', function(){
-//		//console.log(55555);
-//		//dragula([document.querySelector('.gridFields tbody')]);  //querySelectorAll
-//		dragula([document.querySelector('#{$id}_field tbody')]); 
-//		// '$id','$isJ4' getElementById
-//		// {$id}_field 
-//		console.log(66666, 'dragula([document.querySelector(\'#{$id}_field tbody\')]);'); 
-////		jform_fieldparams_list_fields_0_field
-////		jform_fieldparams_subFields_0_field
-//	})})();");
-		
-//document.addEventListener('DOMContentLoaded', () => { removeLBL('$id','$isJ4'); });	
-//<script>
-//	/* table GridFields */
-//</script>
+    JHtml::script('media/vendor/jquery-migrate/js/jquery-migrate.js');
+    JHtml::script('media/vendor/jquery-ui/js/jquery.ui.core.js');
+    JHtml::script('media/vendor/jquery-ui/js/jquery.ui.sortable.js');
 }
 else{
-//	JHtml::_('sortablelist.sortable');
-			
-	JHtml::_('jquery.framework');
-//    JHtml::script('media/jui/js/jquery.js'); 
-//    JHtml::script('media/jui/js/jquery.ui.core.js'); 
-//    JHtml::script('media/jui/js/jquery.ui.sortable.js');
-	
-//	JHtml::_('bootstrap.framework');	
-//    JHtml::_('jquery.framework');
-    JHtml::_('jquery.ui', array('core'));
-    JHtml::_('jquery.ui', array('core', 'sortable','widget','mouse'));
-//		JHtml::_('script', 'jui/sortablelist.js', array('version' => 'auto', 'relative' => true));
-//		JHtml::_('stylesheet', 'jui/sortablelist.css', array('version' => 'auto', 'relative' => true));
+    JHtml::script('media/jui/js/jquery.ui.core.js'); 
+    JHtml::script('media/jui/js/jquery.ui.sortable.js');
+    
+//    JHtml::_('jquery.ui', array('core'));
+//    JHtml::_('jquery.ui', array('core', 'sortable'));
 }
-//toPrint($id.'_field','$id._field');
 //JHtml::_('jquery.framework');
 //JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 //JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
@@ -204,7 +106,7 @@ $count_rows = count($fields);
 //toPrint($columns,'$columns',0,'pre');
 //toPrint($data['columns'],'Fields',0,'pre');
 
-echo "<div class='table-responsive' $class $attr_desc $style>";
+echo "<div class='table-responsive' $class $attr_desc $style $style>";
 echo "<table id='{$id}_field' data-name='$name' "
 . " class='gridFields table -table-light table-responsive table-bordered table-striped table-hover table-sm  caption-top' xstyle='border: 1px solid gray; border-radius: 10px; min-width: 20px; min-height: 20px;'>";
         
@@ -218,38 +120,25 @@ echo "<caption style='caption-side: left;' align='left' title='$description'>$ca
 echo "<thead class='-table-light '>";
 echo "<tr>";
 
-foreach ($columns as $col){ 
-//	$col->description = htmlspecialchars($col->description, ENT_QUOTES);
-	$col->description = $col->description ? addslashes($col->description) : '';
-    $description = $col->description? 
-			"  data-original-title='$col->label' data-content='$col->description' data-bs-content='<b>$col->text </b><br>$col->description'  data-toggle='tooltip' data-bs-toggle='tooltip'  data-bs-html='true' data-bs-placement='bottom' data-placement='bottom'  data-html='true' ":"";
-    $col->classHeader .= $col->description? 'hasPopover':'';
-//	$translateLabel = $col->translateLabel;
-//toPrint(get_class($col),'get_class($col)');
-//continue;
-//	$label = $col->getLabel();// $col->label;
+foreach ($columns as $col){
+    $description = $col->description? "  data-original-title='$col->label' data-content='$col->description'  data-toggle='tooltip' data-placement='bottom'  data-html='true' ":"";
+    $classTooltip = $col->description? 'hasPopover':'';
     $col->label = $col->translateLabel ? JText::_($col->label):$col->label;
     
     if(in_array($col->type, ['index'])){
-        $col->classHeader .= 'text-center  w-1 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered';  
+        $col->classHeader .= 'text-center  w-1 d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered';  
     }
     if(in_array($col->type, ['new_del'])){
-        $col->classHeader .= ' green text-center    w-10 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered'; 
-        $col->text = "<button type='button' class='btn btn-success  $col->class '  aria-label='".JText::_('JADD')."'  aria-hidden='true' title='".JText::_('JADD')."' "
-                . " onclick=\"tblRowNew(this,'.gridFields')\" "
-                . "><i class='bi bi-plus -icon-save-new {$fontIcon}plus-2 large-icon {$fontIcon} {$fontIcon}-lg fas {$fontIcon}-plus  {$fontIcon}-fw'></i></button>";
+        $col->classHeader .= ' green text-center    w-10 d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered'; 
+        $col->label = "<button type='button' class='btn btn-success  $col->class '  aria-label='".JText::_('JADD')."'  aria-hidden='true' title='".JText::_('JADD')."' "
+                . " onclick=\"tblRowNew(this,'.gridFields') \" "
+                . "><i class='bi bi-plus -icon-save-new {$fontIcon}plus-2 large-icon {$fontIcon} {$fontIcon}-lg fas {$fontIcon}-plus  {$fontIcon}-fw'></i></button>";  
     }
     $style = $col->style || $col->styleHeader? " style='$col->style; $col->styleHeader' " : '';
-	
-	if($col->type == 'Hidden')
-		$col->labelclass .= ' collapse ';
     
-	
-	$col->description && $col->description =  " -\n".$col->description;
-	
-    echo "<th class='head _$col->type $col->labelclass  $col->classHeader name_$col->fieldname' scope='col' "
+    echo "<th class='head _$col->type $col->labelclass  $col->classHeader name_$col->fieldname $classTooltip' scope='col' "
             . " data-field='{$name}[{$col->name}][]' data-name='$col->name' id='{$name}[{$col->name}]'  "
-        . "title='$col->description'  $description $style><strong  >$col->text </strong></th>";
+        . " title='$col->text' $description $style><strong  >$col->label</strong></th>";
 }
 
 
@@ -276,7 +165,7 @@ echo "</tfoot>";
 //toPrint($fields,'$fields',0,'pre');
 //toPrint($displayData,'$columns',0,'pre');
 //$this->value;
-echo "<tbody xstyle='background-color:silver'  class='js-draggable container' >";
+echo "<tbody xstyle='background-color:silver'  class='js-draggable' >";
 
 //if(empty($columns))
 //    return;
@@ -287,8 +176,7 @@ $columns;
 $fields;
 $data; 
 
-//toPrint($fields,'$fields',0,'pre');
-//toPrint($columns,'$columns',1,'pre'); th.move.index
+//toPrint($columns,'$columns',1,'pre');
 foreach ($fields as $i => $row){
     echo "<tr class='table_row '>";
 //toPrint(array_keys($row),'$columns Keys',0,'pre');
@@ -301,7 +189,7 @@ foreach ($fields as $i => $row){
 //toPrint($col,'$col',0,'pre');
         if(in_array($col->type, ['index'])){
             
-            echo "<th class='move text-center $col->classCell name_$col->name sortable-handler' scope='row' $style>";
+            echo "<th class='move text-center $col->classCell name_$col->name ' scope='row' $style>";
             
 										$iconClass = '';
 //										if (!$canChange)
@@ -344,13 +232,9 @@ foreach ($fields as $i => $row){
 //            $val = '';
 //        else
 //            $val = $value[$col->name][$i];
-        $attribute = in_array($col->type, ['Radio','Checkbox']) ?  " data-type='$col->type'  data-fieldname='$col->fieldname'":'' ;
+        $attribute = $col->type =="Radio" ?  " data-type='$col->type'  data-fieldname='$col->fieldname'":'' ;
         
-		
-		if($col->type == 'Hidden')
-			$col->classCell .= ' collapse ';
-		
-        echo "<td class='$col->classCell name_$col->fieldname $col->type $col->parentclass' $style $attribute>";
+        echo "<td class='$col->classCell name_$col->fieldname' $style $attribute>";
         echo " $html"; // {$row[$col->fieldname]->value}
         echo "</td>";
         
@@ -361,9 +245,15 @@ foreach ($fields as $i => $row){
 //toPrint($_SERVER,'Input',0,'pre');
 
 $count_rows = count($fields);  
+echo "<template shadowroot='open'>   "; // closed, open data-i='$count_rows'
+//echo "<tr>";
+//echo "<style> :host{display:block;height: 30px;} </style>";
+//echo "<td colspan='8'><h1>Template!!!!</h1></td>";
+//echo "</tr>";
+echo "</template>";
 
+//$columns = [];
 if(true):
-echo "<template shadowroot='open'>   "; // closed, open data-i='$count_rows'   shadowroot='open'
 echo "<tr class='table_row hide template'  data-i='$count_rows'  data-type='$col->type'>";// 
 foreach ($columns as $col){
     
@@ -376,7 +266,7 @@ foreach ($columns as $col){
         }
         if(in_array($col->type, ['new_del'])){
             echo "<th class=' cell $col->classCell name_$col->name' scope='row'>";
-            echo "<button  class='btn btn-danger $col->class '  aria-hidden='true' title='".JText::_('JGLOBAL_FIELD_REMOVE')."' aria-label='".JText::_('JGLOBAL_FIELD_REMOVE')."'"
+            echo "<button href='#' type='button' class='btn btn-danger $col->class '  aria-hidden='true' title='".JText::_('JGLOBAL_FIELD_REMOVE')."' aria-label='".JText::_('JGLOBAL_FIELD_REMOVE')."'"
                     . " onclick=\"tblRow(this,'.table_row','.gridFields').remove(); upInd('gridFields'); \" "
                     . "><i class='bi bi-x icon-delete large-icon fa fa-lg fas fa-times  fa-fw'></i></button>";
             echo "</th>";
@@ -396,17 +286,13 @@ foreach ($columns as $col){
 //        else
 //            $val = $value[$col->name][$i];
         
-        $attribute = in_array($col->type, ['Radio','Checkbox']) ?  " data-type='$col->type' data-fieldname='$col->fieldname'":'';
+        $attribute = $col->type=="Radio" ?  " data-type='$col->type' data-fieldname='$col->fieldname'":'';
         
-		if($col->type == 'Hidden')
-			$col->classCell .= ' collapse ';
-		
-        echo "<td class='cell $col->classCell name_$col->fieldname' $attribute>"; //$col->parentclass
+        echo "<td class='cell $col->classCell name_$col->fieldname' $attribute>";
         echo "$col->html";
         echo "</td>";
 }
 echo "</tr>"; 
-echo "</template>";
 endif;
 /*
  * jform[params][list_fields_][art_id][]
@@ -425,50 +311,39 @@ echo "</tbody>";
 echo "</table>";
 echo "</div>";
 
-//echo "<script type='text/javascript'>
-////document.addEventListener('DOMContentLoaded', () => { removeLBL('$id','$isJ4'); });
-////window.addEventListener('load', () => { initGridFields(); });
-//</script>";
+echo "<script type='text/javascript'>
+document.addEventListener('DOMContentLoaded', () => { removeLBL('$id','$isJ4'); });
+//window.addEventListener('onload', () => { initGridFields(); });
+</script>";
 
-//if($script)
-//    echo "<script type='text/javascript'>$script</style>";
-//if($css)
-//    echo "<style type='text/css'>$css</style>";
+if($script)
+    echo "<script type='text/javascript'>$script</style>";
+if($css)
+    echo "<style type='text/css'>$css</style>";
 
-static $run;
+static $script;
 
-if($run)
+if($script)
     return;
 
-$run = true;
-
-//JFactory::getApplication()->getDocument()->
-//JFactory::getApplication()->getDocument()->addScriptDeclaration($iconClass);
-//JFactory::getApplication()->getDocument()->addStyleDeclaration($iconClass);
-//$script = <<< SCR
-//SCR;
-
+$script = true; 
 
 ?>
-
-<?php if(false):?>
 <script type='text/javascript'>
-<?php endif;?>
-<?php ob_start(); ?>
 "use strict"
-/* Script for GridFields! */
 
-/* Обновление индексдов для таблиц с классом */
+//Обновление индексдов для таблиц с классом
 function upInd(table){
+	
 		let tables = document.getElementsByClassName(table);
 		for(let tbl of tables){
 			updateIndexis(tbl);
-//			console.log(tbl);
+			console.log(tbl);
 		}
+			
 }
 
 function updateIndexis(table){
-//	return;
     //jform[params][list_fields_][onoff][]
         let nameTable = table.dataset.name;
         if(nameTable == '')
@@ -476,76 +351,30 @@ function updateIndexis(table){
         let trs = table.querySelectorAll('tbody > tr');
         if(trs.length === 0)
             return;
-		
-		let count = 0;
         
         for(const [i,tr] of trs.entries()){ 
-//console.log('TR-476:',i,tr);
-            let RadiosTD = tr.querySelectorAll('td[data-type=Radio][data-fieldname],td[data-type=Checkbox][data-fieldname]'); //'td[data-type=Radio][data-fieldname]'
+//console.log('TR:',i,tr);
+            let RadiosTD = tr.querySelectorAll('td[data-type=Radio][data-fieldname]'); //'td[data-type=Radio][data-fieldname]'
 //console.log('RadioTD:',RadiosTD);
 //continue;
             if(RadiosTD.length == 0)
                 continue;
-//console.log('RadioTD:',RadiosTD);
-			
             for(let td of RadiosTD){
-				let radios_checks = td.querySelectorAll('input[type=radio],input[type=checkbox]'); 
-				
-				if(radios_checks.length == 0)
-					continue;
-				
-				let type = td.dataset.type; //.toLowerCase()
                 let name = td.dataset.fieldname;
-                let fullname = nameTable + '[' + name + ']' + '[]';
-				
+                let fullname = nameTable + '[' + name + ']' + '[' + i + ']';
 //                console.log(fullname);
-//console.log('checks:',checks);
-//console.log('radios:',radios);
-				
-				if(radios_checks.length > 1 && type == 'Radio' || radios_checks.length == 1 && type == 'Checkbox')
-					fullname = nameTable + '[' + name + ']' + '[' + i + ']';
-				
-				if(radios_checks.length == 1 && type == 'Radio'){
-					fullname = nameTable + '[' + name + ']';
-					radios_checks.forEach((inpt) => inpt.value = i);
-				}
-				
-				radios_checks.forEach((inpt) => inpt.name = fullname);
-				
-//console.log( fullname,'   :'+radios_checks.length + ' :'+type);
-				
-				
-				
-//				if(checks.length)
-//					checks.forEach((inpt) => inpt.value = i);
-
-				count += radios_checks.length; 
+                td.querySelectorAll('input[type=radio]').forEach((inpt) => inpt.name = fullname);
+//                td.querySelector('fieldset');
             }
         }
-	return count;
 }
 function initGridFields(){
-//	return;
-//console.log("jQuery( \".gridFields\" ).sortable(); 2");
-//console.clear();
-//console.log('initGridFields()');
+
     let tbls = document.querySelectorAll('.gridFields.table');     
     for(let tbl of tbls){
-//console.log(tbl);
-		tbl.addEventListener("mouseup", event => { 
-				updateIndexis(tbl); 
-//console.log('mouseup',tbl);
-		});
-		tbl.addEventListener("touchend", event => { 
-				updateIndexis(tbl); 
-//console.log('touchend',tbl);
-		});
-		
-
-//        let tmplTR = tbl.querySelector('.template'); 
-//console.log(tmplTR,'initGridFields()');
-//        tmplTR.classList.remove('hide','template');
-//        tbl.querySelector('template').content.append(tmplTR);
+        let tmplTR = tbl.querySelector('.template'); 
+        tmplTR.classList.remove('hide','template');
+        tbl.querySelector('template').content.append(tmplTR);
     }
 //Joomla.submitbutton('module.apply');
 //Joomla.submitbutton('module.save');
@@ -555,7 +384,7 @@ function initGridFields(){
 //Joomla.popupWindow('https:\/\/help.joomla.org\/proxy?keyref=Help39:Extensions_Module_Manager_Edit&lang=en', 'Help', 700, 500, 1)// HELP
 
 //jform[params][list_fields_]
-	
+
     
 // var fixHelper = function(e, ui) {
 //	ui.children().each(function() {
@@ -565,13 +394,11 @@ function initGridFields(){
 //};  //    class="icon-move fa fa-arrows" aria-hidden="true"
 
 
-//console.log("jQuery( \".gridFields\" ).sortable(); 3");
-<?php if(empty($isJ4)): ?>
 jQuery( ".gridFields" ).sortable({
 //    helper: fixHelper,
 	handle: 'th.move.index', //Элемент захватываемый мышкой
     items: "tbody > tr",// Назначает дочерние элементы для сортировки
-    update: function( event, ui ){ //this-table,
+    update: function( event, ui ){ //this-table,  
         updateIndexis(this);
 //        console.log(this,event,ui);
     },
@@ -588,11 +415,10 @@ jQuery( ".gridFields" ).sortable({
 //    start: function( event, ui ), //Это событие запускается при запуске сортировки.
 //    stop: function( event, ui ), //Это событие запускается, когда сортировка остановлена.
 //    
-//    update: function( event, ui ),  // ! Это событие запускается, когда пользователь прекратил сортировку и положение DOM изменилось.   //This event is triggered when the user stopped sorting and the DOM position has changed.
+//    update: function( event, ui ), //! Это событие запускается, когда пользователь прекратил сортировку и положение DOM изменилось.   //This event is triggered when the user stopped sorting and the DOM position has changed.
 //    change: function( event, ui ), //Это событие запускается во время сортировки, но только при изменении позиции DOM.    // This event is triggered during sorting, but only when the DOM position has changed.    
 //    beforeStop: function( event, ui ), //Это событие запускается, когда сортировка останавливается, но когда placeholder/helper все еще доступен.     // This event is triggered when sorting stops, but when the placeholder/helper is still available.
 });
-<?php endif; ?>
 jQuery().button('toggle');
 }
 function removeLBL(id,on){
@@ -602,11 +428,7 @@ function removeLBL(id,on){
         return;
     document.getElementById(id+'_field').parentNode.style.marginLeft = '0px';
     document.getElementById(id+'_field').parentNode.parentNode.style.marginLeft = '0px';
-    let lbl = document.getElementById(id+'-lbl');
-	if(lbl)
-		lbl.parentNode.style.width = '100%';
-	// #jform_com_fields_tsena_i0__field 
-	// #jform_com_fields_tsena-lbl
+    document.getElementById(id+'-lbl').parentNode.style.width = '100%';
 }
 function tblRowNew(el, selector){
   let tbl = tblRow(el,selector);
@@ -619,7 +441,7 @@ function tblRowNew(el, selector){
   tbl.querySelector('tbody').appendChild( new_tmp );
   delete new_tmp.dataset.i;
 //  new_tmp.dataset.i = 1 + i;
-  new_tmp.classList.remove('hide','template');
+//  tmp.classList.remove('hide','template');
 //  let inputs = new_tmp.querySelectorAll('input, textarea, select, button');
 //  for(let inpt of inputs){
 //      inpt.id += i;
@@ -634,58 +456,20 @@ function tblRowNew(el, selector){
 //  }
   updateIndexis(tbl);
 }        
-function tblRow(el, selector, stopSelector){
-  if(!el || !el.parentElement) return null;
-  else if(stopSelector && el.parentElement.matches(stopSelector)) return null;
-  else if(el.parentElement.matches(selector)) return el.parentElement;
-  else return tblRow(el.parentElement, selector, stopSelector);
+function tblRow(el, selector, stopSelector) {
+  if(!el || !el.parentElement) return null
+  else if(stopSelector && el.parentElement.matches(stopSelector)) return null
+  else if(el.parentElement.matches(selector)) return el.parentElement
+  else return tblRow(el.parentElement, selector, stopSelector)
 }
+//window.onload = () => console.clear();
+window.onload = function(){initGridFields();};
+</script>
 
-<?php JFactory::getApplication()->getDocument()->addScriptDeclaration(ob_get_clean()); ?>
-<?php if(false):?>
-</script>
-<?php endif;?>
-<script>
-	/* table GridFields */
-	window.addEventListener('load', function() {removeLBL('<?=$id?>','<?=$isJ4?>')});
-</script>
-<?php if(false):?>
-<script>
-<?php endif;?>
-<?php ob_start(); ?>
-/* Script for GridFields! */
-//window. onload = () => console.clear();
-//console.log('jQuery( \".gridFields\" ).sortable(); 0');	
-//document.addEventListener('DOMContentLoaded', () => { removeLBL('$id','$isJ4'); });	
-window.addEventListener('load', function() {
-	if(window.gridfields != true){
-		initGridFields();
-		
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl);
-		});
-		window.gridfields = true;
-	}
-});
-<?php JFactory::getApplication()->getDocument()->addScriptDeclaration(ob_get_clean()); ?>
-<?php if(false):?>
-</script>
 <style type="text/css">
-<?php endif;?>
-<?php ob_start(); ?>
-/* Style for GridFields! */
     .gridFields{
         /*position: relative;*/
         /*top: 0;*/
-    }
-    .gridFields caption {
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-    }
-    .gridFields .d-flex.justify-content-between {
-		display: flex;
-		justify-content: space-between !important;
     }
     .gridFields thead{
         /*position: sticky;*/
@@ -694,14 +478,13 @@ window.addEventListener('load', function() {
     .gridFields thead th{
         /*position: sticky;*/
         /*top: 0;*/
-		vertical-align: middle;
     }
     .gridFields th.name_new_del {
         width: 1%;
     }
     .gridFields th.new_del button{ 
         width: 100%; 
-		/*font-size: 1rem;*/
+		font-size: 1rem;
     }
     .gridFields .control-group{ 
         margin: 0;
@@ -716,45 +499,11 @@ window.addEventListener('load', function() {
     .gridFields .control-group>.controls>*,
     .gridFields .control-group>.controls>.form-control{
         /*width: auto;*/
-		/*width: 100%;*/
+		width: 100%;
 		flex: 1 auto;
-		max-width: 100%;
     }
     .gridFields .name-index{
         text-align: center; 
-    } 
-    .gridFields .form-control{ 
-		box-sizing: border-box;
-		height: inherit;
-    }
-    .gridFields input,
-    .gridFields select{
-		box-sizing: border-box;
-		min-height: 1.7rem;
-    }
-	.gridFields .chzn-container{
-		margin-left: 5px;
-	}
-	.gridFields input[type="radio"],
-	.gridFields input[type="checkbox"]{
-		margin: 0;
-		min-width: 1.7rem;
-		min-height: 1.7rem;
-	}
-    .gridFields .form-check,
-    .gridFields .form-check-input{
-        padding-top: 0; 
-		margin-top: 0;
-    }
-    .gridFields .form-check,
-    .gridFields .form-check-input{
-        padding-top: 0; 
-		margin-top: 0; 
-    } 
-    .gridFields .form-check-input{ 
-		aspect-ratio: 1;
-		object-fit: contain;
-		width: auto;
     }
     .gridFields td{
         position:relative;
@@ -768,11 +517,14 @@ window.addEventListener('load', function() {
         text-align: center;
         cursor: move;
         position: relative;
-		overflow-y: hidden;
+    }
+    .gridFields th.move i{ 
+        position: absolute;
+		opacity: 0.3;
     }
     .gridFields th i{ /*.move*/
         /*content: "::";*/
-		display: inline-block;
+        display: block;
         /*height: 20px;*/
         /*position: absolute;*/
         /*bottom: 2px;*/    
@@ -781,52 +533,20 @@ window.addEventListener('load', function() {
         width: auto;
         margin: auto;
     }
-    .gridFields th.move i{ 
-        position: absolute;
-        display: block;
-		opacity: 0.3;
-    }
     .gridFields th.move:hover{
         background-color: #8888;
     }
-	.gridFields td:not(.Checkbox) .control-group .controls{
+	.gridFields .control-group .controls {
 		/*position: relative;*/
 		/*flex: 1;*/
 		min-width: 50px; /*210px*/
 	}
 	.gridFields  .btn-group{
 		padding-top: 0;
-		/*width: inherit;*/
+		width: inherit;
 	} 
 	.gridFields  details{
 		margin: auto;
 	} 
 	
-	.mw-5r { 
-		max-width: 5rem !important;
-	}
-	.mw-6r { 
-		max-width: 6rem !important;
-	}
-	.w-6r {  
-		/*width: 100px;*/
-		width: 6rem !important;
-		max-width: 6rem !important;
-		background-position-x: -108.8rem;
-	}
-	.w-5r { 
-		/*width: 80px;*/
-		width: 5rem !important;
-		max-width: 5rem !important;
-		background-position-x: -110.4rem;
-	}
-	.w-4r {  
-		/*width: 60px;*/
-		width: 4rem !important;
-		max-width: 4rem !important;
-		background-position-x: -110.8rem;
-	}
-<?php JFactory::getApplication()->getDocument()->addStyleDeclaration(ob_get_clean()); ?>
-<?php if(false):?>
 </style>
-<?php endif;?>
