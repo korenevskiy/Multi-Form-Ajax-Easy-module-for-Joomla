@@ -712,7 +712,7 @@ function mfAjaxDoneForm(data, status) {
 //            console.log('🏆'+this.id);
 //            console.log('#'+this.button, this.type);
 //            console.log(this.buttons);
-    if (this.type === 'popup') 
+    if (this.type === 'popup')
     {
         jQuery('body').append(jQuery(data));
         jQuery('#mfClose_' + this.id).click(this, mfCloseModal_Click);
