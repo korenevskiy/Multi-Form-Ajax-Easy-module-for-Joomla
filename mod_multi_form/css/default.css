@@ -1,9 +1,5 @@
 
-.mfForm.static{
-	width: 100%;
-	max-width: 460px;
-	margin: 0 auto;
-}
+
 .mfForm.margin,
 .mfForm.padding,
 .modMF.moduletable.margin > .mfForm,
@@ -102,13 +98,6 @@
 }
 
 
-.mfForm .form-control{
-    /*?????*/
-    /*max-width: 240px;*/
-    max-width: 256px;
-    /*margin: auto;*/
-    /*margin: 4px auto 10px;*/
-}
 .mfGo,
 .mfFieldGroup .form-control.submit  {
     /*padding:  0 20px 20px;*/
@@ -414,6 +403,7 @@ form.mfStatusForm  input.color{
     width: auto;
 	margin: 2px 6px 0 0;
     height: auto;
+	padding: 6px;
 }
 
 form.mfStatusForm  label.rad,
@@ -424,6 +414,16 @@ form.mfStatusForm  label.col{
 	margin: 5px 10px 0 0;
     height: auto;
     cursor: pointer;
+	
+    padding-left: 20px;
+    text-indent: -20px;
+}
+
+form.mfStatusForm  label.rad input,
+form.mfStatusForm  label.chk input,
+form.mfStatusForm  label.col input{
+	position: relative;
+    left: -20px;
 }
 form.mfStatusForm  .color p{
 	display: inline-block;
@@ -549,8 +549,9 @@ form.mfStatusForm  textarea:focus{
     max-width: 240px;
     max-width: 256px;
     place-content: center;
+	font-size: large;
 }
-.mfStatusForm  .form-group{
+.mfStatusForm  .mfFieldGroup{
     display: flex;
     place-content: center;
     place-content: space-between;
@@ -560,10 +561,11 @@ form.mfStatusForm  textarea:focus{
     width: 100%;
     justify-content: space-between;
 /*    display: table-row;*/
+	align-content: center;
 } 
-form.mfStatusForm .form-group.rad,
-form.mfStatusForm .form-group.chk,
-form.mfStatusForm .form-group.col {
+form.mfStatusForm .mfFieldGroup .form-group.rad,
+form.mfStatusForm .mfFieldGroup .form-group.chk,
+form.mfStatusForm .mfFieldGroup .form-group.col {
     min-height: 20px;
     padding: 0!important;
     margin: 0px auto 0px;
@@ -575,6 +577,7 @@ form.mfStatusForm .form-group.col {
     display: flex;
     justify-items: stretch;
     flex-wrap: nowrap;
+	flex-wrap: wrap;
 }
 
 .mfStatusForm  input.submit:focus,
@@ -599,6 +602,11 @@ form.mfStatusForm .form-group.col {
   -border-radius: 5px;
    transition: 0.4s 0.1s;
 }
+.mfStatusForm  .number,
+.mfStatusForm  .range {
+    text-align: right;
+    text-align-last: right; 
+}
 
 .mfStatusForm  textarea {
   border: 1px solid transparent;
@@ -611,7 +619,7 @@ form.mfStatusForm .form-group.col {
     box-shadow: 0 0 5px inset red, 0 0 5px red;
     border: 1px solid red;
 } 
-.mfStatusForm  .mfFieldGroup>label{
+.mfStatusForm:not(.above)  .mfFieldGroup>label{
     max-width: 160px;
     max-width: 180px;
     width: 100%;
@@ -626,6 +634,8 @@ form.mfStatusForm .form-group.col {
 .mfStatusForm  .mfFieldGroup> label{
     text-align: left;
     text-align-last: left;
+	display: flex;
+    align-items: center;
 }
 .mfStatusForm.modal-body  .mfFieldGroup>label{
     max-width: 240px;
@@ -691,9 +701,6 @@ form.mfStatusForm  label.error{
 }
 
 
-.mfForm.static.grid{
-    max-width: inherit;
-}    
 .mfForm.static .mfEditor iframe{
     /*height: 250px !important;*/
 }
@@ -835,3 +842,205 @@ form.mfStatusForm  label.error{
 .mfFieldGroup intro .table th, .mfFieldGroup intro .tbl th  {
     background-color: #8882;
 }
+
+
+
+/** ----------------------------------------------------  Позиция названия полей    -------*/ 
+.mfForm_modal .mfFieldGroup{
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
+}
+.mfStatusForm.above  .mfFieldGroup > label,
+.mfForm_modal .mfStatusForm:not(.edge) > label{
+	max-width: initial;
+}
+/*form.mfStatusForm.in .form-control,*/
+/*form.mfStatusForm.in .form-group,*/
+/*form.mfStatusForm.in .form-group.rad, 
+form.mfStatusForm.in .form-group.chk, 
+form.mfStatusForm.in .form-group.col,*/
+form.mfStatusForm.in .mfFieldGroup{
+	
+}
+/*form.mfStatusForm.out .form-control,*/
+/*form.mfStatusForm.out .form-group,*/
+/*form.mfStatusForm.out .form-group.rad, 
+form.mfStatusForm.out .form-group.chk, 
+form.mfStatusForm.out .form-group.col,*/
+form.mfStatusForm.out .mfFieldGroup{
+    
+}
+/*form.mfStatusForm.above .form-control,*/
+/*form.mfStatusForm.above .form-group,*/
+/*form.mfStatusForm.above .form-group.rad, 
+form.mfStatusForm.above .form-group.chk, 
+form.mfStatusForm.above .form-group.col, */
+form.mfStatusForm.above .mfFieldGroup{
+    flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
+}
+/*form.mfStatusForm.edge .form-control,*/
+/*form.mfStatusForm.edge .form-group,*/
+/*form.mfStatusForm.edge .form-group.rad, 
+form.mfStatusForm.edge .form-group.chk, 
+form.mfStatusForm.edge .form-group.col,*/
+form.mfStatusForm.edge .mfFieldGroup{
+	display: grid;
+    grid-template-columns: 1fr 2fr;
+	gap: 10px;
+}
+
+/** ----------------------------------------------------   Ширина Полей    -------*/  
+form.mfStatusForm			.form-control{
+    /*?????*/
+    /*max-width: 240px;*/
+    max-width: 256px;
+    /*margin: auto;*/
+    margin: 4px auto 10px;
+	justify-self: center;
+	font-size: large;
+}
+form.mfStatusForm.field180 .form-control, 
+form.mfStatusForm.field180 .input, 
+form.mfStatusForm.field180 .form-group.rad, 
+form.mfStatusForm.field180 .form-group.chk, 
+form.mfStatusForm.field180 .form-group.col,
+form.mfStatusForm.field180 .mfFieldGroup{
+    max-width: 180px;
+}
+form.mfStatusForm.field240 .form-control,
+form.mfStatusForm.field240 .input,
+form.mfStatusForm.field240 .form-group.rad, 
+form.mfStatusForm.field240 .form-group.chk, 
+form.mfStatusForm.field240 .form-group.col,
+form.mfStatusForm.field240 .mfFieldGroup{
+    max-width: 240px;
+}
+form.mfStatusForm.field256 .form-control,
+form.mfStatusForm.field256 .input,
+form.mfStatusForm.field256 .form-group.rad, 
+form.mfStatusForm.field256 .form-group.chk, 
+form.mfStatusForm.field256 .form-group.col,
+form.mfStatusForm.field256 .mfFieldGroup{
+    max-width: 256px;
+}
+form.mfStatusForm.field300 .form-control,
+form.mfStatusForm.field300 .input,
+form.mfStatusForm.field300 .form-group.rad, 
+form.mfStatusForm.field300 .form-group.chk, 
+form.mfStatusForm.field300 .form-group.col,
+form.mfStatusForm.field300 .mfFieldGroup{
+    max-width: 300px;
+}
+form.mfStatusForm.field440 .form-control,
+form.mfStatusForm.field440 .input,
+form.mfStatusForm.field440 .form-group.rad, 
+form.mfStatusForm.field440 .form-group.chk, 
+form.mfStatusForm.field440 .form-group.col,
+form.mfStatusForm.field440 .mfFieldGroup{
+	max-width: 440px;
+}
+form.mfStatusForm.field600 .form-control,
+form.mfStatusForm.field600 .input,
+form.mfStatusForm.field600 .form-group.rad, 
+form.mfStatusForm.field600 .form-group.chk, 
+form.mfStatusForm.field600 .form-group.col,
+form.mfStatusForm.field600 .mfFieldGroup{
+	max-width: 600px;
+}
+form.mfStatusForm.field740 .form-control,
+form.mfStatusForm.field740 .input,
+form.mfStatusForm.field740 .form-group.rad, 
+form.mfStatusForm.field740 .form-group.chk, 
+form.mfStatusForm.field740 .form-group.col,
+form.mfStatusForm.field740 .mfFieldGroup{
+	max-width: 740px;
+}
+form.mfStatusForm.fieldFluid .form-control,
+form.mfStatusForm.fieldFluid .input,
+form.mfStatusForm.fieldFluid .mfFieldGroup.rad, 
+form.mfStatusForm.fieldFluid .mfFieldGroup.chk, 
+form.mfStatusForm.fieldFluid .mfFieldGroup.col,
+form.mfStatusForm.fieldFluid .mfFieldGroup
+{
+	max-width: initial;
+}
+
+ 
+/** ----------------------------------------------------   Ширина формы    -------*/  
+.mfForm.static.grid{
+    max-width: inherit;
+}    
+.mfForm.static{
+	/*width: 100%;*/
+	/*max-width: 460px;*/
+	margin: 0 auto;
+}
+.mfForm_modal,
+.mfForm_static{
+    max-width: inherit;
+	width: inherit;
+	margin: auto;
+}    
+.mfForm_modal.max310,
+.mfForm_static.max310{
+    max-width: 310px;
+}
+.mfForm_modal.max460,
+.mfForm_static.max460{
+    max-width: 460px;
+	
+}
+.mfForm_modal.max640,
+.mfForm_static.max640{
+    max-width: 640px;
+}
+.mfForm_modal.max920,
+.mfForm_static.max920{
+    max-width: 920px;
+}
+.mfForm_modal.margin0,
+.mfForm_static.margin0{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.mfForm_modal.margin10,
+.mfForm_static.margin10{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.mfForm_modal.margin20,
+.mfForm_static.margin20{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.mfForm_modal.margin50,
+.mfForm_static.margin50{
+	margin-left: 50px;
+	margin-right: 50px;
+}
+.mfForm_modal.margin80,
+.mfForm_static.margin80{
+	margin-left: 80px;
+	margin-right: 80px;
+}
+.mfForm_modal.margin120,
+.mfForm_static.margin120{
+	margin-left: 120px;
+	margin-right: 120px;
+}
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
