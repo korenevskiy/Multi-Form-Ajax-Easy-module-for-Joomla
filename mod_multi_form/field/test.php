@@ -155,7 +155,7 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
         $href = $this->id ? "href='$url'" : '' ;
         $message = $this->id ?'': " onclick=\"alert('".JText::_('MOD_MULTI_FORM_TEST_MODULE_MESSAGE')."')\"";
                 
-        $text = (string)$this->element['text']?:'MOD_MULTI_FORM_TEST_MODULE_TEXT';
+        $text = (string)$this->element['text'] ?: 'MOD_MULTI_FORM_TEST_MODULE_TEXT';
         $text = $this->id ? JText::sprintf($text,$this->id) : $this->default;
         $this->value = htmlspecialchars($text, ENT_COMPAT, 'UTF-8') ;
                 
