@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25 нояб. 2020 г., 02:54:27
+    Author     : koren
+*/
+
+.mfForm_modal{
+    display:block;
+}
+.mfClose{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 20px;
+    width: 20px;
+}
+.mfClose .icon-remove:after{
+    position: absolute;
+    left: -2px;
+    top: 0;
+    height: 20px;
+    width: 20px;
+    content: "X";
+    font-weight: bold;
+}

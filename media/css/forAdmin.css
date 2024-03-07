@@ -1,0 +1,103 @@
+.alert-info stron{
+  font-weight: normal;
+}
+.alert-info b{
+  font-weight: bold;
+}
+
+.poryadok{width: 30px;}
+.table-striped tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th {
+    background-color: #ffffff;
+}
+#jform_params_list_fields_table{
+
+}
+#jform_params_list_fields_table tbody{
+
+}
+#jform_params_list_fields_table tr{
+	height: 55px;
+	cursor: default;
+}
+
+#jform_params_list_fields_table tr td:first-child,
+#jform_params_list_fields_table tr th:first-child{
+	padding-left: 40px;
+}
+
+#jform_params_list_fields_table tr td:nth-child(4){
+	min-width: 72px;
+}
+
+#jform_params_list_fields_table tbody tr td:first-child:before{
+	/*content: "";
+    display: block;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 5px;
+	background: url(../img/Icon_DragDrop.png) no-repeat center center transparent;
+	cursor: pointer;*/
+}
+
+#jform_params_list_fields_modal tr td:nth-child(6),
+#jform_params_list_fields_modal tr th:nth-child(6)
+{-display: none;}
+#jform_params_list_fields_modal #jform_params_list_fields_table tr td:nth-child(4){
+	padding-left: 24px;
+	position: relative;
+}
+#jform_params_list_fields_modal #jform_params_list_fields_table tr td:nth-child(4):before{
+    content: "";
+    display: block;
+    width: 16px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+}
+#jform_params_list_fields_modal tr td fieldset{
+	-display: block;
+    -padding: 5px 5px 5px 30px;
+}
+#jform_params_list_fields_modal tr td.redRadio fieldset{
+	background: #A62F29;
+    border-radius: 3px;
+    color: #fff;
+}
+#jform_params_list_fields_modal tr.desabled-field td:nth-child(-n+7){
+	opacity: .5;
+}
+#jform_params_list_fields_modal tr td .btn-group .add.button{
+	display: none;
+}
+#jform_params_list_fields_modal tr td:last-child{
+	text-align: right;
+}
+#jform_params_list_fields_modal tr td:last-child .btn-group .remove.button{
+	border-radius: 4px;
+    -margin-top: 8px;
+}
+#jform_params_list_fields_modal tr td:last-child .btn-group .remove.button .icon-minus{
+	margin: 0;
+}
+#undabledBlocks, #filedOrderBlocks{
+	display: inline-block;
+    padding: 10px;
+    background: #AC312B;
+    color: rgba(255,255,255,.9);
+    font-size: 16px;
+}
+.icon_multiform-mail:before{background: url("../img/icon-field/mail.png") center center no-repeat transparent;}
+.icon_multiform-number:before{background: url("../img/icon-field/number.png") center center no-repeat transparent;}
+.icon_multiform-telephone:before{background: url("../img/icon-field/telephone.png") center center no-repeat transparent;}
+.icon_multiform-text:before{background: url("../img/icon-field/text.png") center center no-repeat transparent;}
+.icon_multiform-checkbox:before{background: url("../img/icon-field/checkbox.png") center center no-repeat transparent;}
+.icon_multiform-dropdownlist:before{background: url("../img/icon-field/dropdownlist.png") center center no-repeat transparent;}
+.icon_multiform-radio:before{background: url("../img/icon-field/radiobutton.png") center center no-repeat transparent;}
+.icon_multiform-separate:before{background: url("../img/icon-field/separate.png") center center no-repeat transparent;}
+.icon_multiform-textarea:before{background: url("../img/icon-field/textarea.png") center center no-repeat transparent;}
+.icon_multiform-range:before{background: url("../img/icon-field/range.png") center center no-repeat transparent;}
+.icon_multiform-color:before{background: url("../img/icon-field/color.png") center center no-repeat transparent;}
+.icon_multiform-hidden:before{background: url("../img/icon-field/hidden.png") center center no-repeat transparent;}
+.icon_multiform-startblock:before{background: url("../img/icon-field/startblock.png") center center no-repeat transparent;}
+.icon_multiform-finishblock:before{background: url("../img/icon-field/finishblock.png") center center no-repeat transparent;}
