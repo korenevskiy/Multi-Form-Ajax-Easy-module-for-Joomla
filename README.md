@@ -4,7 +4,7 @@ The module allows you to easily create any feedback forms. Wide functionality an
 Designed to increase sales of any sites. Sending an email and saving in article in the site category will allow you to follow all requests and allow you to create sections of reviews on the site.  
 [https://extensions.joomla.org/extension/multi-form-ajax-easy/](https://extensions.joomla.org/extension/multi-form-ajax-easy/)
 
-Download Last Release [mod_multi_form.zip](https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master)
+Download Last Release or copy link [mod_multi_form.zip](https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master)
 ```
 https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master
 ```
