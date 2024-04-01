@@ -28,9 +28,8 @@ if(file_exists(__DIR__ . '/functions.php'))
 // Include the helper.
 require_once __DIR__ . '/helper.php';
 //require_once JPATH_BASE . '/components/com_content/helpers/route.php'; 
-
-
-$param = $params->toObject();
+ 
+$params = new Reg($params);
 
 //new Joomla\CMS\Table\Table;
 //$tbl = Joomla\CMS\Table\Table::getInstance('Content');
@@ -45,7 +44,7 @@ $param = $params->toObject();
 //if(is_null($dispay_mods))
 //    $dispay_mods = [];
 if(!empty($module->position)):
-if(!modMultiFormHelper::requireWork($param)){
+if(!modMultiFormHelper::requireWork($params)){
     $pos = $module->position;
     $mod_list_pos = mfModuleHelper::ModeuleDelete($module); 
 //    toPrint($mod_list_pos,'$mod_list_pos:'.$module->id);
@@ -65,20 +64,20 @@ else{
 endif;// </editor-fold>
 
 //if($module->id == 112)
-//toPrint($module,'$module->moduleclass_sfx',0,'pre',true);
+//toPrint($params->recipient_show,'$module->moduleclass_sfx',0,'pre',true);
+//toPrint($params->sendtoemail,'$params->sendtoemail User',0,'pre',TRUE);
 
 //$params->set('header_tag', $params->get('head_tag'));
 //$params->set('module_tag', $params->get('mod_tag'));
-
-//$param = $params->toObject();
-
-//toPrint($param->module_tag,'module_tag'); 
-//toPrint($param->mod_tag,'mod_tag'); 
-
- modMultiFormHelper::constructor($param);
  
 
-//$moduleclass_sfx = htmlspecialchars( $param->moduleclass_sfx );
+//toPrint($params->module_tag,'module_tag'); 
+//toPrint($params->mod_tag,'mod_tag'); 
+
+ modMultiFormHelper::constructor($params);
+ 
+
+//$moduleclass_sfx = htmlspecialchars( $params->moduleclass_sfx );
 //$params->set( 'moduleclass_sfx', $params->get( 'moduleclass_sfx' ). ' mfForm ' );
  
 
@@ -167,11 +166,11 @@ jimport( 'joomla.application.application' );
 
 //$colorscheme 			= $params->get( 'colorscheme' );
  
-$allparams  = $param->list_fields ?: null;//s->get( 'list_fields' );//json_decode($params->get( 'list_fields' ));
-//$allparams->select_editor = $param->select_editor || 'tinymce';   
+$allparams  = $params->list_fields ?: null;//s->get( 'list_fields' );//json_decode($params->get( 'list_fields' ));
+//$allparams->select_editor = $params->select_editor || 'tinymce';   
 if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
     
-//toPrint($allparams->typefield,'$allparams+'.$param->select_editor,0,'pre',true);
+//toPrint($allparams->typefield,'$allparams+'.$params->select_editor,0,'pre',true);
     jimport( 'joomla.html.editor' );
     JPluginHelper::importPlugin('editors');
     if(class_exists('Ed') == false){ 
@@ -199,13 +198,13 @@ if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
     }
 	}
 	
-    $editor = Ed::getInstance($param->select_editor)->Load(); 
+    $editor = Ed::getInstance($params->select_editor)->Load(); 
     
         
     
-    //$fieldB = JEditor::getInstance($param->select_editor || 'tinymce')->initialise();
-    //\Joomla\CMS\Editor\Editor::getInstance($param->select_editor || 'tinymce')->initialise();
-//$plg = JPluginHelper::getPlugin('editors','tinymce'); //->onInit() ,$param->select_editor || 'tinymce'
+    //$fieldB = JEditor::getInstance($params->select_editor || 'tinymce')->initialise();
+    //\Joomla\CMS\Editor\Editor::getInstance($params->select_editor || 'tinymce')->initialise();
+//$plg = JPluginHelper::getPlugin('editors','tinymce'); //->onInit() ,$params->select_editor || 'tinymce'
 //         $methods = get_class_methods($editor);
 //         $methods = get_class($plg);
 //toPrint($methods,'$methods',0,'pre',true); 
@@ -217,31 +216,31 @@ if(($allparams->typefield??false) && in_array('editor', $allparams->typefield)){
 //		\Joomla\CMS\HTML\HTMLHelper::script('media/editors/tinymce/tinymce.min.js', array('version' => 'auto'));
 //		\Joomla\CMS\HTML\HTMLHelper::script('editors/tinymce/tinymce.min.js', array('version' => 'auto', 'relative' => true));
 }else{
-	$param->list_fields = [];
+	$params->list_fields = [];
 }
 
 
-//$fieldB = JEditor::getInstance($param->select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
+//$fieldB = JEditor::getInstance($params->select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
                                   
 //                                    $editor = JEditor::getInstance('tinymce');
 //                                     toPrint($editor,'Editor') ;
                                 //arkeditor, tinymce,  codemirror none   
-if($param->jsbeforesend ?: false){
-    $jssend  = "function funcBefore$module->id(id){ $param->jsbeforesend }";
+if($params->jsbeforesend ?: false){
+    $jssend  = "function funcBefore$module->id(id){ $params->jsbeforesend }";
     JFactory::getDocument()->addScriptDeclaration($jssend);
 } 
- if($param->jsaftersend ?: false){
-    $jssend  = "function funcAfter$module->id(id){ $param->jsaftersend }";
+ if($params->jsaftersend ?: false){
+    $jssend  = "function funcAfter$module->id(id){ $params->jsaftersend }";
     JFactory::getDocument()->addScriptDeclaration($jssend);
  }
 
 //$allparams  = json_decode($params->get( 'list_fields' ));
-//$allparams->select_editor = $param->select_editor || 'tinymce';  
+//$allparams->select_editor = $params->select_editor || 'tinymce';  
 
 
 //$moduleid = $module->id;
 //$moduleTitle			= $module->title;
-//$field          = $fields       = modMultiFormHelper::buildFields($allparams, $moduleid, $onoffpopup, $param->nameInOut);
+//$field          = $fields       = modMultiFormHelper::buildFields($allparams, $moduleid, $onoffpopup, $params->nameInOut);
 //$dataField			= modMultiFormHelper::dataFields($allparams, $moduleid);
 //$dataField				= modMultiFormHelper::getFieldsData($allparams, $moduleid);
 

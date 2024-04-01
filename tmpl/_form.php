@@ -20,7 +20,10 @@ use \Joomla\CMS\Uri\Uri as JUri;
 //use Joomla\Registry\Registry as JRegistry;
  
 
-$param = $params->toObject();
+//$param = $params->toObject();
+
+$params = new Reg($params);
+$param = &$params;
 
 if($param->captcha){ 
     //JHtml::_('behavior.keepalive');
@@ -69,37 +72,54 @@ JText::script("MOD_MULTI_FORM_VALIDATE_RANGE",true);
 JText::script("MOD_MULTI_FORM_VALIDATE_MAX",true);
 JText::script("MOD_MULTI_FORM_VALIDATE_MIN",true);
 
+//echo " <!-- " . JFactory::getConfig()->get('error_reporting','default') . " --> ";
+//echo " <!-- " . (in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none','']) ? '.min' : '.max') . " --> ";
+
+//$wa = new \Joomla\CMS\WebAsset\WebAssetManager;
+$wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
+
+
 if($param->icomoon){
-    JHtml::stylesheet('media/jui/css/icomoon.css');
+//    JHtml::stylesheet('media/jui/css/icomoon.css');
+	
+	$wa->registerAndUseStyle('icomoon','media/jui/css/icomoon.css');
 }
 
 if($param->ui_bulma ?? FALSE){
-    JHtml::stylesheet( JUri::root() . '/modules/mod_multi_form/media/'.$param->ui_bulma);
+//    JHtml::stylesheet( JUri::root() . '/modules/mod_multi_form/media/'.$param->ui_bulma);
+	$wa->registerAndUseStyle('ui_bulma', JUri::root() . '/modules/mod_multi_form/media/'.$param->ui_bulma);
 }
 
-$min = modMultiFormHelper::$min?'':'.min';//modMultiFormHelper::$min;
+$min = modMultiFormHelper::$min ? '.min' : '';//modMultiFormHelper::$min;
 //$captcha_type = $param->captcha ? JFactory::getConfig()->get('captcha',false) : '';//recaptcha, recaptcha_invisible, 0
+
+echo " <!-- " . $min . " --> ";
 
 $stylefiles = (array)($param->stylefiles ?:'default.css');
 foreach ($stylefiles as $css_file){
 	$css_file = $min ?  $css_file : str_replace('.css', '.min.css', $css_file);
-    JHtml::stylesheet("modules/$module->module/media/css/$css_file");
+//    JHtml::stylesheet("modules/$module->module/media/css/$css_file");
+	$wa->registerAndUseStyle($module->module.'-'.$css_file, "modules/$module->module/media/css/$css_file");
 }
 $style = substr(reset($stylefiles), 0, -4);
-if($param->onoffjquery){
-    JHtml::script("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",[],[ 'defer' => 'defer']); //'async' => 'async',
-}else{
+//if($param->onoffjquery){
+////    JHtml::script("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",[],[ 'defer' => 'defer']); //'async' => 'async',
+//	$wa->registerAndUseScript('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js', [], ['defer' => true]);
+//}else{
     JHtml::_('jquery.framework'); 
     JHtml::_('bootstrap.framework');
+	$wa->registerAndUseScript('jquery', 'media/vendor/jquery/js/jquery.js', [], ['defer' => true]);
 //    JHtml::_('bootstrap.loadCss', true);
-}
+//}
+
 //if(is_null(modMultiFormHelper::$min)){
 //    modMultiFormHelper::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
 //}
 //$min = modMultiFormHelper::$min;
 
 //JHtml::script('jquery.form.js', 'modules/$module->module/media/js/');
-JHtml::script("modules/$module->module/media/js/jquery.form$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
+$wa->registerAndUseScript('jquery', "modules/$module->module/media/js/jquery.form$min.js", [], ['defer' => true]);
+//JHtml::script("modules/$module->module/media/js/jquery.form$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/media/js/jquery.validate.min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/media/js/messages.min.js",[],['defer' => 'defer']);//'async' => 'async',
 //JHtml::script("modules/$module->module/media/js/jquery.maskedinput$min.js",[],[ 'defer' => 'defer']); //'async' => 'async',
@@ -108,10 +128,17 @@ JHtml::script("modules/$module->module/media/js/jquery.inputmask$min.js",[],[ 'd
 //JHtml::script("modules/$module->module/media/js/jquery.inputmask.bundle.min.js",[],['defer' => 'defer']); //'async' => 'async',
 JHtml::script("modules/$module->module/media/js/url$min.js",[],[ 'defer' => TRUE]);//'async' => 'async',
 
+
+//$wa->registerAndUseScript('Instascan', 'https://rawgit.com/schmich/instascan-builds/master/instascan.min.js', [], ['defer' => true]);
+//$wa->registerAndUseStyle('slideshowck','modules/mod_multi/media/slideshowCK/administrator/themes/default/css/camera.css');
+
 $param->scriptver = $param->script?:1;
 //toPrint(JUri::root(). "modules/$module->module/media/js/form$param->scriptver$min.js",'path',true, 'message');//Joomla\CMS\Uri\Uri::root()
-JHtml::script("modules/$module->module/media/js/form$param->scriptver$min.js",['detectDebug'=>true],[ 'defer' => 'defer' ]); //'async' => 'async','defer' => 'defer'
+//JHtml::script("modules/$module->module/media/js/form$param->scriptver$min.js",['detectDebug'=>true],[ 'defer' => 'defer' ]); //'async' => 'async','defer' => 'defer'
+$wa->registerAndUseScript('multiForm', "modules/$module->module/media/js/form$param->scriptver$min.js", [], ['defer' => true]);
 //JHtml::script("modules/$module->module/media/js/typed.js"); 
+
+//echo " <!-- " . "modules/$module->module/media/js/form$param->scriptver$min.js" . " --> ";
 
 //echo "modules/$module->module/media/js/jquery.form$min.js<br>";
 //echo "modules/$module->module/media/js/form$param->scriptver$min.js";
@@ -155,7 +182,7 @@ if($param->textBeforeModule_show && ($param->textBeforeModule_1 || $param->textB
   
 
 if($param->popup && empty($param->form_use_id)){
-    echo "<button id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type'  rel='modal:open' " 
+    echo "<button ($min) id='mod_$module->id' $debug href='#mfForm_$form_use_id' alt='$module->title' title='$module->title' data-captcha='$captcha_type'  rel='modal:open' " 
         . "data-id='$form_use_id' data-type='$popup' data-fields='[$ajaxListFields]' data-afterclear='$param->clearaftersend' data-toggle='{$class_form}'  data-target='-#mfForm_{$class_form}_$module->id'  "
         . "class='mfForm mfGo link id$module->id mod_$module->id pos_$module->position $param->style $style $param->classbuttonpopup v$param->scriptver'>$param->textbuttonpopup</button>";
 }

@@ -6,13 +6,13 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-	<modificationsDate>2023-01-26,2024-03-07</modificationsDate>
-    <modificationDate>2024-03-07</modificationDate>
+	<modificationsDate>2023-01-26,2024-03-07,2024-03-07</modificationsDate>
+    <modificationDate>2024-03-25</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
     <license>GNU General Public License version 2, or later.</license>    
-    <version>4.03.15</version>
+    <version>5.00.00</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
@@ -23,7 +23,7 @@
         <folder>field</folder>
         <folder>layouts</folder>
         <folder>language</folder>
-	<folder>media</folder>
+        <folder>media</folder>
         <folder>tmpl</folder>
     </files>
     <languages>
@@ -472,7 +472,14 @@
                        directory="modules/mod_multi_form/field/" exclude="" stripext="" 
                        showon="jed:1" /> 
                 
+            </fieldset>
+
+            <fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
+                addfieldpath="modules/mod_multi_form/field"> 
                 
+                
+                <!--<field type="note"  label="XXX"/>-->   
+                     
             </fieldset>
 
             <fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
@@ -933,12 +940,12 @@ ORDER BY lft)t) ;
                     <option value="">JOFF</option>
                     <option value="on">JENABLED</option>
                 </field>  
-                <field name="date_start" type="calendar" default="NOW"			filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
-                         label="MOD_MULTI_FROM_FIELD_FILTERDATESTART_LABEL"     showon="date_is:on"  
-                         showtime="false"  singleheader="true"  todaybutton="true"	filltable="true"  />     
-                <field name="date_stop" type="calendar" default="NOW -1day"		filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
-                           label="MOD_MULTI_FROM_FIELD_FILTERDATESTOP_LABEL"     showon="date_is:on"  
-                           showtime="false"  singleheader="true" todaybutton="true"	filltable="true" 
+				<field name="date_start" type="calendar" default="NOW"			filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
+					label="MOD_MULTI_FROM_FIELD_FILTERDATESTART_LABEL"     showon="date_is:on"  
+					showtime="false"  singleheader="true"  todaybutton="true"	filltable="true"  />     
+				<field name="date_stop" type="calendar" default="NOW -1day"		filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
+					label="MOD_MULTI_FROM_FIELD_FILTERDATESTOP_LABEL"     showon="date_is:on"  
+					showtime="false"  singleheader="true" todaybutton="true"	filltable="true" 
 				/>     
                         
                         

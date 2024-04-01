@@ -19,7 +19,9 @@ use Joomla\Registry\Registry as JRegistry;
 $document			=  JFactory::getDocument();
 //$configure			=  JFactory::getConfig();
 
-$param = $params->toObject();
+$params = new \Reg($params);
+$param = &$params;
+
 //        toPrint($params,'$params',0,'pre');
 //        toPrint($param,'$param',0,'pre',true);
 //        toPrint($module,'$module',0,'pre',true);

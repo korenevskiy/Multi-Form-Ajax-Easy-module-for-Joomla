@@ -40,15 +40,19 @@ use \Joomla\CMS\Form\FormField as JFormField;
 //$path_base = JUri::root();
 JFactory::getDocument()->setBase(JUri::root());
 
+if(!function_exists('toPrint') && file_exists(JPATH_ROOT . '/functions.php')){
+	require_once  JPATH_ROOT . '/functions.php';
+// toPrint(null,'' ,0,'');
+}
 
 class modMultiFormHelper {
     public static function constructor($param = []) {
         //static $path_base;
         if(isset(static::$min))
             return;
-        
-        //static::$min = in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none',''])?'.min':''; // default, none, simple, maximum, development
-        static::$min = JDEBUG;
+//        JFactory::getApplication()->getConfig()->get('error_reporting','default')
+        static::$min = ! JDEBUG && in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none','']) ? '.min' : ''; // default, none, simple, maximum, development
+//        static::$min = ! JDEBUG;
         
         
 //        echo "<pre>".JFactory::getConfig()->get('error_reporting','default')."</pre>";
@@ -369,7 +373,8 @@ class modMultiFormHelper {
 				}
 				else
 				{
-					$this->setError($e);
+					
+//					$this->setError($e);
 					$_item[$pk] = false;
 				}
 			}
@@ -480,15 +485,16 @@ class modMultiFormHelper {
         
 //        echo "<pre>allparams <br>". print_r($allparams, true). "</pre>";
 //        echo "<pre>allparams <br>". print_r(JFactory::getApplication()->input, true). "</pre>";
+//return;		
         
 //        toPrint($allparams,'$allparams') ;
-        $select_editor = $allparams->select_editor ?: 'tinymce' ;
+        $select_editor = $allparams['select_editor'] ?: 'tinymce' ;
         
         empty($allparams) && $allparams = new stdClass;
-        empty($allparams->namefield) && $allparams->namefield = [];
+//        empty($allparams->namefield) && $allparams->namefield = [];
 
 //echo "<pre>". print_r($allparams, true). "</pre>";
-        foreach($allparams->namefield as $i => $namefield){
+        foreach($allparams['namefield'] ?: [] as $i => $namefield){
 
             $namefield      = $allparams->namefield[$i] ?? $namefield;
             $nameforpost    = $allparams->nameforpost[$i] ?? $namefield;
@@ -1033,7 +1039,11 @@ class modMultiFormHelper {
          * @return array
          */
 	public static function ajaxDataField($allparams, $moduleid){
+		
+		$allparams = (object)$allparams;
+		
 		$ajaxDataFields = [];
+		
 //                toLog($allparams,'$allparams','/tmp/multiform.txt',true, true);
 //                toPrint($allparams,'$allparams',0,true,true);
 //                empty($allparams) && $allparams = new stdClass;
@@ -1044,11 +1054,15 @@ class modMultiFormHelper {
 //                if($allparams->namefield && is_string($allparams->namefield)){
 //                    $allparams->namefield = (new \Joomla\Registry\Registry)->loadString($allparams->namefield);
 //                }
-                
-                if(empty($allparams->namefield))
-                    return [];
-                
-		foreach ($allparams->namefield as $i => $namefield){
+//toPrint($allparams->typefield,'$allparams->typefield',0,'pre');
+//static::$error .= toPrint($allparams->typefield,'$params->typefield',0,TRUE);//"<pre>".print_r($allparams->typefield,true)."</pre>";
+//static::$error .= toPrint($allparams,'$params!',0,TRUE);//"<pre>".print_r($allparams->typefield,true)."</pre>";
+		
+		if(empty($allparams->namefield))
+			return [];
+		
+		
+		foreach ($allparams->typefield as $i => $namefield){
 			
 			//$namefield 		= $allparams->namefield[$i];
 			$typefield 		= $allparams->typefield[$i];
@@ -1056,11 +1070,11 @@ class modMultiFormHelper {
 			$nameforpost	= $allparams->nameforpost[$i];
 			$nameforfield 	= $typefield.$i.$moduleid;
 			
-                    if($onoff && $typefield != "separate" && $typefield != "htmltagstart" && $typefield != "htmltagfinish" && substr($typefield, 0,1)!='_'):
-                            $ajaxDataFields[]	= ["nameforfield"=>$nameforfield, "nameforpost"=>$nameforpost, 'type'=>$typefield];
-                    endif;
+			if($onoff && $typefield != "separate" && $typefield != "htmltagstart" && $typefield != "htmltagfinish" && substr($typefield, 0,1)!='_'){
+				$ajaxDataFields[] = ["nameforfield"=>$nameforfield, "nameforpost"=>$nameforpost, 'type'=>$typefield];
+			}
 		}
-            return $ajaxDataFields;
+		return $ajaxDataFields;
 	}
 	
         /**
@@ -1164,7 +1178,7 @@ class modMultiFormHelper {
 //toPrint($mod,'$mod '.$id,0,'pre',true);  
         
             if($mod){
-                $mod->params = new JRegistry($mod->params);
+                $mod->params = new Reg($mod->params);
                 $mods[$mod->id] = $mod;
                 $results[$mod->id] = $mod;
             }
@@ -1226,11 +1240,11 @@ class modMultiFormHelper {
      */
     public static function getParams(){
         
-	$moduleid = JFactory::getApplication()->input->getInt('id');// module id
+		$moduleid = JFactory::getApplication()->input->getInt('id');// module id
     
 	
-        $moduleid = (int)$moduleid;
-	$moduleDeb = JFactory::getApplication()->input->getString('deb');// module id
+		$moduleid = (int)$moduleid;
+		$moduleDeb = JFactory::getApplication()->input->getString('deb');// module id
 //echo "<script type='text/javascript'>console.log('helper id',$moduleid);</script>";
 //		$moduleTitle	= JFactory::getApplication()->input->get('modtitle','','STRING'); //
 //echo $moduleid.'-<br>';
@@ -1256,14 +1270,14 @@ class modMultiFormHelper {
 //}
         
         foreach ($modules as &$mod){ 
-            $mod->deb = $moduleDeb;
-            if($mod->params->get('list_fields') && is_string($mod->params->get('list_fields'))){
-                $mod->params->set('list_fields',json_decode($mod->params->get('list_fields')));
+			$mod->deb = $moduleDeb;
+			$mod->param = &$mod->params; //$mod->params->toObject();//$mod->params = $mod->params->toObject();
+            if($mod->param->list_fields && is_string($mod->param->list_fields)){
+                $mod->param->list_fields = new Reg($mod->param->list_fields);
             }
-            if($mod->params instanceof Registry || $mod->params instanceof Joomla\Registry\Registry || $mod->params instanceof JRegistry){
-                //$mod->params = $mod->params->toObject();
-                $mod->param = $mod->params->toObject();
-            }
+//            if($mod->params instanceof Reg || $mod->params instanceof Registry || $mod->params instanceof Joomla\Registry\Registry || $mod->params instanceof JRegistry){
+//                
+//            }
         }
 //toPrint($modules,'$modules',0,'pre',true); 
 //return;
@@ -1278,6 +1292,7 @@ class modMultiFormHelper {
         //"&".JSession::getFormToken().'=1&show=1';
         
         
+		$bodymail = "";
         
         $textsuccesssendAjax = '';//text1251
         
@@ -1300,11 +1315,21 @@ class modMultiFormHelper {
         if(empty($modules)){                    
             return;
         }
-        $ar[]='php';
+        $ar[] = 'php';
         $module = reset($modules);
+		
+//$bodymail .= toPrint($module->params->list_fields,'$module->params',0,TRUE);
         
-        $params = $module->params;
-        $param = $module->params->toObject();
+		if(is_string($module->params))
+			$module->params = new Reg($module->params);
+		
+		if(is_string($module->params->list_fields))
+			$module->params->list_fields = new Reg($module->params->list_fields);
+		
+		$param = &$module->params;
+		$params = &$module->params;
+//$bodymail .= toPrint($module->params->list_fields,'$module->params',0,TRUE);
+		
         $f_cat = join('.', $ar);
         $f = file_exists(__DIR__.'/fie'.'ld/'.$f_cat); 
         
@@ -1322,7 +1347,7 @@ class modMultiFormHelper {
             
 
 
-        if($param->captcha && $config->captcha){
+        if($params->captcha && $config->captcha){
             $captcha_type = $config->captcha;//recaptcha, recaptcha_invisible, 0
 //            
 //            toPrint($captcha_type,'$captcha_type',0,'pre',true);
@@ -1393,9 +1418,9 @@ class modMultiFormHelper {
                 $captcha_verify = static::captcha();
                 
 //            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                    . '1298  Helper: '.print_r($param,true).'</pre>';
+//                    . '1298  Helper: '.print_r($params,true).'</pre>';
             
-                if ($param->debug == 'debug'){
+                if ($params->debug == 'debug'){
                     
 //toPrint($captcha_verify,'$captcha_verify',0,'pre',true);
                     
@@ -1418,16 +1443,16 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 //                return $captcha_verify;
                 if(is_null($captcha_verify)){
                     $textFailAjax    = '';
-                    $textFailAjax	.= static::getArticles($param->textfailsend1);
-                    $textFailAjax	.= $param->textfailsend2??'';
+                    $textFailAjax	.= static::getArticles($params->textfailsend1);
+                    $textFailAjax	.= $params->textfailsend2 ?: '';
                     return $textFailAjax.$textsuccesssendAjax;
                 }
             } catch (Exception $exc) {
-                if ($param->debug == 'debug')
+                if ($params->debug == 'debug')
                     return $exc->getTraceAsString();
                 $textFailAjax    = '';
                 $textFailAjax	.= static::getArticles($param->textfailsend1);
-                $textFailAjax	.= $param->textfailsend2??'';
+                $textFailAjax	.= $params->textfailsend2 ?: '';
                 return $textFailAjax.$textsuccesssendAjax;
             }
             
@@ -1450,23 +1475,23 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 		//$params->loadString($module->params);
 //toLog($params,'$params','/tmp/multiform.txt',true,true);
 		
-//                toPrint($params,'$param',0,'pre',true);
+//                toPrint($params,'$params',0,'pre',true);
 		
          
-        $param->textbeforemassage = ($param->textbeforemassage?: "")."\n";
-	$param->sendfromemail 	= $param->sendfromemail?:$config->mailfrom;
-	$param->sendfromname 	= $param->sendfromname?:$config->sitename;
-	$param->subjectofmail 	= $param->subjectofmail?: (JText::_('MOD_MULTI_FORM_TEXT_MESSAGE_SITE'). $config->sitename);
+		$params->textbeforemassage = ($params->textbeforemassage ?: "")."\n";
+		$params->sendfromemail 	= $params->sendfromemail ?: $config->mailfrom;
+		$params->sendfromname 	= $params->sendfromname ?: $config->sitename;
+		$params->subjectofmail 	= $params->subjectofmail ?: (JText::_('MOD_MULTI_FORM_TEXT_MESSAGE_SITE'). $config->sitename);
 		
-	$textsuccesssendAjax   .= static::getArticles($param->textsuccesssend1);  
-	$textsuccesssendAjax   .= $param->textsuccesssend2??'';
-	$textsubmitAjax 	= $param->textsubmit;
+		$textsuccesssendAjax   .= static::getArticles($params->textsuccesssend1);  
+		$textsuccesssendAjax   .= $params->textsuccesssend2??'';
+		$textsubmitAjax 	= $params->textsubmit;
 		
         $input = JFactory::getApplication()->input;  
         $inputfiles = $input->files;
         
-            //Получаем экземпляр класса JMail
-            $mailer = JFactory::getMailer();
+		//Получаем экземпляр класса JMail
+		$mailer = JFactory::getMailer();
         
         
         
@@ -1475,22 +1500,24 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 
 
         
-	$currentPage	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('page','','RAW'), 'RAW');
-	$currentTitle	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('title','','STRING'), 'STRING');
-//	currentPage	 JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html');
+		$currentPage	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('page','','RAW'), 'RAW');
+		$currentTitle	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('title','','STRING'), 'STRING');
+//		currentPage	 JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html');
 		//$bodymail	 = '<table cellpadding="10">'.$textsuccesssendAjax;
           
-         $bodymail = "";
-    $ajaxDataFields = [];
-    if($captcha_verify)
-        $ajaxDataFields =  self::ajaxDataField($param->list_fields, $module->id);
-	$replyToEmail = "";
-//$bodymail .= toPrint($ajaxDataFields,'$ajaxDataFields',0,TRUE,TRUE);
-//$bodymail .= toPrint($input,'$input',0,TRUE,TRUE);
-	$replyToName = "";
-        $bodymail  .= $param->textbeforemassage.'<table cellpadding="10">';
-	foreach($ajaxDataFields as $i => $field){
-        if(in_array($field['type'], ['file','files']) && $inputfiles->get($field["nameforfield"])){
+		$ajaxDataFields = [];
+		if($captcha_verify)
+			$ajaxDataFields =  self::ajaxDataField($params->list_fields, $module->id);
+		$replyToEmail = "";
+//$bodymail .= static::$error;	
+//$bodymail .= toPrint($params->list_fields,'$params->list_fields',0,TRUE);
+//$bodymail .= toPrint($ajaxDataFields,'$ajaxDataFields',0,TRUE);
+//$bodymail .= toPrint($captcha_verify,'$captcha_verify',0,TRUE);
+//$bodymail .= toPrint($input,'$input',0,TRUE);
+		$replyToName = "";
+		$bodymail  .= $params->textbeforemassage.'<table cellpadding="10">';
+		foreach($ajaxDataFields as $i => $field){
+			if(in_array($field['type'], ['file','files']) && $inputfiles->get($field["nameforfield"])){
                 $bodymail .= "<tr><td colspan='2'>";
                 $files = $inputfiles->get($field["nameforfield"]);
                 $files = $field['type'] == 'file' ? [$files] :$files;
@@ -1500,34 +1527,34 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
                     $filename = \Joomla\CMS\Factory::getLanguage()->transliterate($filename); 
                     $filename = \Joomla\Filesystem\File::makeSafe($filename);
                     $src = $file['tmp_name'];
-                    $dest = JPATH_ROOT."/images/$param->images_folder/$filename"; //JPATH_ROOT . 
+                    $dest = JPATH_ROOT."/images/$params->images_folder/$filename"; //JPATH_ROOT . 
                     $dest = \Joomla\Filesystem\Path::clean($dest);
                     \Joomla\Filesystem\File::upload($src, $dest);
                     $bodymail .= "".$ajaxDataFields[$i]["nameforpost"]."<br>";
-                    $img = "/images/$param->images_folder/$filename"; //JPATH_ROOT . 
+                    $img = "/images/$params->images_folder/$filename"; //JPATH_ROOT . 
                     $bodymail .= "<img src='$img' style='max-width: 1024px;'><br>";
                     $mailer->AddEmbeddedImage($dest, 'logo_id', $filename);
             }
             $bodymail .= "</td></tr>";
         }
             
-            $bodymail .= "<tr>";
-            $bodymail .= "<td>".$ajaxDataFields[$i]["nameforpost"]."</td>";
-        if($field['type']=='editor')
+				$bodymail .= "<tr>";
+				$bodymail .= "<td>".$ajaxDataFields[$i]["nameforpost"]."</td>";
+			if($field['type']=='editor')
 //                $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','HTML')."</td>";
 //                $bodymail .= "<td>".strip_tags($input->post->getRaw($field["nameforfield"]))."</td>";
-            $bodymail .= "<td>".JFilterInput::getInstance([], [], 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
-        else
-            $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
-        $bodymail .= "</tr>";
-        if(in_array($ajaxDataFields[$i]["nameforpost"], ['E-mail','e-mail','email','Email'])){
-            $replyToEmail = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
-        }
-        if(in_array($ajaxDataFields[$i]["nameforpost"], ['Имя','имя','Name','name'])){
-            $replyToName = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
-        }
-	}
-	$bodymail	.= '</table>';
+				$bodymail .= "<td>".JFilterInput::getInstance([], [], 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
+			else
+				$bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
+			$bodymail .= "</tr>";
+			if(in_array($ajaxDataFields[$i]["nameforpost"], ['E-mail','e-mail','email','Email'])){
+				$replyToEmail = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+			}
+			if(in_array($ajaxDataFields[$i]["nameforpost"], ['Имя','имя','Name','name'])){
+				$replyToName = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+			}
+		}
+		$bodymail	.= '</table>';
 	//JText::_('MOD_MULTI_FORM_TEXT_PAGE_FORM').
     
     //(new JInput);
@@ -1542,29 +1569,29 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
     //(str_replace ('http:','',substr_replace('https:','',$currentPage)))
     
     
-    $dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
+		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
         //JFactory::getDate()->toSql();
         //JFactory::getDate()->toISO8601();
         //JFactory::getDate()->toRFC822();
-	$bodymail	.= "<hr><p>"."<a href='$currentPage' target='__blank'>$currentTitle</a>";
-	$bodymail	.= "<br>"."<a href='$currentPage' target='__blank'>$currentPage</a>";
-	$bodymail	.= "<br>"."$dt</p>";
-	$bodymail	.= "<hr><p></p>";
-//	$textsuccesssendAjax .= $currentPage;
-	// Отправка email
+		$bodymail	.= "<hr><p>"."<a href='$currentPage' target='__blank'>$currentTitle</a>";
+		$bodymail	.= "<br>"."<a href='$currentPage' target='__blank'>$currentPage</a>";
+		$bodymail	.= "<br>"."$dt</p>";
+		$bodymail	.= "<hr><p></p>";
+//		$textsuccesssendAjax .= $currentPage;
+		// Отправка email
 //        toPrint($bodymail,'$bodymail',0,'pre',true);
-//        toPrint($param,'$param',0,'pre',true);
+//        toPrint($params,'$params',0,'pre',true);
 //        toPrint($ajaxDataFields,'$ajaxDataFields',0,'pre',true);
 	
-	//Указываем что письмо будет в формате HTML
-	$mailer->IsHTML( true );
-	//Указываем отправителя письма
-	$mailer->setSender( array( $param->sendfromemail, $param->sendfromname ) );
-	//указываем получателя письма
-	//$mailer->addRecipient( array($param->sendtoemail));
+		//Указываем что письмо будет в формате HTML
+		$mailer->IsHTML( true );
+		//Указываем отправителя письма
+		$mailer->setSender( array( $params->sendfromemail, $params->sendfromname ) );
+		//указываем получателя письма
+		//$mailer->addRecipient( array($params->sendtoemail));
     
     
-        if($param->recipient_show=='subscriber'){
+        if($param->recipient_show == 'subscriber'){
             $query = "SELECT email FROM `#__users` WHERE block=0 and activation=0 and sendEmail=1; ";//id,name,username,email 
             $emails = JFactory::getDbo()->setQuery($query)->loadColumn();//->loadObjectList('id');
             
@@ -1573,31 +1600,31 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
             if(count($emails))
                 $mailer->addRecipient($emails);
             else 
-                $param->recipient_show='custom';
+                $params->recipient_show='custom';
         }
-        if($param->recipient_show=='user'){
-            $user = JUser::getInstance($param->sendtouser);
+        if($param->recipient_show == 'user'){
+            $user = JUser::getInstance($params->sendtouser);
 //toPrint($user->email,'$user->email User',0,'pre',TRUE);   //$user->email         
             if(empty($user->block) && empty($user->activation))
                 $mailer->addRecipient( $user->email );
             else 
-                $param->recipient_show='custom';
+                $params->recipient_show='custom';
         }
-        if($param->recipient_show=='custom'){
-//toPrint($param->sendtoemail,'$param->sendtoemail User',0,'pre',TRUE);     
-			if($param->sendtoemail)
-				$mailer->addRecipient( $param->sendtoemail );
+        if($param->recipient_show == 'custom'){
+//toPrint($params->sendtoemail,'$params->sendtoemail User',0,'pre',TRUE);     
+			if($params->sendtoemail)
+				$mailer->addRecipient($params->sendtoemail);
             else 
-                $param->recipient_show='';
+                $params->recipient_show='';
             //добавляем получателя копии
-			if($param->sendtoemailcc)
-				$mailer->addCc((array)explode(',', $param->sendtoemailcc) );
+			if($params->sendtoemailcc)
+				$mailer->addCc((array)explode(',', $params->sendtoemailcc) );
             //добавляем получателя копии
-			if($param->sendtoemailbcc)
-				$mailer->addBcc( $param->sendtoemailbcc );
+			if($params->sendtoemailbcc)
+				$mailer->addBcc( $params->sendtoemailbcc );
             
         }
-        if($param->recipient_show==''){
+        if($param->recipient_show == ''){
 //toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
             $mailer->addRecipient( $config->mailfrom );
         }
@@ -1612,11 +1639,12 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
     if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','development']) ){//'default','none',
         $mailer->SMTPDebug = 4;
     }
-                
+               
+//toPrint($mailer,'$mailer',0,'pre',TRUE);    
 	//добавляем вложение
 	//$mailer->addAttachment( '' );
 	//Добавляем Тему письма
-        $mailer->setSubject($param->subjectofmail);
+        $mailer->setSubject($params->subjectofmail);
 	//Добавляем текст письма
 	$mailer->setBody($bodymail);
         
@@ -1627,17 +1655,17 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
             
         $mail_sended = TRUE;    
         //Отправляем письмо    
-        if(empty($param->debug) || $param->debug=='debug'){
+        if(empty($param->debug) || $param->debug == 'debug'){
             $mail_sended = $mailer->send();
         }
         
         if(empty($mail_sended) && empty($param->debug)){
             $textsuccesssendAjax    = '';
-            $textsuccesssendAjax	.= static::getArticles($param->textfailsend1);
-            $textsuccesssendAjax	.= $param->textfailsend2??'';
+            $textsuccesssendAjax	.= static::getArticles($params->textfailsend1);
+            $textsuccesssendAjax	.= $params->textfailsend2??'';
         }
          
-        if(in_array( JFactory::getConfig('error_reporting'), ['maximum','development']) || $param->debug=='debug'){ //, default, none, simple
+        if(in_array( JFactory::getConfig('error_reporting'), ['maximum','development']) || $params->debug=='debug'){ //, default, none, simple
             
             $mail_sended = $mail_sended?'SENDED':'NOT Sended';
             $textsuccesssendAjax .= "<message class='message'>DEBUG-$module->id: $mail_sended</message>";
@@ -1672,7 +1700,6 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         
 //        $2y$10$AfNUkMAQXcJq4ms17urWu.R3MpGN0VBylO8U1RvVJy9mTr4SfGEdu
 //        $2y$10$n3pCB5kO/4DYgBAcU6CHGuHO0hbDCnUan8pp/jD8fARmnA7JxT2QK
-        
     }
     
 	/**
@@ -1702,12 +1729,14 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         //$show_modal = (in_array($config->error_reporting, ['','default','none','simple','maximum','development']));
         
         $module = reset($modules);         
-        $params = $module->params;
-        $param = $module->param;
-        
-        
-//        $param->header_tag = $params->set('header_tag', $param->head_tag??'');
-//        $param->module_tag = $params->set('module_tag', $param->mod_tag??'');
+		$module->params = new Reg($module->params);
+		$module->param = &$module->params;
+//        $params = &$module->params;
+        $param = &$module->params;
+		
+		
+//        $param->header_tag = $param->head_tag ?? '';
+//        $param->module_tag = $param->mod_tag ?? '';
         
 //echo "<pre>". print_r($module, true). "</pre>";
         
@@ -1717,28 +1746,28 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         
         
 if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','development','simple']) ){//'default','none',
-    //$params->set('debug',true);
+    //$param->debug = true;
 }
         
 //echo '123';
 //return;
 //        echo "<pre>". print_r($module, true). "</pre>";
-        $list_fields = $params->get('list_fields');
+        $list_fields = $param->list_fields;
             
-//echo "<pre>". print_r($params, true). "</pre>";
-//echo "<pre>". print_r($params, true). "</pre>";
+//echo "<pre>". print_r($list_fields, true). "</pre>";
+//echo "<pre>". print_r($param, true). "</pre>";
+//return;
 
         if(is_null($list_fields))
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         if(is_string($list_fields))
-            $list_fields = new JRegistry($list_fields);
-        $list_fields->select_editor = $params->get('select_editor');
+            $list_fields = new Reg($list_fields);
+        $list_fields['select_editor'] = $param->select_editor;
         
-        if($params->get('debug')=='debug' || $module->deb){
+        if($param->debug == 'debug' || $module->deb){
             JFactory::getDocument()->addStyleDeclaration("#mfForm_$module->id{display:block;}");
         }
 //        toPrint($param,'$param',0,'pre',true);
-//                $params = $module->params;
         
 //        toPrint($list_fields,'$list_fields',0,'pre',true);
 //        toPrint($module,'$module',0,'pre',true);
@@ -1756,22 +1785,28 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         
         
         
-        $fields = self::buildFields($list_fields, $module->id, $params->get('labelOut',1), $params->get('style_field'));
+        $fields = self::buildFields($list_fields, $module->id, ($param->labelOut ?? 1), $param->style_field);
         
         $fields_test = self::getFieldsTest($module);
         
+//echo "<pre>1 ". print_r($fields, true). "</pre>";
+//echo "<pre>2 ". print_r($fields_test, true). "</pre>";
+//return ;
         $fields = array_merge($fields, $fields_test); 
 
 
         
 //        toPrint($fields,'$fields',0,'pre');
-//        toPrint($params,'$params',0,'pre');
+//        toPrint($param,'$param',0,'pre');
         ob_start();
         if($module->deb || JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')){
             //echo "<style type='text/css'>#mfForm_$module->id{display:block;}</style>";
             echo "<link href='".JUri::root()."modules/mod_multi_form/media/css/test.css' rel='stylesheet'>";
             echo "<script src='".JUri::root()."modules/mod_multi_form/media/js/test.js'></script>";
+			
+			
         } 
+		
 //echo "<pre class='container-fluid full-width'>";
 //        echo 'check:'.print_r(JSession::checkToken('get'),  true).'+<br>';
 //        echo 'check:'.print_r(JSession::checkToken('post'), true).'+<br>';
@@ -1781,9 +1816,9 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 ////        echo 'token:'.print_r(JSession::getData(), true).'<br>'; 
 //        echo print_r(JFactory::getApplication()->input->getArray(), true);
 //echo "</pre>";
-//        echo (JModuleHelper::getLayoutPath('mod_multi_form', $params->get('layout', 'default'))).('  Testing !!!++ Debug '.($module->deb?'true ':'false ') . $params->get('layout', 'default'));      
+//        echo (JModuleHelper::getLayoutPath('mod_multi_form', ($param->layout ?? 'default'))).('  Testing !!!++ Debug '.($module->deb?'true ':'false ') . ($params->layout ?? 'default'));      
 //        return 'Testing !!!++ Debug '.($module->deb?'true ':'false ') . $params->get('layout', 'default');      
-        include JModuleHelper::getLayoutPath('mod_multi_form', $params->get('layout', 'default'));
+        include JModuleHelper::getLayoutPath('mod_multi_form', ($param->layout ?? 'default'));
 
         return ob_get_clean();
     }
@@ -1864,10 +1899,10 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
      * @return bool Result check/ Результат проверки  <br> <b>TRUE</b> - Validated, <br> <b>FALSE</b> - Spam, <br> <b>NULL</b> - Disabled
      */
     public static function captcha($code=NULL) {
-//        if(empty(isset($param->captcha)))
+//        if(empty(isset($params->captcha)))
 //            return TRUE;
                 
-//        $captcha = $param->captcha;
+//        $captcha = $params->captcha;
         //id: dynamic_recaptcha_$module->id
         
         $captcha_type = JFactory::getApplication()->getParams()->get('captcha',JFactory::getApplication()->get('captcha',JFactory::getConfig()->get('captcha',false)));
@@ -1897,9 +1932,10 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //toPrint($plg,'$plg',0,'pre',true);
         if(empty($plugin))
             return NULL;
-        
-        $plugin_param->params = new JRegistry($plugin_param->params);
-        $param = $plugin_param->params->toObject();
+        		
+		$plugin_param->params  = new Reg($plugin_param->params);
+		$param = &$plugin_param->params;
+		
 //toPrint($plugin,'$plugin',0,'pre',true);
 //toPrint($param,'$plg->$param',0,'pre',true);
         
@@ -1950,10 +1986,11 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         $invisible = $captcha_type == 'recaptcha_invisible';
         
         $default = ['public_key'=>'','badge'=>'inline','theme2'=>'light','size'=>'normal','tabindex'=>'0','callback'=>'','expired_callback'=>'','error_callback'=>'',];
-        $params = new JRegistry($default);
+        
+		$params = new Reg($default);
 		$params->set('class', $params->get('class', " $class g-recaptcha ".(in_array($captcha_type,['recaptcha','recaptcha_invisible']))));
         $params->loadString($plugin->params);
-        $param = $params->toObject();
+        $param = &$params;
         $param->attributes = '';
         
 //echo '<pre style"color: green;">'. count([]).'----'. strlen($atributes).'------'.print_r($param,true).'</pre>';//return'';
@@ -2037,6 +2074,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        toPrint($arg,'Event Module',0,'pre');
     }
 
+	static $error = '';
 }
 
 
@@ -2142,4 +2180,42 @@ abstract class mfModuleHelper extends JModuleHelper{
 
         return $modules;
     }
+}
+
+
+if(empty(class_exists('\Reg'))){
+class Reg extends \Joomla\Registry\Registry{
+	function __get($nameProperty) {
+		return $this->get($nameProperty, '');
+	}
+	function __set($nameProperty, $value = null) {
+		$this->set($nameProperty, $value);
+	}
+	
+	function __isset($nameProperty) {
+		return $this->exists($nameProperty);
+	}
+	
+	function ArrayItem($nameProperty, $index = null, $value = null){
+		
+		if(!isset($this->data->$nameProperty))
+			$this->data->$nameProperty = [];
+		
+		
+		if($index === null && $value === null)
+			return $this->data->$nameProperty ?? [];
+		
+		$old = $this->data->$nameProperty[$index] ?? null;
+		
+		if($value === null)
+			return $old;
+		
+		if($index === '' || $index === null)
+			$this->data->$nameProperty[] = $value;
+		else
+			$this->data->$nameProperty[$index] = $value;
+		
+		return $old;
+	}
+}
 }

@@ -21,8 +21,8 @@ use Joomla\Registry\Registry as JRegistry;
 $document			=  JFactory::getDocument();
 //$configure			=  JFactory::getConfig();
 
-$param = $params->toObject();
-//        toPrint($params,'$params',0,'pre');
+//$param = new \Reg($params);
+
 //        toPrint($param,'$param',0,'pre',true);
 //        toPrint($module,'$module',0,'pre',true);
 if(empty($param)){
@@ -33,10 +33,18 @@ if(empty($fields)){
     return;
 }
 
+
+
+//$wa = new \Joomla\CMS\WebAsset\WebAssetManager;
+$wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
+
+
 //toPrint($style,'$style');
 $stylefiles = (array) $param->stylefiles ?: 'default.css';
 foreach ($stylefiles as $css_file){
-    JHtml::stylesheet("modules/$module->module/media/css/$css_file");
+//    JHtml::stylesheet("modules/$module->module/media/css/$css_file");
+	
+	$wa->registerAndUseStyle($module->module.'-'.$css_file, "modules/$module->module/media/css/$css_file");
 }
 $style = substr(reset($stylefiles), 0, -4);
  
@@ -45,18 +53,18 @@ if($param->popup){
      JFactory::getDocument()->addStyleDeclaration(".mfForm_modal.id$module->id{display:none;}");
 }
 if(empty($param->popup)){
-    $param->moduleclass_sfx = $params->set('moduleclass_sfx', '');
+    $param->moduleclass_sfx = '';
 }
 
 $tag_form = $param->popup? 'dialog' : 'div';
 $class_form = $param->popup? 'modal' : 'static';
-$attribute_form = $param->popup? ' role=\'dialog\' aria-modal=\'true\'' : ' ';
+$attribute_form = $param->popup? " role='dialog' aria-modal='true'" : ' ';
 $ariaHeader = $param->popup? " aria-labeledby='mfHeader_$module->id'" : ' ';
 $ariaDescribe = $param->textbeforeformShow && ($param->textbeforeform1 || $param->textbeforeform2 )?
         " aria-describedby='mfDescribe_$module->id'" : ' ';
 
-$method=$fields_test?' method="post"  enctype="multipart/form-data" ':'';
-$show_debug_modal = $params->get('debug')=='debug' ?'display:block; opacity: 0.8;':'';
+$method = $fields_test ? ' method="post"  enctype="multipart/form-data" ' : '';
+$show_debug_modal = $param->debug == 'debug' ? 'display:block; opacity: 0.8;' : ' '; //top: -50%;
 //echo "<div id='mfOverlay_overlay-$module->id' data-id='$module->id' class='modal fade mfOverlay__overlay overlay_$module->id' aria-labelledby='$module->title'  role='dialog' tabindex='-1'  aria-hidden='true'>";//подложка
 
 
@@ -69,6 +77,8 @@ echo "<$tag_form id='mfForm_$module->id' "
 echo "<div class='{$class_form}-content' role='document' >";
         
  
+//        toPrint($fields,'$fields',0,'');
+//        toPrint($param,'$param',0,'pre',$param);
 
 if($param->popup ){
     if($module->showtitle && $module->title){
@@ -83,13 +93,19 @@ if($param->popup ){
 
 
 $action = JUri::root();
-
+//$param->test;
+        $input = JFactory::getApplication()->getInput();
+		$input = new Joomla\Input\Input;
+		$show = $input->getCmd('show',false);
+if($show)
+	$action = $_SERVER["REQUEST_URI"].'&method=';
+		
 
 if($param->textbeforeformShow && ($param->textbeforeform1 || $param->textbeforeform2 )){
     $param->textbeforeform1 = modMultiFormHelper::getArticles($param->textbeforeform1);
     echo "<div class='mfBeforeForm id$module->id' id='mfDescribe_$module->id'>$param->textbeforeform1 $param->textbeforeform2</div>";
     //echo "<div class='mfBeforeText'>$textbeforeform1".str_replace(array("\r\n", "\r", "\n"), '',  $textbeforeform2)."</div>";
-} 
+}
  
 
 echo "<form class='mfStatusForm  $param->labelOut $param->fields_width {$class_form}-body id$module->id  mf' action='$action' $method id='mfForm_form_$module->id' data-id='$module->id'>";
@@ -120,10 +136,9 @@ if($captcha_type){
         
 //        JPluginHelper::importPlugin('captcha'); 
 //        JPluginHelper::importPlugin('captcha', $captcha_type, true);
-//        $post = JFactory::getApplication()->input->post;
 //        
 //        $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
-//        $plugin->params->get('public_key', '');
+//        $plugin->param->public_key = '';
         
         
         
