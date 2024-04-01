@@ -77,7 +77,7 @@
     display: table;
 }
 .mfForm_modal .modal-body{
-    border-bottom: 1px solid #8888;
+    /*border-bottom: 1px solid #8888;*/
 }
 .mfForm_modal .mfBeforeForm,
 .mfForm_modal .modal-header,
@@ -95,6 +95,7 @@
     background-color: #8883;
     background-color: transparent;
     background-color: initial;
+		padding-top: 0;
 }
 
 
@@ -176,8 +177,9 @@
     margin: auto;
 	width: 280px;
 	border: 1px solid;
+	transition-behavior: allow-discrete;
 	/*background: #fff;*/
-    background-color: inherit;
+	background-color: inherit;
 	/*position: absolute;*/
 	position: fixed;
 	/*left: 50%;*/
@@ -189,9 +191,9 @@
     padding: 0;
     /*padding: 20px 30px 30px;*/ 
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: normal;
     box-shadow: 0 0 10px;
-		
+		top: -100%;
 		
 	max-width: calc((100% - 6px) - 2em);
 	max-height: calc((100% - 6px) - 2em);
@@ -207,6 +209,9 @@
 .mfForm_modal[open] {
 	opacity: 1;
 	visibility: visible;
+	@starting-style{
+		opacity: 0;
+	}
 }
 
 dialog.mfForm_modal  .mfCloseLabel{ 
@@ -283,7 +288,7 @@ dialog.mfForm_modal  .mfClose{
     /*height: 3rem !important;*/
     /*width: 3rem!important;*/
         padding-top: 2px ;
-    transition: transform .5s; 
+    transition:  .5s; 
 }
 dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):focus,
 dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover
@@ -542,6 +547,8 @@ form.mfStatusForm  textarea:focus{
     font-weight: 600;
     -color: #fff;
     transition:  0.6s ;
+		
+		/*--btn-border-color: #b5bdc6;*/
 /*    -webkit-transition: color 400ms, background-color 400ms, border-color 400ms;
     -o-transition: color 400ms, background-color 400ms, border-color 400ms;
     -transition: color 400ms, background-color 400ms, border-color 400ms;*/

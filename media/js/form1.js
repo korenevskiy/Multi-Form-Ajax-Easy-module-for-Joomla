@@ -63,11 +63,11 @@ function mfScrollStatic_Click(event) {
  * @returns {undefined} 
  */
 function mfOpenModal_Click(event) {
-  event.preventDefault();
+	event.preventDefault();
 //    console.log('event -> ', event);
 //    console.log('event.data.fields -> ', event.data.fields);
-//    console.log('this -> ', this);
-
+    console.log('this -> ', this);
+	
 //event.data - Модуль с датой
 //this - Модуль с датой
 
@@ -81,10 +81,12 @@ function mfOpenModal_Click(event) {
         if (this[field] !== undefined) {// если пробел.
             document.getElementById(field).value = '';
         }
-
   }
-
+  
   let id = event.data.id;
+  
+  document.getElementById('mfForm_' + id).showModal();
+
   let modal_id = 'mfForm_' + id; 
 
   let heightpage = jQuery(window).height();
@@ -125,7 +127,7 @@ function mfOpenModal_Click(event) {
 //    resolve => setTimeout(resolve, ms)
 //  );
 //}           
-              
+         positiOnScroll = '0';     
                 
 //console.log(jQuery('#' +modal_id),'HaHa');  
 //                document.getElementById(modal_id).showModal();
@@ -134,7 +136,7 @@ function mfOpenModal_Click(event) {
       let modal = jQuery('#' +modal_id);//.css('padding',0);     
 //console.log(modal,'HaHa');      
 //      modal.modal('show').css('padding-right',0);
-//      jQuery('#' +modal_id).css('display','none').css('opacity',0).css('top','-50%');
+//      jQuery('#' +modal_id).css('display','none').css('opacity',0).css('top','-200%');
 //      modal.fadeIn(400, ( mod )=>{
 //console.log(this, 'HaHa 1'); 
 //      });    
@@ -172,17 +174,19 @@ function mfCloseModal_Click(event) {
     event.preventDefault();
     let id = event.data.id;
     let param = this;
-    jQuery("#mfOverlay_" + id).fadeOut(); // скрываем подложку
-    jQuery("#mfForm_" + id)//.fadeOut(400,'swing',{})
-            .animate({top: '-50%'}, 400)//.delay(800)
+    jQuery("#mfOverlay_" + id).fadeOut(()=>{
+		jQuery("#mfForm_" + id)//.fadeOut(400,'swing',{})
+            .animate({top: '-200%'}, 400)//.delay(800)
             .animate({opacity: 0}, 400, function () { // после анимации
-        
+				document.getElementById('mfForm_'+id).close();
                 //this.closest('dialog').close();
 //    console.log('modal -> ', 'mfForm_'+id);
 //                jQuery(this).css('display', 'none'); // делаем ему display: none;
 //                jQuery("#mfForm_" + id).modal('hide');
 //                document.getElementById('mfForm_'+id).close();
             }).delay(400).modal('hide');
+	}); // скрываем подложку
+    
 }
 var runingCloseModalForm = false;
 /** НЕ ИСПОЛЬЗУЕТСЯ!!!
@@ -208,7 +212,9 @@ console.log(overley,'HaHa');
                     .animate({opacity: 0}, 300, function () { // после анимации
 //console.log(overley,'HaHa');
                         jQuery(this).css('display', 'none'); // делаем ему display: none;
-                        jQuery(overley).fadeOut(400); // скрываем подложку
+                        jQuery(overley).fadeOut(400, function(){
+							document.getElementById('mfForm_'+params.id).close();
+						}); // скрываем подложку
                     }
                     );
         });
@@ -235,20 +241,23 @@ function hideBlockFormAfterSend(id, modal, overley, status, response) {
     let heightpopupblock = jQuery('.mfStatusDone.id' + id).height();
     let scrollFT = scrollFromTop();
     let positiOnScroll = heightpage / 2 - heightpopupblock / 2;//+ scrollFT;
-
+	positiOnScroll = 0;
 // console.log('heightpopupblock высота модалки ',heightpopupblock);
 // console.log('scrollFT позиция прокрученого сайта ',scrollFT);
 // console.log('positiOnScroll ',positiOnScroll);
-
-
+	
     jQuery('#mfForm_' + id).animate({top: positiOnScroll}, 400, function () {
-        jQuery('.mfStatusForm.id' + id).fadeOut();
+        jQuery('.mfStatusForm.id' + id).fadeOut(400,function(){
+//			document.getElementById('mfForm_'+id).close();
+		});
         setTimeout(function () {
             jQuery('#mfForm_' + id)
                     // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
                     .animate({top: -positiOnScroll}, 400,
                             function () { // после анимации 
-                                jQuery(this).fadeOut(); // делаем ему display: none;
+                                jQuery(this).fadeOut(400,function(){
+									document.getElementById('mfForm_'+id).close();
+								}); // делаем ему display: none;
                                 jQuery("#mfOverlay_" + id).fadeOut(); // скрываем подложку
                             }
                     );
@@ -274,7 +283,7 @@ function hideAndClearFormAfterSend(id, modal, overley, status, response) {
     let heightpopupblock = jQuery('.mfStatusDone.id' + id).height();
     let scrollFT = scrollFromTop();
     let positiOnScroll = heightpage / 2 - heightpopupblock / 2 + scrollFT;
-
+	positiOnScroll = 0;
 
     jQuery('#mfForm_' + id).animate({top: positiOnScroll}, 400, function () {
         setTimeout(function () {
@@ -282,8 +291,10 @@ function hideAndClearFormAfterSend(id, modal, overley, status, response) {
                     // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
                     .animate({top: -positiOnScroll}, 400,
                             function () { // после анимации 
-                                jQuery(this).fadeOut(); // делаем ему display: none;
-                                jQuery('#mfOverlay_' + id).fadeOut('', function () { // скрываем подложку 
+                                jQuery(this).fadeOut(400,function(){
+									document.getElementById('mfForm_'+id).close();
+								}); // делаем ему display: none;
+                                jQuery('#mfOverlay_' + id).fadeOut(400, function () { // скрываем подложку 
                                     jQuery('.mfStatusDone.id' + id).fadeOut();
                                     jQuery('.mfStatusForm.id' + id).fadeIn();
                                     jQuery('.mfStatusForm.id' + id).get(0).reset();
@@ -332,6 +343,7 @@ function hideAndClearStaticFormAfterSend(id, block, status, response, textbutton
                     jQuery('.mfStatusForm.id' + id).fadeIn(400, function () {
                         jQuery('.mfStatusForm.id' + id)[0].reset();
                         jQuery('#mfForm_' + id + ' input[id^=submit]').button('ready');
+//						document.getElementById('mfForm_'+id).close();
                     });
                 });
             }, 8000);// Задержка вывода сообщения для статической формы 
@@ -342,12 +354,18 @@ function hideAndClearStaticFormAfterSend(id, block, status, response, textbutton
 
 /* --------- --------------------------------------- */
 
-// -------- Send F    -/ Метод выполняется при получении HTML от AJAX запроса
-function mfAjaxDoneSuccess(data, status) {
-    this.deb && console.log("Send Success! data:",[data]);  
+/**
+ * Вызывается после Успешной отправки данных формы
+ * Send F    -/ Метод выполняется при получении HTML от AJAX запроса
+ * @param {type} html
+ * @param {type} status
+ * @returns {undefined}
+ */
+function mfAjaxDoneSuccess(html, status) {
+    this.deb && console.log("Send Success! html:",[html]);  
     this.deb && console.log("Send Success! status:", status);
 
-    // Вызов пользовательского скрипта из модуля.
+    // Вызов пользовательского скрипта из модуля. Который пользователь прописал в параметрах модуля
     let func_custom = window['funcAfter' + this.id];
     if (func_custom && typeof func_custom === 'function') {
         func_custom.apply(this);//, this.id
@@ -356,8 +374,9 @@ function mfAjaxDoneSuccess(data, status) {
 //console.clear();
 //console.log('# '+this.id);
     let posAfterSend = positionAfterSend('#mfForm_' + this.id);
-//console.log('posAfterSend',posAfterSend);
-//console.log('# '+this.id);
+//	posAfterSend = 0;
+console.log('posAfterSend',posAfterSend);
+console.log('# '+this.id,' FormDone.');
     let params = this;
 
 //console.log(this);
@@ -373,7 +392,7 @@ function mfAjaxDoneSuccess(data, status) {
                             '#mfForm_' + params.id,
                             '#mfOverlay_' + params.id,
                             '.mfStatusDone.id' + params.id,
-                            data
+                            html
                             );
                 } else {
 
@@ -382,7 +401,7 @@ function mfAjaxDoneSuccess(data, status) {
                             '#mfForm_' + params.id,
                             '#mfOverlay_' + params.id,
                             '.mfStatusDone.id' + params.id,
-                            data
+                            html
                             );
                 }
             });
@@ -400,7 +419,7 @@ function mfAjaxDoneSuccess(data, status) {
                         params.id,
                         '#mfForm_' + params.id,
                         '.mfStatusDone.id' + params.id,
-                        data,
+                        html,
                         jQuery('input#submit' + params.id).attr('value')
                         );
             } else {
@@ -408,7 +427,7 @@ function mfAjaxDoneSuccess(data, status) {
                         params.id,
                         '#mfForm_' + params.id,
                         '.mfStatusDone.id' + params.id,
-                        data
+                        html
                         );
             }
             mfScrollStatic_Click.call(params, {data: params, first: true, preventDefault: function () {
@@ -419,6 +438,13 @@ function mfAjaxDoneSuccess(data, status) {
     }
 }
 
+/**
+ * Вызов при клике кнопки Отправить. <br>
+ * Но при первом запуске формы, тоже вызывается этот метод, <br>
+ *  но с ограничением чтобы только происходила инициализация проверки полей
+ * @param {type} e
+ * @returns {undefined}
+ */
 function mfButtonSubmit_Click(e) {
 //        let params = e.data;
 //        let e = {data:this};
@@ -474,73 +500,7 @@ e.data.deb &&                console.log('--------- --------- Click Send -------
                     console.log('👎 --------- --------- Validate Faile ---------', validator);
 //                console.log('👎 _validator<FORM>',this);
                 },
-            submitHandler: function (form) {//,event //recaptcha_invisible, recaptcha
-e.data.deb &&         console.log('--------- --------- ---------');
-e.data.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  ()  Captcha:',params.captcha?'Yes🌟':'No🚫', params.captcha, params);
-//console.log('🏆 Captcha !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha);
-                    e.preventDefault();
-                    if (params.captcha == 'recaptcha'  && params.grecaptcha !== false) {
-                        //'dynamic_captcha_'+params.id
-                        //grecaptcha.execute(params.grecaptcha)
-                        //grecaptcha.execute('widget_captcha_'+params.id)
-//                        grecaptcha.ready(function() {
-//                            console.log('22222222222')
-                            let rdy = this;
-                            params.response = grecaptcha.getResponse(params.WidgetId);
-                            if(params.response){
-                                console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', ' This:',this,' Module:',params  );
-                                submitHandler.call(params, form);
-                                
-                                if(params.xCallback && params.xCallback.trim()){
-                                    try {
-                                        let callback = params.xCallback.trim();
-                                        eval(callback+'()');
-                                        //callback();
-                                        //eval(module.xCallback);
-                                    }catch(e){
-                                    }
-                                }
-                            }
-                        return false;
-//                        });
-                    }
-                    if (params.captcha == 'recaptcha_invisible'  && params.grecaptcha !== false) {
-                        //'dynamic_captcha_'+params.id
-                        //grecaptcha.execute(params.grecaptcha)
-                        //grecaptcha.execute('widget_captcha_'+params.id)
-//                        grecaptcha.ready(function() {
-//                            console.log('3333333333333')
-                            let rdy = this;
-                            
-                            grecaptcha.execute(params.grecaptcha).then(function(token){
-
-                                params.token = token; 
-                                console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', token,' This:',this,' Module:',params  );//,', form:', form
-                                return;
-                                
-                                submitHandler.call(params, form);
-                            });
-//                        });
-                        return;
-                    }
-                    else if(params.captcha == 'recaptcha_invisible' && params.grecaptcha === false){//
-e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );//, ', form:', form
-//                            console.log('4444444444')
-//                        submitHandler.call(params, form);
-                        return;
-                    }
-                    else if(!params.captcha || params.grecaptcha === false){//Капча не настроена, выполняем без капчи
-e.data.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params );//, ', form:', form 
-//                            console.log('555555555555')
-                        submitHandler.call(params, form);
-                        return;
-                    }
-                    else{
-e.data.deb && console.log('👎 Captcha NULL !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha );
-                        /* Message ERROR! Alert: Please Please contact us in another way in contacts.*/
-                        /* Message ERROR! Alert: Пожалуйста обратитесь другим способом в контактах.*/
-                    }
-                }
+            submitHandler: submitHandler.bind(params)
             });
 
 //    console.log(55555555, "#mfForm_form_" + params.id, params, this);
@@ -548,9 +508,90 @@ e.data.deb && console.log('👎 Captcha NULL !!!    <--------- captcha:' , param
 //    return false;
 }
 
+/**
+ * Происходит после успешной валидации полей на содержимое
+ * @returns {undefined}
+ */
+function submitHandler(form) {//,event //recaptcha_invisible, recaptcha
+
+	const params = this;
+params.deb &&         console.log('--------- --------- ---------');
+params.deb &&         console.log('(I)  :-)  - submitHandlerValidate!!!!!->  ()  Captcha:',params.captcha?'Yes🌟':'No🚫', params.captcha, params);
+//console.log('🏆 Captcha !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha);
+	
+	if (params.captcha == 'recaptcha'  && params.grecaptcha !== false) {
+		//'dynamic_captcha_'+params.id
+		//grecaptcha.execute(params.grecaptcha)
+		//grecaptcha.execute('widget_captcha_'+params.id)
+//		grecaptcha.ready(function() {
+//		console.log('22222222222')
+		params.response = grecaptcha.getResponse(params.WidgetId);
+		if(params.response){
+			console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', ' This:',this,' Module:',params  );
+			submitHandlerSubmit.call(params, form);
+            
+			if(params.xCallback && params.xCallback.trim()){
+				try {
+					let callback = params.xCallback.trim();
+					eval(callback+'()');
+					//callback();
+					//eval(module.xCallback);
+				}catch(e){
+				}
+			}
+		}
+		return false;
+//                        });
+	}
+	if (params.captcha == 'recaptcha_invisible'  && params.grecaptcha !== false) {
+                        //'dynamic_captcha_'+params.id
+                        //grecaptcha.execute(params.grecaptcha)
+                        //grecaptcha.execute('widget_captcha_'+params.id)
+//                        grecaptcha.ready(function() {
+//                            console.log('3333333333333')
+		let rdy = this;
+                            
+		grecaptcha.execute(params.grecaptcha).then(function(token){
+
+			params.token = token; 
+			console.log('(II) Execute() -submitHandler-CallBack!!!!!-> Token', token,' This:',this,' Module:',params  );//,', form:', form
+//			document.getElementById('mfForm_'+params.id).close();
+			return;
+                                
+			submitHandlerSubmit.call(params, form);
+		});
+//                        });
+		return;
+	}
+	else if(params.captcha == 'recaptcha_invisible' && params.grecaptcha === false){//
+params.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params  );//, ', form:', form
+//		console.log('4444444444')
+//		submitHandlerSubmit.call(params, form);
+//		document.getElementById('mfForm_'+params.id).close();
+		return;
+	}else if(!params.captcha || params.grecaptcha === false){//Капча не настроена, выполняем без капчи
+params.deb && console.log('(II) Valid() -submitHandler-CallBack!!!!!-> ',' This:',this,' Module:',params );//, ', form:', form 
+//		console.log('555555555555')
+		submitHandlerSubmit.call(params, form);
+//		document.getElementById('mfForm_'+params.id).close();
+		return;
+	}else{
+params.deb && console.log('👎 Captcha NULL !!!    <--------- captcha:' , params.captcha, '  grecaptcha:', params.grecaptcha );
+		/* Message ERROR! Alert: Please Please contact us in another way in contacts.*/
+		/* Message ERROR! Alert: Пожалуйста обратитесь другим способом в контактах.*/
+						
+//		document.getElementById('mfForm_'+params.id).close();
+	}
+}
+
 
 // -------- Submit Form
-function submitHandler(form){
+/**
+ * Отправка данных формы
+ * @param {type} form
+ * @returns {undefined}
+ */
+function submitHandlerSubmit(form){
 
 //                let data = this;//form.dataset;
 
@@ -559,7 +600,7 @@ function submitHandler(form){
 //                console.log('capth_exe',capth_exe);
 //                console.log('form',form);
 
-this.deb && console.log('(III)  submitHandler() -Execute-CallBack!!!!!-> ', this);
+this.deb && console.log('(III)  submitHandlerSubmit() -Execute-CallBack!!!!!-> ', this);
 //    return;
 
 //                jQuery(form).submit(function(e) {
@@ -676,10 +717,10 @@ this.deb &&         console.log('--------- --------- ---------');
 //                console.log('e.data.fields',e.data.fields); 
 let vals = data.values();
 let etrs = data.entries();
-console.log('data:',vals,' etrs:',etrs); 
+console.log('data:',vals,' etrs:',Object.fromEntries(etrs)); 
 //return false;
 //window['data'+this.id] = data;
- 
+//console.log(this.deb);
 
 let url = window.location.origin + '/index.php';
     url = document.baseURI + 'index.php';
@@ -692,12 +733,12 @@ this.deb && console.log(data);
 
 // -------- Load F 
 /**
- * 
- * @param {html} data return html from server
+ * Вызывается после успешной загрузки формы
+ * @param string html return html from server
  * @param {type} status
  * @returns {undefined}
  */
-function mfAjaxDoneForm(data, status) {
+function mfAjaxDoneForm(html, status) {
 //        var id = jQuery(this).data('id');
 //        var deb = jQuery(this).data('deb');
 //        var type = jQuery(this).data('type');
@@ -706,24 +747,34 @@ function mfAjaxDoneForm(data, status) {
     let params = this; 
 
 
+
+        console.log(this.buttons);
+//        console.log(html);
 //        console.log(this);
-//        console.log(data);
 //            console.log('🏆'+this.id);
 //            console.log('🏆'+this.id);
 //            console.log('#'+this.button, this.type);
 //            console.log(this.buttons);
     if (this.type === 'popup')
     {
-        jQuery('body').append(jQuery(data));
+        jQuery('body').append(jQuery(html));
         jQuery('#mfClose_' + this.id).click(this, mfCloseModal_Click);
         jQuery('#mfOverlay_' + this.id).click(this, mfCloseModal_Click);
+		
+//        console.log(this);
+		jQuery('dialog#mfForm_'+this.id+'.mfForm_modal').animate({top: '-200%'}, 400).fadeOut().modal('hide');//.modal('hide');
+		document.getElementById('mfForm_'+this.id).close();
+
+		
+		
         jQuery('.modal-backdrop.show').click(function(){ 
             jQuery('.mfOverlay').fadeOut();
-            jQuery('dialog.mfForm_modal').animate({top: '-50%'}, 400).fadeOut().modal('hide');//.modal('hide');
-            jQuery(this).hide();});
+            jQuery('dialog.mfForm_modal').animate({top: '-200%'}, 400).fadeOut().modal('hide');//.modal('hide');
+            jQuery(this).hide();
+		});
         if (this.buttons.length > 0) {
             for (let btn of this.buttons) {
-//                 console.log(btn);
+                 console.log(btn);
                 jQuery(btn).click(this, mfOpenModal_Click);
             }
         }
@@ -739,7 +790,7 @@ function mfAjaxDoneForm(data, status) {
         
         
     } else {
-        jQuery('#mod_' + this.id).append(jQuery(data));
+        jQuery('#mod_' + this.id).append(jQuery(html));
         if (this.buttons.length > 0) {
             for (let btn in this.buttons) {
 //                console.log(btn);
@@ -748,7 +799,7 @@ function mfAjaxDoneForm(data, status) {
         }
     }
     this.deb && console.log('🏆 ButtonSubmit.Click(f()) id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Success! - Done! status:', status, ' ', this);
-    //Инициализация Validator'а на форме при первом запуске
+    //Инициализация Validator'а на форме при первой запуске
     mfButtonSubmit_Click.call(this, {data: this, first: true, preventDefault: function () {
         this.deb && console.log('🏆 mfButtonSubmit_Click ', "#mfForm_form_" + this.id, this);
         return true;
@@ -764,6 +815,13 @@ function mfAjaxDoneForm(data, status) {
     this.deb && console.log('🏆 Module id:' + this.id + ' Tag:' + this.tag + ' Type:' + this.type + ' - Load form Success! - Done! status:', status);
 }
 
+/**
+ * Вызывается после ошибки загрузки формы
+ * @param {type} jqXHR
+ * @param {type} status
+ * @param {type} errorThrown
+ * @returns {undefined}
+ */
 function mfAjaxFailForm(jqXHR, status, errorThrown) {//(jqXHR, status, errorThrown)
 //console.clear();
     console.log(jqXHR.responseText);
@@ -881,6 +939,7 @@ function mfGetAllModules() {
     return mods;
 }
 /**
+ * Инициализация элементов управления после загрузки всех форм
  * Выполнение ReCaptcha, Загрузка MCE Tiny, Назначение ссылок для вызова форм
  * @param {type} p1
  * @returns {undefined} 
@@ -930,7 +989,7 @@ function mfAjaxCompleteAllForm(p1) {
                             }});
                             return;
                        }else{
-                            submitHandler.call(module, form);
+                            submitHandlerSubmit.call(module, form);
                        }
                     
             console.log('(IV)  Response-CallBack!!!!! --> R:', response, ' M:', module);
@@ -944,8 +1003,8 @@ function mfAjaxCompleteAllForm(p1) {
                        }
                     }
                         
-                    //submitHandler.call(params,form);
-                    //submitHandler.call(data,form,event); 
+                    //submitHandlerSubmit.call(params,form);
+                    //submitHandlerSubmit.call(data,form,event); 
                 },
                 'expired-callback': function (response) {//Выполняется при истечении срока действия ответа reCaptcha и требует новой проверки.
                     if(module.xExpiredCallback && module.xExpiredCallback.trim()){
@@ -958,7 +1017,7 @@ function mfAjaxCompleteAllForm(p1) {
                        }
                     }
                     console.log('(-II)  Delay-CallBack!!!!!-->R:', response, ' M:', module, 'this:', mods);
-                    //submitHandler.call(data,form,event); 
+                    //submitHandlerSubmit.call(data,form,event); 
                 },
                 'error-callback': function (response) {//Выполняется при ошибке проверки, обычно это отсутсвие сети, нужно информировать юзера о повторном подключении(проверке).
                     if(module.xErrorCallback && module.xErrorCallback.trim()){
@@ -971,7 +1030,7 @@ function mfAjaxCompleteAllForm(p1) {
                        }
                     }
                     console.log('(-II)  Error-CallBack!!!!!-->R:', response, ' M:', module, 'this:', mods);
-                    //submitHandler.call(data,form,event); 
+                    //submitHandlerSubmit.call(data,form,event); 
                 }
             });
 //            module.response = grecaptcha.getResponse(params.WidgetId);
