@@ -99,23 +99,24 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
         
         //$urlForm = JUri::root(). "/?option=com_ajax&module=multi_form&format=raw&method=getForm&id=$this->id&$hash=1&show=1&Itemid=0";
        
-        $html .= "<script>"
-                . "const script$this->id  = function(){\n"
-                . "const request$this->id = new XMLHttpRequest();\n"
-                . "const url$this->id = '$urlToken';\n"
-                . "request$this->id.open('GET', url$this->id);\n"
-                . "request$this->id.setRequestHeader('Content-Type', 'application/x-www-form-url');\n"                
-                . "request$this->id.addEventListener('readystatechange', () => {if (request$this->id.readyState === 4 && request$this->id.status === 200) {\n"
-                
-                . "const ulrForm$this->id = '$root?option=com_ajax&module=multi_form&format=raw&method=getForm&show=1&id=$this->id$itemids&'+ request$this->id.responseText + '=1$key';\n"
-                . "//console.log('urlResponse', request$this->id.responseText );\n"
-                . "//console.log('ulrForm', ulrForm$this->id );\n"
-                . "document.getElementById('mod_test_$this->id').href = ulrForm$this->id;\n"
-                . "}});"
-                . "request$this->id.send();"
-                . "}\n"
-                . "document.addEventListener('DOMContentLoaded', script$this->id);"
-                . "</script>";
+        $html .= "<script>       
+const script$this->id  = function(){       
+	const request$this->id = new XMLHttpRequest();       
+	const url$this->id = '$urlToken';       
+	request$this->id.open('GET', url$this->id);       
+	request$this->id.setRequestHeader('Content-Type', 'application/x-www-form-url');       
+	request$this->id.addEventListener('readystatechange', () => {
+		if (request$this->id.readyState === 4 && request$this->id.status === 200) {       
+			const ulrForm$this->id = '$root?option=com_ajax&module=multi_form&format=raw&method=getForm&show=1&id=$this->id$itemids&'+ request$this->id.responseText + '=1$key';
+//			console.log('urlResponse', request$this->id.responseText );
+//			console.log('ulrForm', ulrForm$this->id);
+			document.getElementById('mod_test_$this->id').href = ulrForm$this->id;
+		}
+	});  
+	request$this->id.send();       
+}      
+document.addEventListener('DOMContentLoaded', script$this->id);       
+</script>";
         
                 
 

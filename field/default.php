@@ -15,9 +15,9 @@ use \Joomla\CMS;
 use Joomla\CMS\Factory as JFactory;
 
 include_once JPATH_ROOT . '/funtions.php';
-toPrint(123);
-toPrint(123,'',0,'message',true);
-toPrint(123,'',0,'pre',true);
+//toPrint(123);
+//toPrint(123,'',0,'message',true);
+//toPrint(123,'',0,'pre',true);
 
 if($work_type_require == 'and'):
         
