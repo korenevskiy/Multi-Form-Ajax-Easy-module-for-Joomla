@@ -6,13 +6,13 @@
     client="site">
     <name>Multi Form Ajax Easy</name>
     <creationDate>2020-05-01</creationDate>
-	<modificationsDate>2023-01-26,2024-03-07,2024-03-07</modificationsDate>
-    <modificationDate>2024-03-25</modificationDate>
+	<modificationsDate>2023-01-26,2024-03-07,2024-03-07,2024-03-25</modificationsDate>
+    <modificationDate>2024-05-26</modificationDate>
     <author>Korenevskiy Sergei</author>
     <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
     <copyright>Copyright (C) 2017 All rights reserved.</copyright>
     <license>GNU General Public License version 2, or later.</license>    
-    <version>5.00.00</version>
+    <version>5.1.01</version>
     <element></element>
     <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
     <files>
@@ -218,10 +218,12 @@
                 <field
                     name="recipient_show"
                     type="radio"
-                    default=""
+                    default="replyto"
                     label="MOD_MULTI_FROM_RECIPIENT_LBL"
                     class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="">[[%1:]] - [[%2:]],Email Site,MOD_MULTI_FROM_ADMINISTRATOR_OPT</option>
+                    <option value="">[[%1:]],Email Site</option>
+                    <option value="replyto">[[%1:]],Email Reply</option>
+                    <option value="administrator" class='hidden' >MOD_MULTI_FROM_ADMINISTRATOR_OPT</option>
                     <option value="user">JUSER</option>
                     <option value="subscriber">Subscriber</option>
                     <option value="custom">MOD_MULTI_FROM_OTHER_OPT</option>
@@ -477,9 +479,6 @@
             <fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
                 addfieldpath="modules/mod_multi_form/field"> 
                 
-                
-                <!--<field type="note"  label="XXX"/>-->   
-                     
             </fieldset>
 
             <fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
@@ -1146,12 +1145,8 @@ ORDER BY lft)t) ;
                     <option value="0">JDISABLED</option>
                 </field>
                 
-                <field name="script" type="list" default="1" 
-                       class="  radio "
-                       label="Script form version" 
-                       readonly="1" disabled="1">
-                    <option value="1">v1</option> 
-                </field>
+                <field name="versionScript"  type="hidden" default="1" value="1"/>
+				
                 <field
                     name="select_editor"
                     type="sql" 

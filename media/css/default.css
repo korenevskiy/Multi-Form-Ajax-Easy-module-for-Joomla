@@ -302,6 +302,7 @@ dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover
     -color: transparent;
     border: 1px solid #ccc;
     background-position-y: 0rem;
+		backdrop-filter: blur(1px);
 }
 dialog.mfForm_modal .mfClose span{
     display: block; 
@@ -429,6 +430,18 @@ form.mfStatusForm  input.color{
 	margin: 2px 6px 0 0;
     height: auto;
 	padding: 6px;
+	font-size: large;
+	  /* Double-sized Checkboxes */
+/*  -ms-transform: scale(2);  IE 
+  -moz-transform: scale(2);  FF 
+  -webkit-transform: scale(2);  Safari and Chrome 
+  -o-transform: scale(2);  Opera */
+  padding: 10px;
+	width: 20px; 
+	height: 20px;
+	
+		border: 1px solid #8886;
+		grid-area: chck ;
 }
 
 form.mfStatusForm  label.rad,
@@ -436,19 +449,25 @@ form.mfStatusForm  label.chk,
 form.mfStatusForm  label.col{
     float: left;
     width: auto;
-	margin: 5px 10px 0 0;
+	margin: 5px 0px 0 0;
     height: auto;
     cursor: pointer;
 	
     padding-left: 20px;
     text-indent: -20px;
+	padding-left: 0px;
+  text-indent: -10px;
+		text-indent: 0px;
+	grid-area: label ;
+	display: flex;
+  align-items: center;
 }
 
 form.mfStatusForm  label.rad input,
 form.mfStatusForm  label.chk input,
 form.mfStatusForm  label.col input{
 	position: relative;
-    left: -20px;
+    /*left: -20px;*/
 }
 form.mfStatusForm  .color p{
 	display: inline-block;
@@ -577,6 +596,7 @@ form.mfStatusForm  textarea:focus{
     max-width: 256px;
     place-content: center;
 	font-size: large;
+	  z-index: 0;
 }
 .mfStatusForm  .mfFieldGroup{
     display: flex;
@@ -605,6 +625,28 @@ form.mfStatusForm .mfFieldGroup .form-group.col {
     justify-items: stretch;
     flex-wrap: nowrap;
 	flex-wrap: wrap;
+	
+	gap: 10px;
+  grid-template-columns: 30px auto;
+  grid-template-rows: repeat(4, auto);
+	grid-template-areas: "chck error" "chck label";
+	align-items: baseline;
+}
+
+form.mfStatusForm .mfFieldGroup .form-group.chk.opts0{
+	flex-direction: row;
+	flex-wrap: nowrap;
+	display: grid;
+	gap: 0 15px;
+	
+}
+form.mfStatusForm .mfFieldGroup .form-group.chk.opts0 > input{
+	margin: 0px 0 0;
+	
+}
+
+form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
+	
 }
 
 .mfStatusForm  input.submit:focus,
@@ -702,7 +744,7 @@ form.mfStatusForm  legend {
     background-color: transparent;
     /*background-color: rgba(255,255,255, 0.8);*/
     border-radius: 4px;
-    margin-top: -10px;
+    margin-top: -5px;
     margin-bottom: -0px;
     color: red;
     font-size: 14px;
@@ -725,8 +767,23 @@ form.mfStatusForm  label.error{
 	/*bottom: 0;*/
      position: initial;
     justify-self: baseline;
+		max-width: inherit;
+		color: red;
+		max-width: initial;
+		text-decoration-thickness: 1px;
+		font-size: inherit;
+}
+form.mfStatusForm:not(.above) .mfFieldGroup > label.error{ 
+		max-width: initial;
 }
 
+form.mfStatusForm .mfFieldGroup.checkbox label.error{
+	/*position: absolute;*/
+	/*bottom: 0;*/
+		margin-top: 0;
+		grid-area: error;
+		align-self: start;
+}
 
 .mfForm.static .mfEditor iframe{
     /*height: 250px !important;*/

@@ -51,6 +51,7 @@ class modMultiFormHelper {
         if(isset(static::$min))
             return;
 //        JFactory::getApplication()->getConfig()->get('error_reporting','default')
+		//$param->debug != 'debug' && 
         static::$min = ! JDEBUG && in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none','']) ? '.min' : ''; // default, none, simple, maximum, development
 //        static::$min = ! JDEBUG;
         
@@ -202,17 +203,17 @@ class modMultiFormHelper {
      */
     public static function getArticle($pk = null)
     {   if(empty($pk))
-             return (object)['introtext'=>'', 'fulltext'=>''];
+             return '';
         
 		$user = JFactory::getUser();
-        
-             
+
         static $_item;
                 
         if(is_null($_item)){
             $_item = [];
         }
-
+		
+		
 		if (!isset($_item[$pk]))
 		{
 			try
@@ -222,13 +223,13 @@ class modMultiFormHelper {
 				
 				$query = $db->getQuery(true)
 					->select(
-                                                'a.id, a.asset_id, a.title, a.alias, a.introtext, a.fulltext, ' .
+                                                'a.id, a.asset_id, a.title, a.alias, a.introtext, ' . //  a.fulltext,
 							'a.state, a.catid, a.created, a.created_by, a.created_by_alias, ' .
 							// Use created if modified is 0
 							'CASE WHEN a.modified = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.modified END as modified, ' .
 							'a.modified_by, a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, ' .
 							'a.images, a.urls, a.attribs, a.version, a.ordering, ' .
-							'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language, a.xreference'
+							'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language '
 //						$this->getState(
 //							'item.select', 'a.id, a.asset_id, a.title, a.alias, a.introtext, a.fulltext, ' .
 //							'a.state, a.catid, a.created, a.created_by, a.created_by_alias, ' .
@@ -273,8 +274,8 @@ class modMultiFormHelper {
 
 					$nowDate = $db->quote($date->toSql());
 
-					$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-						->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+					$query->where("(a.publish_up IS NULL OR a.publish_up = $nullDate OR a.publish_up <= $nowDate)")
+						->where("(a.publish_down IS NULL OR a.publish_down = $nullDate OR a.publish_down >= $nowDate)");
 				}
 
 				// Filter by published state.
@@ -289,33 +290,41 @@ class modMultiFormHelper {
 				$db->setQuery($query);
 
 				$data = $db->loadObject();
+//echo "<-<$id>->"; 
+//toPrint($query,'$query',0,'pre',true);
+
                 if(empty($data)){
+					$_item[$pk]= '';
+					return '';
                     $_item[$pk]=(object)['introtext'=>'', 'fulltext'=>''];
                     return $_item[$pk];
                 }
-                    
+                
 //                toPrint($data->state,'$data->state',0,true,true);
 //				if (empty($data))
 //				{ 
 //					return JFactory::getApplication()->enqueueMessage(JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));:
 //				}
 
+
 				// Check for published state if filter set.
 				if ($data->state < 1)
 				{
+					$_item[$pk]= '';
+					return '';
                     $_item[$pk]=(object)['introtext'=>'', 'fulltext'=>'']; 
                     return $_item[$pk]; 
 //					return JFactory::getApplication()->enqueueMessage(JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));:
 				}
 
 				// Convert parameter fields to objects.
-				$data->params = new JRegistry($data->attribs);//$registry =  
+				$data->params = new \Reg($data->attribs);//$registry = 
 
 //                toPrint($data->attribs,'$data->attribs:'.$pk,0,true,true);
 //				$data->params = clone $this->getState('params');
 //				$data->params->merge($registry);
 
-				$data->metadata = new JRegistry($data->metadata);
+				$data->metadata = new \Reg($data->metadata);
 
 				// Technically guest could edit an article, but lets not check that to improve performance a little.
 				if (!$user->get('guest'))
@@ -417,7 +426,8 @@ class modMultiFormHelper {
             
         
         $intro = "";
-                            
+                         
+//toPrint();   
                             
         foreach ($ids as $id){
             $art = "";
@@ -426,12 +436,13 @@ class modMultiFormHelper {
         //continue;
             try { 
 //                $art = $content->getItem((int) $id); 
-                $art = static::getArticle((int) $id);  
+                $art = static::getArticle((int) $id); 
+
             } catch (Exception $exc) {
                 $art = '';//echo $exc->getTraceAsString();
                 continue;
             }
-            
+
             if(empty($art))
                 continue;
 //        toPrint('EndArticle','',0,TRUE,TRUE);
@@ -439,9 +450,9 @@ class modMultiFormHelper {
      
 //        $url_1 = ContentHelperRoute::getArticleRoute($id, $art->catid, $art->language);
 //return '';         
-                        if($art->params->get('link_titles') || $art->params->get('show_readmore'))//$url = JRoute::_($fieldB);
-                            //$url1 = JUri::base (). ContentHelperRoute::getArticleRoute($id, $art->catid, $art->language);
-                            $url = JRoute::_(JUri::base (). ContentHelperRoute::getArticleRoute($id, $art->catid, $art->language), false);
+			if($art->params->get('link_titles') || $art->params->get('show_readmore'))//$url = JRoute::_($fieldB);
+				//$url1 = JUri::base (). ContentHelperRoute::getArticleRoute($id, $art->catid, $art->language);
+				$url = JRoute::_(JUri::base (). ContentHelperRoute::getArticleRoute($id, $art->catid, $art->language), false);
                         
 //         toPrint($art->params->get('link_titles'),'$art->params->get(link_titles)') ;
 //         toPrint($art->params->get('show_readmore'),'$art->params->get(show_readmore)') ;
@@ -456,16 +467,20 @@ class modMultiFormHelper {
          
       
                         
-                        if($art->params->get('link_titles',1)  && $art->params->get('show_title'))
-                            $intro .= "<a href='$url' title='$art->title'>";
-                        if($art->params->get('show_title'))
-                            $intro .= "<h4>$art->title</h4>";
-                        if($art->params->get('link_titles',1)  && $art->params->get('show_title'))
-                            $intro .= "</a>";
-                        if($art->params->get('show_intro'))
-                            $intro .= $art->introtext.$art->fulltext;
-                        else
-                            $intro .= $art->fulltext ?: $art->introtext;
+			if($art->params->get('link_titles',1)  && $art->params->get('show_title'))
+							$intro .= "<a href='$url' title='$art->title'>";
+
+			if($art->params->get('show_title'))
+							$intro .= "<h4>$art->title</h4>";
+						
+			if($art->params->get('link_titles',1)  && $art->params->get('show_title'))
+							$intro .= "</a>";
+//toPrint($url,'$url') ; 
+//toPrint($url,'$url') ; 						
+						if($art->params->get('show_intro'))
+							$intro .= $art->introtext; //.$art->fulltext;
+						else
+							$intro .= $art->fulltext ?: $art->introtext;
                         //[show_readmore] => 1 [show_readmore_title] => 0
         }
         return $intro;
@@ -486,24 +501,47 @@ class modMultiFormHelper {
 //        echo "<pre>allparams <br>". print_r($allparams, true). "</pre>";
 //        echo "<pre>allparams <br>". print_r(JFactory::getApplication()->input, true). "</pre>";
 //return;		
-        
+
+
 //        toPrint($allparams,'$allparams') ;
-        $select_editor = $allparams['select_editor'] ?: 'tinymce' ;
+        $select_editor = $allparams->select_editor ?: 'tinymce' ;
         
-        empty($allparams) && $allparams = new stdClass;
+        
+		if(empty($allparams))
+			$allparams = new stdClass;
+		
 //        empty($allparams->namefield) && $allparams->namefield = [];
-
+//if(static::$debug){
+//ini_set('display_errors', '1');
+//ini_set('display_startup_errors', '1');
+//error_reporting(E_ALL);
 //echo "<pre>". print_r($allparams, true). "</pre>";
-        foreach($allparams['namefield'] ?: [] as $i => $namefield){
+//return [];
 
-            $namefield      = $allparams->namefield[$i] ?? $namefield;
-            $nameforpost    = $allparams->nameforpost[$i] ?? $namefield;
-            $typefield      = $allparams->typefield[$i] ?? 'text';
-            $paramsfield    = $allparams->paramsfield[$i] ?? '';
-            $art_id         = $allparams->art_id[$i] ?? 0; 
-            $onoff          = $allparams->onoff[$i] ?? 1;
+//toPrint();
+//toPrint($i,'$i',0,'pre',true); 
+//toPrint($allparams,'$allparams',0,'pre',true); 
+//toPrint($allparams->typefield,'$allparams->typefield',0,'pre',true); 
+//toPrint($allparams->art_id,'$allparams->art_id',0,'pre',true); 
+//toPrint($list_fields,'$layout',0,'pre',true); 
+	
+//}
+//echo "<pre>". print_r($allparams, true). "</pre>";
+        foreach($allparams->namefield ?: [] as $i => $namefield){
+
+            $namefield      = $allparams->namefield[$i]		?? $namefield;
+            $nameforpost    = $allparams->nameforpost[$i]	?? $namefield;
+            $typefield      = $allparams->typefield[$i]		?? 'text';
+            $paramsfield    = $allparams->paramsfield[$i]	?? '';
+            $art_id         = $allparams->art_id[$i]		?? 0; 
+            $onoff          = $allparams->onoff[$i]			?? 1;
             $required		= $onoff == 2;
-
+//if(static::$debug){
+//toPrint();
+//toPrint($i,'$i',0,'pre',true); 
+//toPrint($typefield,'$typefield',0,'pre',true); 
+//	
+//}
     //        toPrint(null, "$typefield $required: $namefield",0, TRUE, TRUE);
 
             $reqstar = $regstartag = $requiredField = '';
@@ -520,7 +558,7 @@ class modMultiFormHelper {
             $valueforfield = JFactory::getApplication()->input->getString($nameforfield, '');
 
 //$regstartag .= " $typefield $nameforfield -  $valueforfield ";
-            $intro = "";
+            $intro = "$art_id";
 
             if(empty($onoff)) 
                 continue;
@@ -536,7 +574,12 @@ class modMultiFormHelper {
                     $intro = "<intro>$intro</intro>";
             }
 //                        toPrint($nameforfield,'$nameforfield');
+
+//toPrint($i,'$i',0,'pre',true); 
+//toPrint($art_id,'$art_id',0,'pre',true);
+//toPrint($intro,'$intro',0,'pre',true); 
     switch($typefield){
+		
         case "": 
             if(empty($namefield))
                 $fieldB = $intro;
@@ -777,12 +820,24 @@ class modMultiFormHelper {
 		case "checkbox":
             $fieldB = '';
 //						$checkboxes = explode(";", $paramsfield);
-            $selects = (array)explode("\n", $paramsfield);
-			if(in_array($labelOut, ['edge','above',1]))
-                $fieldB .= "<div class='mfFieldGroup checkbox $style_field'><label class='checkbox'>$namefield$regstartag</label>";
+            $selects = array_filter(explode("\n", $paramsfield));
+			if(in_array($labelOut, ['edge','above',1])){
+                $fieldB .= "<div class='mfFieldGroup checkbox $style_field'>";
+				if($selects)
+					$fieldB .= "<label class='checkbox'>$namefield$regstartag</label>";
+			}
 //$fieldB = "<fieldset for='$nameforfield' class='check'><legend> </legend></fieldset>";
 //toPrint($selects,'$selects',0,'pre',true); 
-            $fieldB .= "<div class='form-group input chk '>";
+			$count = count($selects);
+            $fieldB .= "<div class='form-group input chk opts$count '>";
+			
+			if(empty($selects)){
+				$chk = ($valueforfield)?' checked ':'';
+			
+                $fieldB .= "<input id='$nameforfield.$i' type='checkbox'  name='$nameforfield' value='✓' $chk $requiredField  class='form-check form-check-input checkbox '>";
+                $fieldB .= "<label for='$nameforfield.$i' class='check chk '>$namefield</label>";
+			}
+				
             foreach($selects as $y => $check ){
                 $check = trim($check);
 				if(empty($check))
@@ -790,11 +845,11 @@ class modMultiFormHelper {
                 $chk = ($valueforfield == $check)?' checked ':'';
                 if(is_array($valueforfield))
                     $chk = (in_array($check,$valueforfield))?' checked ':'';
-                $fieldB .= "<input id='$nameforfield.$y' type='checkbox'  $requiredField name='$nameforfield' value='$check' $chk  class='form-control checkbox '>";
+                $fieldB .= "<input id='$nameforfield.$y' type='checkbox'  $requiredField name='$nameforfield' value='$check' $chk  class='form-check form-check-input checkbox '>";
                 $fieldB .= "<label for='$nameforfield.$y' class='check chk '>$check</label>";
             }
-            $fieldB .= "<br>$intro";
             $fieldB .= "</div>";
+            $fieldB .= "$intro";
 			if(in_array($labelOut, ['edge','above',1]))
                 $fieldB .= "</div>";
 		break;
@@ -1273,7 +1328,7 @@ class modMultiFormHelper {
 			$mod->deb = $moduleDeb;
 			$mod->param = &$mod->params; //$mod->params->toObject();//$mod->params = $mod->params->toObject();
             if($mod->param->list_fields && is_string($mod->param->list_fields)){
-                $mod->param->list_fields = new Reg($mod->param->list_fields);
+//                $mod->param->list_fields = new Reg($mod->param->list_fields);
             }
 //            if($mod->params instanceof Reg || $mod->params instanceof Registry || $mod->params instanceof Joomla\Registry\Registry || $mod->params instanceof JRegistry){
 //                
@@ -1628,6 +1683,10 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 //toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
             $mailer->addRecipient( $config->mailfrom );
         }
+        if($param->recipient_show == 'replyto'){
+//toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
+            $mailer->addRecipient( $config->replyto );
+        }
 	
 	//добавляем адрес для ответа
 	if($replyToEmail != ""){
@@ -1727,9 +1786,13 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
         $config	= JFactory::getConfig()->toObject();
         
         //$show_modal = (in_array($config->error_reporting, ['','default','none','simple','maximum','development']));
-        
-        $module = reset($modules);         
-		$module->params = new Reg($module->params);
+
+        $module = reset($modules);
+//if($params->get('debug') == 'debug'){
+//        toPrint($module->params,'$module->params',0,'pre',true); 
+//	static::$debug = $param->debug == 'debug';
+//}
+//		$module->params = new Reg($module->params);
 		$module->param = &$module->params;
 //        $params = &$module->params;
         $param = &$module->params;
@@ -1737,7 +1800,7 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
 		
 //        $param->header_tag = $param->head_tag ?? '';
 //        $param->module_tag = $param->mod_tag ?? '';
-        
+
 //echo "<pre>". print_r($module, true). "</pre>";
         
 //echo $module->id.'<br>';
@@ -1752,7 +1815,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //echo '123';
 //return;
 //        echo "<pre>". print_r($module, true). "</pre>";
-        $list_fields = $param->list_fields;
+        $list_fields = $param->list_fields ?? new stdClass;
             
 //echo "<pre>". print_r($list_fields, true). "</pre>";
 //echo "<pre>". print_r($param, true). "</pre>";
@@ -1762,7 +1825,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         if(is_string($list_fields))
             $list_fields = new Reg($list_fields);
-        $list_fields['select_editor'] = $param->select_editor;
+        $list_fields->select_editor = $param->select_editor;
         
         if($param->debug == 'debug' || $module->deb){
             JFactory::getDocument()->addStyleDeclaration("#mfForm_$module->id{display:block;}");
@@ -1782,17 +1845,20 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        toPrint($param->layout,'$layout',0,'pre',true); 
         
 //        return __DIR__."/../tmpl/$form";
+//if($param->debug == 'debug'){
+//        toPrint($list_fields,'$layout',0,'pre',true); 
+////	static::$debug = $param->debug == 'debug';
+//}
         
         
+        $fields = static::buildFields($list_fields, $module->id, ($param->labelOut ?? 1), $param->style_field);
         
-        $fields = self::buildFields($list_fields, $module->id, ($param->labelOut ?? 1), $param->style_field);
-        
-        $fields_test = self::getFieldsTest($module);
+        $fields_test = static::getFieldsTest($module);
         
 //echo "<pre>1 ". print_r($fields, true). "</pre>";
 //echo "<pre>2 ". print_r($fields_test, true). "</pre>";
 //return ;
-        $fields = array_merge($fields, $fields_test); 
+        $fields = array_merge($fields, $fields_test);
 
 
         

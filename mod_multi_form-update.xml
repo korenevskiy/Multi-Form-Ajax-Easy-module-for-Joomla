@@ -6,12 +6,12 @@
 Designed to increase sales of any sites. Sending an email and saving in article in the site category will allow you to follow all requests and allow you to create sections of reviews on the site.</description>
         <element>mod_multi_form</element>
         <type>module</type>
-        <version>5.00.00</version>
+        <version>5.1.01</version>
         <client>0</client>
         
         <infourl title="Multi Form Ajax Easy - from ExplorerOffice.ru/en/">http://explorer-office.ru/en/download</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/archive/refs/tags/v5.0.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/archive/refs/tags/v5.1.zip</downloadurl>
             <downloadurl type="full" format="zip">http://explorer-office.ru/files/mod_multi_form_free.zip</downloadurl>
         </downloads>
         <php_minimum>8.0</php_minimum>

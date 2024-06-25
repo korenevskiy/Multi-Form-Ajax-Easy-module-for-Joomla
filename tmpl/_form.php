@@ -108,7 +108,10 @@ $style = substr(reset($stylefiles), 0, -4);
 //}else{
     JHtml::_('jquery.framework'); 
     JHtml::_('bootstrap.framework');
-	$wa->registerAndUseScript('jquery', 'media/vendor/jquery/js/jquery.js', [], ['defer' => true]);
+$wa->useScript('jquery');	
+$wa->useScript('jquery-noconflict');
+$wa->useScript('jquery-migrate');
+//$wa->registerAndUseScript('jquery', 'media/vendor/jquery/js/jquery.js', [], ['defer' => true]);
 //    JHtml::_('bootstrap.loadCss', true);
 //}
 
@@ -118,7 +121,7 @@ $style = substr(reset($stylefiles), 0, -4);
 //$min = modMultiFormHelper::$min;
 
 //JHtml::script('jquery.form.js', 'modules/$module->module/media/js/');
-$wa->registerAndUseScript('jquery', "modules/$module->module/media/js/jquery.form$min.js", [], ['defer' => true]);
+$wa->registerAndUseScript('jquery.form', "modules/$module->module/media/js/jquery.form$min.js", [], ['defer' => true]);
 //JHtml::script("modules/$module->module/media/js/jquery.form$min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/media/js/jquery.validate.min.js",[],[ 'defer' => 'defer']);//'async' => 'async',
 JHtml::script("modules/$module->module/media/js/messages.min.js",[],['defer' => 'defer']);//'async' => 'async',
@@ -132,12 +135,22 @@ JHtml::script("modules/$module->module/media/js/url$min.js",[],[ 'defer' => TRUE
 //$wa->registerAndUseScript('Instascan', 'https://rawgit.com/schmich/instascan-builds/master/instascan.min.js', [], ['defer' => true]);
 //$wa->registerAndUseStyle('slideshowck','modules/mod_multi/media/slideshowCK/administrator/themes/default/css/camera.css');
 
-$param->scriptver = $param->script?:1;
 //toPrint(JUri::root(). "modules/$module->module/media/js/form$param->scriptver$min.js",'path',true, 'message');//Joomla\CMS\Uri\Uri::root()
 //JHtml::script("modules/$module->module/media/js/form$param->scriptver$min.js",['detectDebug'=>true],[ 'defer' => 'defer' ]); //'async' => 'async','defer' => 'defer'
-$wa->registerAndUseScript('multiForm', "modules/$module->module/media/js/form$param->scriptver$min.js", [], ['defer' => true]);
-//JHtml::script("modules/$module->module/media/js/typed.js"); 
+//if($param->debug == 'debug') {
+//	$min = '';
+//	toPrint();
+//	toPrint(array_keys(get_defined_vars()),'$module',0,'message');
+//	toPrint($module,'$module',0,'message');
+//	toPrint($param,'$param',0,'message');
+//	$param->scriptver;
+//}
 
+$versionScript = $param->debug == 'debug'? time() : ($param->versionScript ?: file_get_contents(JPATH_ROOT . '/modules/mod_multi_form/media/MD5SUM'));
+$wa->registerAndUseScript('multiForm', "modules/$module->module/media/js/form$min.js",
+		['version' => ($versionScript?:'auto'), 'relative' => false, 'detectDebug' => ($min?:true)], ['defer' => true]);
+//JHtml::script("modules/$module->module/media/js/typed.js"); 
+//[]
 //echo " <!-- " . "modules/$module->module/media/js/form$param->scriptver$min.js" . " --> ";
 
 //echo "modules/$module->module/media/js/jquery.form$min.js<br>";
