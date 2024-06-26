@@ -1182,7 +1182,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		}elseif($data && is_object ($data)){
 			foreach ($atributes as $attr){
 				if(! isset($data->$attr))
-					$data->$attr = $d->$attr;
+					$d->$attr = $data->$attr;
 			}
 		}else{
 			$data = $d;
