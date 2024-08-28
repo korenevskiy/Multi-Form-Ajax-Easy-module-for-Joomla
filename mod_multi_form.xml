@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
 	type="module"
-	version="3.7"
+	version="4.0"
 	method="upgrade"
 	client="site">
 	<name>Multi Form Ajax Easy</name>
@@ -13,7 +13,7 @@
 	<copyright>Copyright (C) 2017 All rights reserved.</copyright>
 	<license>GNU General Public License version 2, or later.</license>
 	<version>5.1.02</version>
-	<element></element>
+	<element>mod_multi_form</element>
 	<description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
 	<files>
 		<filename module="mod_multi_form">mod_multi_form.php</filename>
@@ -42,7 +42,7 @@
 		<fields name="params">
 			<fieldset
 				name="basic"
-				addfieldpath="modules/mod_multi_form/fields">
+				addfieldpath="modules/mod_multi_form/field">
 				
 				<field
 					type="translate"
@@ -180,7 +180,7 @@
 					showon="popup:1"  group="JNOW"
 					type="textTranslate"
 					xtype="textTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					label="MOD_MULTI_FORM_TEXT_CALL_POPUP_LABEL"
 					description="MOD_MULTI_FORM_TEXT_CALL_POPUP_DESC"
 					default="MOD_MULTI_FORM_TEXT_CALL_POPUP_DEF"
@@ -192,7 +192,7 @@
 					name="textsubmit"
 					type="textTranslate"
 					translate_default="true"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					default="MOD_MULTI_FORM_TEXT_SUBMIT_DEF"
 					label="MOD_MULTI_FORM_TEXT_SUBMIT_LABEL"
 					description="MOD_MULTI_FORM_TEXT_SUBMIT_DESC"
@@ -202,7 +202,7 @@
 					name="textwhensending"
 					translate_default="true"
 					type="textTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
 					description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
 					default="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DEF"
@@ -232,7 +232,7 @@
 				<field
 					name="sendtoemail"
 					type="emailConfig"  showon="recipient_show:custom"
-					addfieldpath="/modules/mod_multi_form/fields/"
+					addfieldpath="/modules/mod_multi_form/field/"
 					default="mailfrom"
 					label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_LABEL"
 					description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_DESC"
@@ -264,7 +264,7 @@
 					name="subjectofmail"
 					translate_default="true"
 					type="textTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					default="MOD_MULTI_FORM_SUBJECT_DEF"
 					label="MOD_MULTI_FORM_SUBJECT_LABEL"
 					description="MOD_MULTI_FORM_SUBJECT_DESC"
@@ -305,7 +305,7 @@
 					name="textBeforeModule_1"
 					showon="textBeforeModule_show:1"
 					type="Modal_Article"
-					addfieldpath="administrator/components/com_content/models/fields/modal/"
+					addfieldpath="administrator/components/com_content/models/field/modal/"
 					label="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
 					description="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_DESC"
 					class="article" />
@@ -313,7 +313,7 @@
 					name="textBeforeModule_2"
 					showon="textBeforeModule_show:1"
 					type="EditorTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					value="MOD_MULTI_FORM_TEXT_BEFORE_BUTTON_CALL_FORM_DEF"
 					width="300"
 					height="350"
@@ -341,7 +341,7 @@
 					name="textbeforeform1"
 					showon="textbeforeformShow:1"
 					type="Modal_Article"
-					addfieldpath="administrator/components/com_content/models/fields/modal/"
+					addfieldpath="administrator/components/com_content/models/field/modal/"
 					label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
 					description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
 					class="article" />
@@ -350,7 +350,7 @@
 					showon="textbeforeformShow:1"
 					translate_default="true"
 					type="editorTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					dafalult="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DEF"
 					width="300px"
 					height="350"
@@ -374,7 +374,7 @@
 						type="Modal_Article"
 						label="PLG_ORDER_PARAM_MAILDONE"
 						addfieldpath_1="administrator/components/com_content/src/Field/Modal/"
-						addfieldpath_2="administrator/components/com_content/models/fields/modal/"
+						addfieldpath_2="administrator/components/com_content/models/field/modal/"
 						addfieldprefix="Joomla\Component\Content\Administrator\Field"
 						class="article" />
 		<field  
@@ -384,7 +384,7 @@
 		default=""
 		label="MOD_MULTIMODULE_FIELD_ARTICLESELECT_LABEL" 
 		description="COM_CONTENT_CHANGE_ARTICLE" 
-		Xaddfieldpath="/modules/mod_multi/fields"
+		Xaddfieldpath="/modules/mod_multi/field"
 								
 		   showon="article_show:full[OR]article_show:intro[OR]article_show:content"
 		/>
@@ -394,7 +394,7 @@
 					type="Modal_Article"
 					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
 					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
-					Xaddfieldpath="administrator/components/com_content/models/fields/modal/"
+					Xaddfieldpath="administrator/components/com_content/models/field/modal/"
 					Zaddfieldpath="administrator/components/com_content/src/Field/Modal/ArticleField.php"
 					Daddfieldpath="/administrator/components/com_content/src/Field/Modal/"
 					addfieldprefix="Joomla\Component\Content\Administrator\Field"
@@ -430,7 +430,7 @@
 					type="Modal_Article"
 					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
 					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
-					addfieldpath="administrator/components/com_content/models/fields/modal/"
+					addfieldpath="administrator/components/com_content/models/field/modal/"
 					addfieldprefix="Joomla\Component\Content\Administrator\Field"
 					required="false"
 					select="true"
@@ -447,7 +447,7 @@
 					name="textfailsend2"
 					translate_default="true"
 					type="editorTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field/"
 					buttons="true"
 					hide="readmore,pagebreak,module"
 					height="350"
@@ -483,9 +483,8 @@
 
 			<fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
 					  addfieldpath="modules/mod_multi_form/field"> 
-				<!--  
-				-->
-				<!-- 
+<!--			-->
+<!-- 
 				<field
 				name="list_fields_"
 				type="Repeatable"
@@ -581,10 +580,10 @@
 				</fields>
 				</field>
 				
-				-->
+-->
 
 
-				<!--
+<!--
 				<field name="note13" type="note" label="LOREMIPSUM" description="LOREMIPSUM_DESC" close="true" /> 
 				<sql primary="id">
 				SELECT id, title, text FROM #__content;
@@ -606,8 +605,10 @@
 				<option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit2</option>
 				<option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit3</option>
 				</field>
-				-->
-				<!--
+			
+-->
+
+<!--
 				   <field
 				label="JEDIT"
 				type="format" 
@@ -617,7 +618,7 @@
 				<![CDATA[
 				<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
 				</field>
-				-->
+-->
 				<field 
 					name="list_fields"
 					type="gridfields"
@@ -725,7 +726,7 @@
 						<option value="0">JNO</option>
 					</field> 
 
-					<!-- <field
+<!--				<field
 					label="JEDIT"
 					type="format" 
 					default="" 
@@ -735,7 +736,7 @@
 					<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
 					</field> --> 
 				</field>
-				<!-- --> 
+<!-- --> 
 			</fieldset>  
 
 			<fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
@@ -879,7 +880,7 @@ width: 100%;}
 
 
 
-				<!--<field name="menu_assigment" type="menuitem" default="0" label="Select a menu item" description="Select a menu item"
+<!--			<field name="menu_assigment" type="menuitem" default="0" label="Select a menu item" description="Select a menu item"
 				   showon="menu_is:only[OR]menu_is:without">
 				<option	value="0">JDEFAULT</option>
 				</field>-->
@@ -909,7 +910,7 @@ width: 100%;}
 					default="0"
 					label="[[%1:]] ,MOD_MULTI_FROM_FIELD_MENUITEM_LABEL"
 
-					multiple="true" key_field="id"value_field="title" translate_default="true"  
+					multiple="true" key_field="id" value_field="title" translate_default="true"  
 					query="SELECT '- - All - -' title, 0 level, 0 id UNION(SELECT * FROM (
 SELECT CONCAT(if(level=1,'&#9733;',''), REPEAT('- ',level-1),title,IF(published=1,'','🚫'),IF(home,'&#127775;',''),' /',language) title, level, id /*, parent_id, lft, rgt, published, title, alias, path  , home, client_id, access*/
 FROM #__menu 
@@ -1343,7 +1344,7 @@ ORDER BY lft)t) ;
 					type="text"
 					showon="popup:1"
 					xtype="textTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field"
 					label="CSS class Button PopUp"
 					default="btn btn-primary button  "
 					class="call-popup" />
@@ -1351,7 +1352,7 @@ ORDER BY lft)t) ;
 					name="classbuttonsubmit"
 					type="text"
 					xtype="textTranslate"
-					addfieldpath="modules/mod_multi_form/fields/"
+					addfieldpath="modules/mod_multi_form/field"
 					label="CSS class Button Submit"
 					description="'btn button'-standart button, 'fluid'-width 100% button"
 					default=" btn btn-primary button submit fluid "
