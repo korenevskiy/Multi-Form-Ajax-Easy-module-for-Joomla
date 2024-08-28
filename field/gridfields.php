@@ -43,7 +43,6 @@ use  Joomla\Database\Exception;
 //if(file_exists(__DIR__ . '/../functions.php'))
 //	require_once  __DIR__ . '/../functions.php';
 
-
 if(file_exists(JPATH_ROOT . '/functions.php'))
 	require_once  JPATH_ROOT . '/functions.php';
  
@@ -329,6 +328,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 * @var  string
 	 */
 	protected $renderLabelLayout = 'joomla.form.renderlabel';
+	
+	protected $isJ4 = true;
 	
 	/**
 	 * Method to instantiate the form field object.
@@ -619,7 +620,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
             unset($this->columns[$name]);
 			return $name;
 		}
-		
+	
+	$dataColumn = (object)$dataColumn;
+	
 //toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');		
 //toPrint($dataColumn->text,'$dataColumn->text');		
 		
@@ -952,6 +955,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		if(empty($field))
 			$field = JFormHelper::loadFieldType('text');			// <<<<<<<<<<<<<<<<<<<<<<<
 		
+		$field->setup(simplexml_load_string("<field/>"), '');
 		
 //toPrint( $field->name);
 		$field = static::getDefaultData($field);
@@ -1052,6 +1056,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		
 		if(isset($data['name']))
 			$field->name = $data['name'];
+		
 //toPrint($field->value, '$field->value:'.$field->name, 0);
 //toPrint($field->checked, '$field->checked:'.$field->name, 0);
 		
