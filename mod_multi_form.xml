@@ -1,802 +1,802 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
-    type="module"
-    version="3.7"
-    method="upgrade"
-    client="site">
-    <name>Multi Form Ajax Easy</name>
-    <creationDate>2020-05-01</creationDate>
-	<modificationsDate>2023-01-26,2024-03-07,2024-03-07,2024-03-25</modificationsDate>
-    <modificationDate>2024-05-26</modificationDate>
-    <author>Korenevskiy Sergei</author>
-    <authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
-    <copyright>Copyright (C) 2017 All rights reserved.</copyright>
-    <license>GNU General Public License version 2, or later.</license>    
-    <version>5.1.01</version>
-    <element></element>
-    <description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
-    <files>
-        <filename module="mod_multi_form">mod_multi_form.php</filename>
-        <filename>mod_multi_form.xml</filename> 
-        <filename>helper.php</filename>
-        <filename>index.html</filename>
-        <folder>field</folder>
-        <folder>layouts</folder>
-        <folder>language</folder>
-        <folder>media</folder>
-        <folder>tmpl</folder>
-    </files>
-    <languages>
-        <language tag="en-GB">language/en-GB/mod_multi_form.ini</language>
-        <language tag="en-GB">language/en-GB/mod_multi_form.sys.ini</language>
-        <language tag="ru-RU">language/ru-RU/mod_multi_form.ini</language>
-        <language tag="ru-RU">language/ru-RU/mod_multi_form.sys.ini</language>
-        <language tag="uk-UA">language/uk-UA/mod_multi_form.ini</language>
-        <language tag="uk-UA">language/uk-UA/mod_multi_form.sys.ini</language>
-    </languages>
-    <updateservers>
-        <server type="extension" priority="1" name="mod_multi_form">https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form-update.xml</server>
-        <server type="extension" priority="2" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>
-    </updateservers>
-    <config>
-        <fields name="params">
-            <fieldset
-                name="basic"
-                addfieldpath="modules/mod_multi_form/fields">
+	type="module"
+	version="3.7"
+	method="upgrade"
+	client="site">
+	<name>Multi Form Ajax Easy</name>
+	<creationDate>2020-05-01</creationDate>
+	<modificationsDate>2023-01-26,2024-03-07,2024-03-07,2024-03-25,2024-05-26</modificationsDate>
+	<modificationDate>2024-08-28</modificationDate>
+	<author>Korenevskiy Sergei</author>
+	<authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
+	<copyright>Copyright (C) 2017 All rights reserved.</copyright>
+	<license>GNU General Public License version 2, or later.</license>
+	<version>5.1.02</version>
+	<element></element>
+	<description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
+	<files>
+		<filename module="mod_multi_form">mod_multi_form.php</filename>
+		<filename>mod_multi_form.xml</filename> 
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>field</folder>
+		<folder>layouts</folder>
+		<folder>language</folder>
+		<folder>media</folder>
+		<folder>tmpl</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/mod_multi_form.ini</language>
+		<language tag="en-GB">language/en-GB/mod_multi_form.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/mod_multi_form.ini</language>
+		<language tag="ru-RU">language/ru-RU/mod_multi_form.sys.ini</language>
+		<language tag="uk-UA">language/uk-UA/mod_multi_form.ini</language>
+		<language tag="uk-UA">language/uk-UA/mod_multi_form.sys.ini</language>
+	</languages>
+	<updateservers>
+		<server type="extension" priority="1" name="mod_multi_form">https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form-update.xml</server>
+		<server type="extension" priority="2" name="mod_multi_form">https://explorer-office.ru/files/mod_multi_form-update.xml</server>
+	</updateservers>
+	<config>
+		<fields name="params">
+			<fieldset
+				name="basic"
+				addfieldpath="modules/mod_multi_form/fields">
 				
 				<field
 					type="translate"
-					/>
-                    
-                
-                <field type="test"  icon='eye-open'/>   
-                     
-                      
-                <field  type="note" label="MOD_MULTI_FORM_FREE_VERSION_NOTE" showon="default!:default.php[AND]jed!:jed.php" heading="h4"
-                        description="" comment="for Beta version" /> 
-                
-                <field  type="note" label="MOD_MULTI_FORM_JED_VERSION_NOTE" showon="default!:default.php[AND]jed:jed.php" heading="h4"
-                        description="" comment="for Jed version" /> 
-                
-                <field  type="note" label="MOD_MULTI_FORM_PRO_VERSION_NOTE" showon="default:default.php" heading="h4"
-                        description="" comment="for Pro version" /> 
-            
-                 
-                
-                
-                <field extension="com_content" 
-                       type="category" 
-                       showon="default!:default.php[AND]jed!:jed.php"
-                       label="&lt;s&gt;[[%1:]]&lt;/s&gt; [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL,MOD_MULTI_FORM_FREE" 
-                       description="[[%1:]] [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC,MOD_MULTI_FORM_FREE" >
-                </field>
-                <field 
-                    type="list" default="1"
-                    label="&lt;s&gt;[[%1:]] [[%2:]]&lt;/s&gt; [[%3:]],JSTATUS,JTOOLBAR_APPLY,MOD_MULTI_FORM_FREE" 
-                    class="chzn-color-state radio " showon="default!:default.php[AND]jed!:jed.php">
-                    <option value="1">JPUBLISHED</option>
-                    <option value="0">JUNPUBLISHED</option>
-                    <option value="2">JTOOLBAR_ARCHIVE</option>
-                    <option value="-2">JTRASH</option>  
-                </field>
-                <field extension="com_content" 
-                       type="category" 
-                       showon="default!:default.php[AND]jed:jed.php"
-                       label="&lt;s&gt;[[%1:]]&lt;/s&gt; [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL,MOD_MULTI_FORM_JED" 
-                       description="[[%1:]] [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC,MOD_MULTI_FORM_JED" >
-                </field>
-                <field 
-                    type="list" default="1"
-                    label="&lt;s&gt;[[%1:]] [[%2:]]&lt;/s&gt; [[%3:]],JSTATUS,JTOOLBAR_APPLY,MOD_MULTI_FORM_JED" 
-                    class="chzn-color-state radio " showon="default!:default.php[AND]jed:jed.php">
-                    <option value="1">JPUBLISHED</option>
-                    <option value="0">JUNPUBLISHED</option>
-                    <option value="2">JTOOLBAR_ARCHIVE</option>
-                    <option value="-2">JTRASH</option>  
-                </field>
-                
-                
-                
-                
-                <field name="article_in_category"
-                       type="cat"  extension="com_content"
-                       show_root="false"   class=" "
-                       show_empty="true" showon="default:default.php"
-                       label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
-                       description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC">
-                </field>
-                
-                <field
-                    name="article_published" 
-                    type="list" 
-                    default="0"  showon="default:default.php[AND]article_in_category!:"
-                    label="[[%1:]] [[%2:]],JSTATUS,JTOOLBAR_APPLY" 
-                    class="chzn-color-state radio ">
-                    <option value="1">JPUBLISHED</option>
-                    <option value="0">JUNPUBLISHED</option>
-                    <option value="2">JTOOLBAR_ARCHIVE</option>
-                    <option value="-2">JTRASH</option>  
-                </field> 
-                
-                
-                
-                
-                
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr&gt;"
-                    description="" />
-                    
-                <field  type="note" label="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE" 
-                        description="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE_DESC"
-                        showon="default!:default.php[AND]jed!:jed.php" comment="for Beta version" />
-                <field  type="note" label="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE" 
-                        description="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE_DESC"
-                        showon="default!:default.php[AND]jed:jed.php" comment="for Jed version" />  
-                        
-                 
-                
-              
-                <field
-                    name="popup"
-                    type="radio"
-                    default="1"
-                    label="MOD_MULTI_FORM_POPUP_ENABLE_LABEL"
-                    description="MOD_MULTI_FORM_POPUP_ENABLE_DESC"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">MOD_MULTI_FORM_POPUP_ON</option>
-                    <option value="0">MOD_MULTI_FORM_POPUP_OFF</option>
-                </field>
-                <field
-                    name="labelOut"
-                    type="radio"
-                    default="1"
-                    label="MOD_MULTI_FORM_NAME_INPUT_INOUT_LABEL"
-                    description="MOD_MULTI_FORM_NAME_INPUT_INOUT_DESC"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">JDEFAULT</option>
-                    <option value="in">MOD_MULTI_FORM_NAME_INPUT_INOUT_IN</option>
-                    <option value="above">MOD_MULTI_FORM_NAME_INPUT_INOUT_ABOVE</option>
-                    <option value="edge">MOD_MULTI_FORM_NAME_INPUT_INOUT_EDGE</option>
-                </field>
-                <field
-                    name="form_use_id"
-                    type="sql"
-                    value_field="title"
-                    translate="true"
-                    default=""
-                    label="MOD_MULTI_FORM_USE_FORM_LBL"
-                    description="MOD_MULTI_FORM_USE_FORM_DESC"
-                    query="SELECT '' `value`, 'JGLOBAL_USE_GLOBAL' title UNION  (SELECT id `value`, CONCAT_WS('', 'id:',id,' - ',title,' /pos:',`position`,'/on:',published) title FROM #__modules WHERE `module` = 'mod_multi_form' ORDER BY position,ordering);" />
-                
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>" 
-                />   
-                <field
-                    name="textbuttonpopup"
-                    showon="popup:1"  group="JNOW"
-                    type="textTranslate"
-                    xtype="textTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    label="MOD_MULTI_FORM_TEXT_CALL_POPUP_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_CALL_POPUP_DESC"
-                    default="MOD_MULTI_FORM_TEXT_CALL_POPUP_DEF"
-                    translate_default="true"
-                    class="call-popup" />
-                
-                
-                <field
-                    name="textsubmit"
-                    type="textTranslate"
-                    translate_default="true"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    default="MOD_MULTI_FORM_TEXT_SUBMIT_DEF"
-                    label="MOD_MULTI_FORM_TEXT_SUBMIT_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_SUBMIT_DESC"
-                    required=""
-                    class="" />
-                <field
-                    name="textwhensending"
-                    translate_default="true"
-                    type="textTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
-                    default="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DEF"
-                    required=""
-                    class="" />
-                
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr&gt;"
-                    description="" />
-                    
-                <field
-                    name="recipient_show"
-                    type="radio"
-                    default="replyto"
-                    label="MOD_MULTI_FROM_RECIPIENT_LBL"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="">[[%1:]],Email Site</option>
-                    <option value="replyto">[[%1:]],Email Reply</option>
-                    <option value="administrator" class='hidden' >MOD_MULTI_FROM_ADMINISTRATOR_OPT</option>
-                    <option value="user">JUSER</option>
-                    <option value="subscriber">Subscriber</option>
-                    <option value="custom">MOD_MULTI_FROM_OTHER_OPT</option>
-                </field>
-                
-                <field
-                    name="sendtoemail"
-                    type="emailConfig"  showon="recipient_show:custom"
-                    addfieldpath="/modules/mod_multi_form/fields/"
-                    default="mailfrom"
-                    label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_LABEL"
-                    description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_DESC"
-                    class="" />
-                <field
-                    name="sendtoemailcc"
-                    type="text"  showon="recipient_show:custom"
-                    label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_CC_LABEL"
-                    description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_CC_DESC"
-                    required="false"
-                    class="" />
-                <field
-                    name="sendtoemailbcc"
-                    type="email"  showon="recipient_show:custom"
-                    label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_BCC_LABEL"
-                    description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_BCC_DESC"
-                    required="false"
-                    class="" />
-                <field name="sendtouser" type="user"
-                       label="JUSER"  showon="recipient_show:user" 
-                       class=" " groups="8,7,5,6"		  />
-                
-                <field
-                    type="note"
-                    default="" multiple="true"  showon="recipient_show:subscriber"
-                    label="Mail will be received subscribers. " 
-                />   
-                <field
-                    name="subjectofmail"
-                    translate_default="true"
-                    type="textTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    default="MOD_MULTI_FORM_SUBJECT_DEF"
-                    label="MOD_MULTI_FORM_SUBJECT_LABEL"
-                    description="MOD_MULTI_FORM_SUBJECT_DESC"
-                    class="" />
-                
-                
-                
-                
-                
-                 
-                 
-                     
-                
-                
-                
-                
-                
-                
-                     
-                <field
-                    type="spacer"
-                    default=""  
-                    label="&lt;hr>" 
-                />   
-                
-                
-                <field 
-                    name="textBeforeModule_show"
-                    type="radio"
-                    default="0"
-                    label="[[%1:]],MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_BUTTON_CALL_FORM_DESC"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">JSHOW</option>
-                    <option value="0">JHIDE</option>
-                </field>
-                <field 
-                    name="textBeforeModule_1"
-                    showon="textBeforeModule_show:1"
-                    type="Modal_Article"
-                    addfieldpath="administrator/components/com_content/models/fields/modal/"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_DESC"
-                    class="article" />
-                <field
-                    name="textBeforeModule_2"
-                    showon="textBeforeModule_show:1"
-                    type="EditorTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    value="MOD_MULTI_FORM_TEXT_BEFORE_BUTTON_CALL_FORM_DEF"
-                    width="300"
-                    height="350"
-                    filter="raw"
-                    buttons="true"
-                    hide="readmore,pagebreak,module"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_DESC"
-                    required="false" />
-                
-                
-                
-                 
-                <field
-                    name="textbeforeformShow"
-                    type="radio"
-                    default="0"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DESC"
-                    class="btn-group btn-group-yesno ">
-                    <option value="1">JSHOW</option>
-                    <option value="0">JHIDE</option>
-                </field>
-                <field
-                    name="textbeforeform1"
-                    showon="textbeforeformShow:1"
-                    type="Modal_Article"
-                    addfieldpath="administrator/components/com_content/models/fields/modal/"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
-                    class="article" />
-                <field
-                    name="textbeforeform2"
-                    showon="textbeforeformShow:1"
-                    translate_default="true"
-                    type="editorTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    dafalult="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DEF"
-                    width="300px"
-                    height="350"
-                    filter="raw"
-                    buttons="true"
-                    hide="readmore,pagebreak,module"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DESC"
-                    required="false"
-                    class="" />
-                
-                
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr&gt;"
-                    description="" />
+				/>
+
+
+				<field type="test"  icon='eye-open'/>   
+ 
+  
+				<field  type="note" label="MOD_MULTI_FORM_FREE_VERSION_NOTE" showon="default!:default.php[AND]jed!:jed.php" heading="h4"
+					   description="" comment="for Beta version" /> 
+
+				<field  type="note" label="MOD_MULTI_FORM_JED_VERSION_NOTE" showon="default!:default.php[AND]jed:jed.php" heading="h4"
+					   description="" comment="for Jed version" /> 
+
+				<field  type="note" label="MOD_MULTI_FORM_PRO_VERSION_NOTE" showon="default:default.php" heading="h4"
+					   description="" comment="for Pro version" /> 
+
+ 
+
+
+				<field extension="com_content" 
+					   type="category" 
+					   showon="default!:default.php[AND]jed!:jed.php"
+					   label="&lt;s&gt;[[%1:]]&lt;/s&gt; [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL,MOD_MULTI_FORM_FREE" 
+					   description="[[%1:]] [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC,MOD_MULTI_FORM_FREE" >
+				</field>
+				<field 
+					type="list" default="1"
+					label="&lt;s&gt;[[%1:]] [[%2:]]&lt;/s&gt; [[%3:]],JSTATUS,JTOOLBAR_APPLY,MOD_MULTI_FORM_FREE" 
+					class="chzn-color-state radio " showon="default!:default.php[AND]jed!:jed.php">
+					<option value="1">JPUBLISHED</option>
+					<option value="0">JUNPUBLISHED</option>
+					<option value="2">JTOOLBAR_ARCHIVE</option>
+					<option value="-2">JTRASH</option>  
+				</field>
+				<field extension="com_content" 
+					   type="category" 
+					   showon="default!:default.php[AND]jed:jed.php"
+					   label="&lt;s&gt;[[%1:]]&lt;/s&gt; [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL,MOD_MULTI_FORM_JED" 
+					   description="[[%1:]] [[%2:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC,MOD_MULTI_FORM_JED" >
+				</field>
+				<field 
+					type="list" default="1"
+					label="&lt;s&gt;[[%1:]] [[%2:]]&lt;/s&gt; [[%3:]],JSTATUS,JTOOLBAR_APPLY,MOD_MULTI_FORM_JED" 
+					class="chzn-color-state radio " showon="default!:default.php[AND]jed:jed.php">
+					<option value="1">JPUBLISHED</option>
+					<option value="0">JUNPUBLISHED</option>
+					<option value="2">JTOOLBAR_ARCHIVE</option>
+					<option value="-2">JTRASH</option>  
+				</field>
+
+
+
+
+				<field name="article_in_category"
+					   type="cat"  extension="com_content"
+					   show_root="false"   class=" "
+					   show_empty="true" showon="default:default.php"
+					   label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
+					   description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC">
+				</field>
+
+				<field
+					name="article_published" 
+					type="list" 
+					default="0"  showon="default:default.php[AND]article_in_category!:"
+					label="[[%1:]] [[%2:]],JSTATUS,JTOOLBAR_APPLY" 
+					class="chzn-color-state radio ">
+					<option value="1">JPUBLISHED</option>
+					<option value="0">JUNPUBLISHED</option>
+					<option value="2">JTOOLBAR_ARCHIVE</option>
+					<option value="-2">JTRASH</option>  
+				</field> 
+
+
+
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr&gt;"
+					description="" />
+
+				<field  type="note" label="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE" 
+					   description="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE_DESC"
+					   showon="default!:default.php[AND]jed!:jed.php" comment="for Beta version" />
+				<field  type="note" label="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE" 
+					   description="MOD_MULTI_FORM_STANDART_SETTINGS_NOTE_DESC"
+					   showon="default!:default.php[AND]jed:jed.php" comment="for Jed version" />  
+
+ 
+
+  
+				<field
+					name="popup"
+					type="radio"
+					default="1"
+					label="MOD_MULTI_FORM_POPUP_ENABLE_LABEL"
+					description="MOD_MULTI_FORM_POPUP_ENABLE_DESC"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">MOD_MULTI_FORM_POPUP_ON</option>
+					<option value="0">MOD_MULTI_FORM_POPUP_OFF</option>
+				</field>
+				<field
+					name="labelOut"
+					type="radio"
+					default="1"
+					label="MOD_MULTI_FORM_NAME_INPUT_INOUT_LABEL"
+					description="MOD_MULTI_FORM_NAME_INPUT_INOUT_DESC"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">JDEFAULT</option>
+					<option value="in">MOD_MULTI_FORM_NAME_INPUT_INOUT_IN</option>
+					<option value="above">MOD_MULTI_FORM_NAME_INPUT_INOUT_ABOVE</option>
+					<option value="edge">MOD_MULTI_FORM_NAME_INPUT_INOUT_EDGE</option>
+				</field>
+				<field
+					name="form_use_id"
+					type="sql"
+					value_field="title"
+					translate="true"
+					default=""
+					label="MOD_MULTI_FORM_USE_FORM_LBL"
+					description="MOD_MULTI_FORM_USE_FORM_DESC"
+					query="SELECT '' `value`, 'JGLOBAL_USE_GLOBAL' title UNION  (SELECT id `value`, CONCAT_WS('', 'id:',id,' - ',title,' /pos:',`position`,'/on:',published) title FROM #__modules WHERE `module` = 'mod_multi_form' ORDER BY position,ordering);" />
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>" 
+				/>   
+				<field
+					name="textbuttonpopup"
+					showon="popup:1"  group="JNOW"
+					type="textTranslate"
+					xtype="textTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					label="MOD_MULTI_FORM_TEXT_CALL_POPUP_LABEL"
+					description="MOD_MULTI_FORM_TEXT_CALL_POPUP_DESC"
+					default="MOD_MULTI_FORM_TEXT_CALL_POPUP_DEF"
+					translate_default="true"
+					class="call-popup" />
+
+
+				<field
+					name="textsubmit"
+					type="textTranslate"
+					translate_default="true"
+					addfieldpath="modules/mod_multi_form/fields/"
+					default="MOD_MULTI_FORM_TEXT_SUBMIT_DEF"
+					label="MOD_MULTI_FORM_TEXT_SUBMIT_LABEL"
+					description="MOD_MULTI_FORM_TEXT_SUBMIT_DESC"
+					required=""
+					class="" />
+				<field
+					name="textwhensending"
+					translate_default="true"
+					type="textTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					label="MOD_MULTI_FORM_TEXT_WHEN_SENDING_LABEL"
+					description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
+					default="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DEF"
+					required=""
+					class="" />
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr&gt;"
+					description="" />
+
+				<field
+					name="recipient_show"
+					type="radio"
+					default="replyto"
+					label="MOD_MULTI_FROM_RECIPIENT_LBL"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="">[[%1:]],Email Site</option>
+					<option value="replyto">[[%1:]],Email Reply</option>
+					<option value="administrator" class='hidden' >MOD_MULTI_FROM_ADMINISTRATOR_OPT</option>
+					<option value="user">JUSER</option>
+					<option value="subscriber">Subscriber</option>
+					<option value="custom">MOD_MULTI_FROM_OTHER_OPT</option>
+				</field>
+
+				<field
+					name="sendtoemail"
+					type="emailConfig"  showon="recipient_show:custom"
+					addfieldpath="/modules/mod_multi_form/fields/"
+					default="mailfrom"
+					label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_LABEL"
+					description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_DESC"
+					class="" />
+				<field
+					name="sendtoemailcc"
+					type="text"  showon="recipient_show:custom"
+					label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_CC_LABEL"
+					description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_CC_DESC"
+					required="false"
+					class="" />
+				<field
+					name="sendtoemailbcc"
+					type="email"  showon="recipient_show:custom"
+					label="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_BCC_LABEL"
+					description="MOD_MULTI_FORM_EMAIL_FIELD_RECIPIENT_BCC_DESC"
+					required="false"
+					class="" />
+				<field name="sendtouser" type="user"
+					   label="JUSER"  showon="recipient_show:user" 
+					   class=" " groups="8,7,5,6"		  />
+
+				<field
+					type="note"
+					default="" multiple="true"  showon="recipient_show:subscriber"
+					label="Mail will be received subscribers. " 
+				/>   
+				<field
+					name="subjectofmail"
+					translate_default="true"
+					type="textTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					default="MOD_MULTI_FORM_SUBJECT_DEF"
+					label="MOD_MULTI_FORM_SUBJECT_LABEL"
+					description="MOD_MULTI_FORM_SUBJECT_DESC"
+					class="" />
+
+
+
+
+
+ 
+ 
+ 
+
+
+
+
+
+
+ 
+				<field
+					type="spacer"
+					default=""  
+					label="&lt;hr>" 
+				/>   
+
+
+				<field 
+					name="textBeforeModule_show"
+					type="radio"
+					default="0"
+					label="[[%1:]],MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_BUTTON_CALL_FORM_DESC"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
+				</field>
+				<field 
+					name="textBeforeModule_1"
+					showon="textBeforeModule_show:1"
+					type="Modal_Article"
+					addfieldpath="administrator/components/com_content/models/fields/modal/"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_DESC"
+					class="article" />
+				<field
+					name="textBeforeModule_2"
+					showon="textBeforeModule_show:1"
+					type="EditorTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					value="MOD_MULTI_FORM_TEXT_BEFORE_BUTTON_CALL_FORM_DEF"
+					width="300"
+					height="350"
+					filter="raw"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_MODULE_DESC"
+					required="false" />
+
+
+
+ 
+				<field
+					name="textbeforeformShow"
+					type="radio"
+					default="0"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DESC"
+					class="btn-group btn-group-yesno ">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
+				</field>
+				<field
+					name="textbeforeform1"
+					showon="textbeforeformShow:1"
+					type="Modal_Article"
+					addfieldpath="administrator/components/com_content/models/fields/modal/"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
+					description="MOD_MULTI_FORM_TEXT_WHEN_SENDING_DESC"
+					class="article" />
+				<field
+					name="textbeforeform2"
+					showon="textbeforeformShow:1"
+					translate_default="true"
+					type="editorTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					dafalult="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DEF"
+					width="300px"
+					height="350"
+					filter="raw"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_FORM_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_FORM_DESC"
+					required="false"
+					class="" />
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr&gt;"
+					description="" />
 					
-<!--			<field
-				name="messageDoneId"
-				type="Modal_Article"
-				label="PLG_ORDER_PARAM_MAILDONE"
-				addfieldpath_1="administrator/components/com_content/src/Field/Modal/"
-				addfieldpath_2="administrator/components/com_content/models/fields/modal/"
-				addfieldprefix="Joomla\Component\Content\Administrator\Field"
-				class="article" />
-                    <field  
-                        name="article_id" 
-                        type="article"  hiddenLabel="true" 
-                        size="5" 
-                        default=""                    
-                        label="MOD_MULTIMODULE_FIELD_ARTICLESELECT_LABEL" 
-                        description="COM_CONTENT_CHANGE_ARTICLE" 
-                        Xaddfieldpath="/modules/mod_multi/fields"
-						
-                           showon="article_show:full[OR]article_show:intro[OR]article_show:content"
-                    />    
-		-->
-                <field
-                    name="textsuccesssend1"
-                    type="Modal_Article"
-                    label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
-                    Xaddfieldpath="administrator/components/com_content/models/fields/modal/"
+				<!--			<field
+						name="messageDoneId"
+						type="Modal_Article"
+						label="PLG_ORDER_PARAM_MAILDONE"
+						addfieldpath_1="administrator/components/com_content/src/Field/Modal/"
+						addfieldpath_2="administrator/components/com_content/models/fields/modal/"
+						addfieldprefix="Joomla\Component\Content\Administrator\Field"
+						class="article" />
+		<field  
+		name="article_id" 
+		type="article"  hiddenLabel="true" 
+		size="5" 
+		default=""
+		label="MOD_MULTIMODULE_FIELD_ARTICLESELECT_LABEL" 
+		description="COM_CONTENT_CHANGE_ARTICLE" 
+		Xaddfieldpath="/modules/mod_multi/fields"
+								
+		   showon="article_show:full[OR]article_show:intro[OR]article_show:content"
+		/>
+				-->
+				<field
+					name="textsuccesssend1"
+					type="Modal_Article"
+					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
+					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
+					Xaddfieldpath="administrator/components/com_content/models/fields/modal/"
 					Zaddfieldpath="administrator/components/com_content/src/Field/Modal/ArticleField.php"
 					Daddfieldpath="/administrator/components/com_content/src/Field/Modal/"
 					addfieldprefix="Joomla\Component\Content\Administrator\Field"
-				required="false"
-				select="true"
-				new="true"
-				edit="true"
-				clear="true"
-				propagate="true"
-				translate_label="true"
-				translateDefault="true"
-				filter="integer"
-				hint="12,23" 
-                    class="article" />
-				     
+					required="false"
+					select="true"
+					new="true"
+					edit="true"
+					clear="true"
+					propagate="true"
+					translate_label="true"
+					translateDefault="true"
+					filter="integer"
+					hint="12,23" 
+					class="article" />
+				 
 				
 				
-                <field
-                    name="textsuccesssend2"
-                    translate_default="true"
-                    type="editorTranslate"
-                    buttons="true"
-                    hide="readmore,pagebreak,module"
-                    height="350"
-                    filter="raw"
-                    label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
-                    default="MOD_MULTI_FORM_TEXT_SUCCESS_DEF"
-                    required="false"
-                    class="" />
-                <field
-                    name="textfailsend1"
-                    type="Modal_Article"
-                    label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
-                    addfieldpath="administrator/components/com_content/models/fields/modal/"
+				<field
+					name="textsuccesssend2"
+					translate_default="true"
+					type="editorTranslate"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					height="350"
+					filter="raw"
+					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
+					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
+					default="MOD_MULTI_FORM_TEXT_SUCCESS_DEF"
+					required="false"
+					class="" />
+				<field
+					name="textfailsend1"
+					type="Modal_Article"
+					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
+					addfieldpath="administrator/components/com_content/models/fields/modal/"
 					addfieldprefix="Joomla\Component\Content\Administrator\Field"
-				required="false"
-				select="true"
-				new="true"
-				edit="true"
-				clear="true"
-				propagate="true"
-				translate_label="true"
-				translateDefault="true"
+					required="false"
+					select="true"
+					new="true"
+					edit="true"
+					clear="true"
+					propagate="true"
+					translate_label="true"
+					translateDefault="true"
+					filter="integer"
+					hint="12,23" 
+					class="article" />
+				<field
+					name="textfailsend2"
+					translate_default="true"
+					type="editorTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					height="350"
+					filter="raw"
+					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
+					default="MOD_MULTI_FORM_TEXT_FAIL_DEF"
+					required="true"
+					class="" />
+
+
+				<field name="default" 
+					   type="filelist"   
+					   hide_default='false' hide_none='true'
+					   default="default.php" filter="default.php" fileFilter="default.php" 
+					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
+					   showon="default:1" /> 
+
+
+				<field name="jed" 
+					   type="filelist"   
+					   hide_default='false' hide_none='true'
+					   default="jed.php" filter="jed.php" fileFilter="jed.php" 
+					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
+					   showon="jed:1" /> 
+
+			</fieldset>
+
+			<fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
+					  addfieldpath="modules/mod_multi_form/field"> 
+
+			</fieldset>
+
+			<fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
+					  addfieldpath="modules/mod_multi_form/field"> 
+				<!--  
+				-->
+				<!-- 
+				<field
+				name="list_fields_"
+				type="Repeatable"
+				icon="list" 
+				description=""
+				label="MOD_MULTI_FORM_LIST_FIELD_LABEL"
+				default="{   &quot;namefield&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;nameforpost&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;typefield&quot;:[&quot;text&quot;,&quot;text&quot;], &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],  &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],&quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]   }">
+				<fields name="formfields">
+				<fieldset
+				hidden="true"
+				name="list_fields_modal"
+				repeat="true">
+				<field
+				name="namefield"
+				type="text"
+				label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
+				description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
+				class="" />
+				<field
+				name="nameforpost"
+				type="text"
+				label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
+				description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
+				class="" />
+				<field
+				name="typefield"
+				type="list" class="far fa-edit"
+				default=""
+				label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
+				description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
+				<option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+				<option class="text" value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
+				<option class="textarea" value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
+				<option class="editor" value="editor">[[%1:]],JEDITOR</option>
+				<option class="tel" value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
+				<option class="email" value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
+				<option class="number" value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
+				<option class="select" value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
+				<option class="radio" value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
+				<option class="file" value="file">File</option>
+				<option class="files" value="files">Files</option>
+				<option class="checkbox" value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
+				 
+				
+				<option class="time" value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
+				<option class="date" value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
+				<option class="datetime" value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
+				<option class="datetime-local" value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
+				<option class="week" value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
+				<option class="month" value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
+				<option class="image" value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
+				<option class="url" value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
+				<option class="password" value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
+				<option class="range" value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
+				
+				<option class="color" value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
+				<option class="hidden" value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
+				<option class="separate" value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
+				<option class="startblock" value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
+				<option class="finishblock" value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
+				</field>
+				<field
+				name="paramsfield"
+				label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+				size="30"
+				type="textarea"
+				description=""
+				default=""
+				class="params_type span2" />
+				<field
+				name="art_id"
+				label="JGLOBAL_ARTICLES"
+				type="text"
+				description="IDs [[%1:]],JGLOBAL_ARTICLES"
+				default=""
 				filter="integer"
-				hint="12,23" 
-                    class="article" />
-                <field
-                    name="textfailsend2"
-                    translate_default="true"
-                    type="editorTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    buttons="true"
-                    hide="readmore,pagebreak,module"
-                    height="350"
-                    filter="raw"
-                    label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
-                    default="MOD_MULTI_FORM_TEXT_FAIL_DEF"
-                    required="true"
-                    class="" />
-                
-                    
-                <field name="default" 
-                       type="filelist"   
-                       hide_default='false' hide_none='true'
-                       default="default.php" filter="default.php" fileFilter="default.php" 
-                       directory="modules/mod_multi_form/field/" exclude="" stripext="" 
-                       showon="default:1" /> 
-                    
-                    
-                <field name="jed" 
-                       type="filelist"   
-                       hide_default='false' hide_none='true'
-                       default="jed.php" filter="jed.php" fileFilter="jed.php" 
-                       directory="modules/mod_multi_form/field/" exclude="" stripext="" 
-                       showon="jed:1" /> 
-                
-            </fieldset>
+				hint="12,23"
+				class=" span1" />
+				  
+				<field
+				name="onoff"
+				type="radio"
+				default="1"
+				label="MOD_MULTI_FORM_ONOFF_LABEL"
+				description="MOD_MULTI_FORM_NO_LABEL"
+				class="btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
+				<option value="2">[[%1:]]*,JYES</option>
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+				</field>
+				  
+				</fieldset>
+				</fields>
+				</field>
+				
+				-->
 
-            <fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
-                addfieldpath="modules/mod_multi_form/field"> 
-                
-            </fieldset>
 
-            <fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
-                addfieldpath="modules/mod_multi_form/field"> 
-<!--              
--->
- <!--                 
-                <field
-                    name="list_fields_"
-                    type="Repeatable"
-                    icon="list" 
-                    description=""
-                    label="MOD_MULTI_FORM_LIST_FIELD_LABEL"
-                    default="{       &quot;namefield&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;nameforpost&quot;:[&quot;Name&quot;,&quot;Phone&quot;],       &quot;typefield&quot;:[&quot;text&quot;,&quot;text&quot;],         &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],      &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],        &quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]       }">
-                    <fields name="formfields">
-                        <fieldset
-                            hidden="true"
-                            name="list_fields_modal"
-                            repeat="true">
-                            <field
-                                name="namefield"
-                                type="text"
-                                label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
-                                class="" />
-                            <field
-                                name="nameforpost"
-                                type="text"
-                                label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
-                                class="" />
-                            <field
-                                name="typefield"
-                                type="list" class="far fa-edit"
-                                default=""
-                                label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
-                                <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
-                                <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
-                                <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
-                                <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
-                                <option class="tel"             value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
-                                <option class="email"             value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
-                                <option class="number"             value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
-                                <option class="select"             value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
-                                <option class="radio"             value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
-                                <option class="file"             value="file">File</option>
-                                <option class="files"             value="files">Files</option>
-                                <option class="checkbox"             value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
-         
+				<!--
+				<field name="note13" type="note" label="LOREMIPSUM" description="LOREMIPSUM_DESC" close="true" /> 
+				<sql primary="id">
+				SELECT id, title, text FROM #__content;
+				</sql>
+				<field type="insert" sql="INSERT ...">
+				<field/>
+				<field/>
+				<field/>
+				</insert>
+				<field name="" type="containier" label="">
+				<field/>
+				<field/>
+				</field>
+				<field name="edit" type="link" primary="id" label="Edit" target="_blank"
+				default="/administrator/index.php?option=com_content&task=article.edit&id={0}"
+				/>
+				<field name="edit2" type="links" primary="id" label="Edit" target="_blank">
+				<option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit1</option>
+				<option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit2</option>
+				<option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit3</option>
+				</field>
+				-->
+				<!--
+				   <field
+				label="JEDIT"
+				type="format" 
+				default="" 
+				hint="12,23" hiddenLabel="true"
+				class=" span1" >
+				<![CDATA[
+				<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
+				</field>
+				-->
+				<field 
+					name="list_fields"
+					type="gridfields"
+					label="New Table"
+ 
+					addfieldpath="modules/mod_multi_form/field"
+					creatable="true"
+					movable="true"
+					removable="true" 
+					removableClass="btn-sm"
+					removable-class="btn-sm"
+				>   
+					<default>
+						{
+						"namefield":["Name","Phone"],
+						"nameforpost":["Name","Phone"],
+						"typefield":["text","text"],
+						"paramsfield":["",""],
+						"art_id":["",""],
+						"onoff":["2","2"]
+						}
+					</default>
+					<field
+						name="namefield" 
+						type="text" 
+						label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
+						description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
+						class="" />
+					<field
+						name="nameforpost"
+						type="text"
+						label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
+						description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
+						class="" /> 
+					<field style="-width:10%"
+						   name="field"
+						   type="text"
+						   label="{Field}"
+						   description=""
+						   class=" w-5  form-control-sm" /> 
+					<field
+						name="typefield"
+						type="list" class="far fa-edit   form-select-sm"
+						default="" style="min-width: 100px;"
+						label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
+						description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
+						<option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+						<option class="text" value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
+						<option class="textarea" value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
+						<option class="editor" value="editor">[[%1:]],JEDITOR</option>
+						<option class="tel" value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
+						<option class="email" value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
+						<option class="number" value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
+						<option class="select" value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
+						<option class="radio" value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
+						<option class="file" value="file">File</option>
+						<option class="files" value="files">Files</option>
+						<option class="checkbox" value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
 
-                                <option class="time"             value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
-                                <option class="date"             value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
-                                <option class="datetime"             value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
-                                <option class="datetime-local"             value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
-                                <option class="week"             value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
-                                <option class="month"             value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
-                                <option class="image"             value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
-                                <option class="url"             value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
-                                <option class="password"             value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
-                                <option class="range"             value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
-                                
-                                <option class="color"             value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
-                                <option class="hidden"             value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
-                                <option class="separate"             value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
-                                <option class="startblock"             value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
-                                <option class="finishblock"             value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
-                            </field>
-                            <field
-                                name="paramsfield"
-                                label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
-                                size="30"
-                                type="textarea"
-                                description=""
-                                default=""
-                                class="params_type span2" />
-                            <field
-                                name="art_id"
-                                label="JGLOBAL_ARTICLES"
-                                type="text"
-                                description="IDs [[%1:]],JGLOBAL_ARTICLES"
-                                default=""
-                                filter="integer"
-                                hint="12,23"
-                                class=" span1" />
-                              
-                            <field
-                                name="onoff"
-                                type="radio"
-                                default="1"
-                                label="MOD_MULTI_FORM_ONOFF_LABEL"
-                                description="MOD_MULTI_FORM_NO_LABEL"
-                                class="btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
-                                <option             value="2">[[%1:]]*,JYES</option>
-                                <option             value="1">JYES</option>
-                                <option             value="0">JNO</option>
-                            </field>
-                                  
-                        </fieldset>
-                    </fields>
-                </field>
-                
--->
-                
-                
-<!--
-<field name="note13" type="note" label="LOREMIPSUM" description="LOREMIPSUM_DESC" close="true" /> 
-                    <sql primary="id">
-                        SELECT id, title, text FROM #__content;
-                    </sql>
-                    <field type="insert" sql="INSERT ...">
-                        <field/>
-                        <field/>
-                        <field/>
-                    </insert>
-                    <field name="" type="containier" label="">
-                        <field/>
-                        <field/>
-                    </field>
-                    <field name="edit" type="link" primary="id" label="Edit" target="_blank"
-                        default="/administrator/index.php?option=com_content&task=article.edit&id={0}"
-                    />
-                    <field name="edit2" type="links" primary="id" label="Edit" target="_blank">
-                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit1</option>
-                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit2</option>
-                        <option value="/administrator/index.php?option=com_content&task=article.edit&id={0}" class="" href="">Edit3</option>
-                    </field>
--->
-<!--
-   <field
-                                label="JEDIT"
-                                type="format" 
-                                default="" 
-                                hint="12,23" hiddenLabel="true"
-                                class=" span1" >
-                                <![CDATA[
-                                <a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
-                            </field>
--->
-                <field 
-                    name="list_fields"
-                    type="gridfields"
-                    label="New Table"
-                     
-                addfieldpath="modules/mod_multi_form/field"
-                    creatable="true"
-                    movable="true"
-                    removable="true" 
-                     removableClass="btn-sm"
-                     removable-class="btn-sm"
-                    >   
-                    <default>
-                        {
-                        "namefield":["Name","Phone"],
-                        "nameforpost":["Name","Phone"],
-                        "typefield":["text","text"],
-                        "paramsfield":["",""],
-                        "art_id":["",""],
-                        "onoff":["2","2"]
-                        }
-                    </default>
-                            <field
-                                name="namefield" 
-                                type="text" 
-                                label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
-                                class="" />
-                            <field
-                                name="nameforpost"
-                                type="text"
-                                label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
-                                description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
-                                class="" /> 
-                            <field style="-width:10%"
-                                name="field"
-                                type="text"
-                                label="{Field}"
-                                description=""
-                                class=" w-5  form-control-sm" /> 
-                            <field
-                                name="typefield"
-                                type="list" class="far fa-edit   form-select-sm"
-                                default="" style="min-width: 100px;"
-                                label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
-                                description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
-                                <option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
-                                <option class="text"             value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
-                                <option class="textarea"             value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
-                                <option class="editor"             value="editor">[[%1:]],JEDITOR</option>
-                                <option class="tel"             value="tel">MOD_MULTI_FORM_TYPE_FIELD_TELEPHONE</option>
-                                <option class="email"             value="email">MOD_MULTI_FORM_TYPE_FIELD_EMAIL</option>
-                                <option class="number"             value="number">MOD_MULTI_FORM_TYPE_FIELD_NUMBER</option>
-                                <option class="select"             value="select">MOD_MULTI_FORM_TYPE_FIELD_SELECT</option>
-                                <option class="radio"             value="radio">MOD_MULTI_FORM_TYPE_FIELD_RADIO</option>
-                                <option class="file"             value="file">File</option>
-                                <option class="files"             value="files">Files</option>
-                                <option class="checkbox"             value="checkbox">MOD_MULTI_FORM_TYPE_FIELD_CHECKBOX</option>
-                                
-                                
-                                <option class="time"             value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
-                                <option class="date"             value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
-                                <option class="datetime"             value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
-                                <option class="datetime-local"             value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
-                                <option class="week"             value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
-                                <option class="month"             value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
-                                <option class="image"             value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
-                                <option class="url"             value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
-                                <option class="password"             value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
-                                <option class="range"             value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
-                                
-                                <option class="color"             value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
-                                <option class="hidden"             value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
-                                <option class="separate"             value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
-                                <option class="startblock"             value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
-                                <option class="finishblock"             value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
-                            </field>
-                            <field
-                                name="paramsfield"
-                                label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
-                                size="30"
-                                type="textarea"  
-                                description=""
-                                default=""
-                                class="" />
-                            <field
-                                name="art_id"
-                                label="JGLOBAL_ARTICLES"
-                                type="text"
-                                description="IDs [[%1:]],JGLOBAL_ARTICLES"
-                                default=""
-                                filter="integer"
-                                hint="12,23"
-                                class="" />
-                            
-                            <field
-                                name="onoff"
-                                type="radio"
-                                default="1"
-                                label="MOD_MULTI_FORM_ONOFF_LABEL"
-                                description="MOD_MULTI_FORM_NO_LABEL"
-                                class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
-                                <option             value="2">[[%1:]]*,JYES</option>
-                                <option             value="1">JYES</option>
-                                <option             value="0">JNO</option>
-                            </field> 
-                            
-                     <!--         <field
-                                label="JEDIT"
-                                type="format" 
-                                default="" 
-                                hint="12,23" hiddenLabel="true"
-                                class=" span1" >
-                                <![CDATA[
-                                <a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
-                            </field> --> 
-                </field>
- <!--                 --> 
-            </fieldset>                  
 
-            <fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
-                <field
-                    name="work_type_require"
-                    type="radio"
-                    class="btn-group "
-                    default="0" 
-                    multiple="true"  
-                    label="MOD_MULTI_FROM_FIELD_FILTERTYPE_LABEL"   
-                >
-                    <option value="0">MOD_MULTI_FROM_FIELD_FILTERTYPEALL_LABEL</option>
-                    <option value="and">MOD_MULTI_FROM_FIELD_FILTERTYPEAND_LABEL</option>
-                    <option value="or">MOD_MULTI_FROM_FIELD_FILTERTYPEOR_LABEL</option>
-                </field>    
-                <field
-                    type="spacer" class="alert alert-secondary alert-error  show row-fluid btn btn-lg"
-                    showon="work_type_require:0"
-                        
-                    label=" 
+						<option class="time" value="time">MOD_MULTI_FORM_TYPE_FIELD_TIME</option>
+						<option class="date" value="date">MOD_MULTI_FORM_TYPE_FIELD_DATE</option>
+						<option class="datetime" value="datetime">MOD_MULTI_FORM_TYPE_FIELD_DATETIME</option>
+						<option class="datetime-local" value="datetime-local">MOD_MULTI_FORM_TYPE_FIELD_DATETIMELOCAL</option>
+						<option class="week" value="week">MOD_MULTI_FORM_TYPE_FIELD_WEEK</option>
+						<option class="month" value="month">MOD_MULTI_FORM_TYPE_FIELD_MONTH</option>
+						<option class="image" value="image">MOD_MULTI_FORM_TYPE_FIELD_IMAGE</option>
+						<option class="url" value="url">MOD_MULTI_FORM_TYPE_FIELD_URL</option>
+						<option class="password" value="password">MOD_MULTI_FORM_TYPE_FIELD_PASSWORD</option>
+						<option class="range" value="range">MOD_MULTI_FORM_TYPE_FIELD_RANGE</option>
+
+						<option class="color" value="color">MOD_MULTI_FORM_TYPE_FIELD_COLOR</option>
+						<option class="hidden" value="hidden">MOD_MULTI_FORM_TYPE_FIELD_HIDDEN</option>
+						<option class="separate" value="_separate">MOD_MULTI_FORM_TYPE_FIELD_SEPARATE</option>
+						<option class="startblock" value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
+						<option class="finishblock" value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
+					</field>
+					<field
+						name="paramsfield"
+						label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+						size="30"
+						type="textarea"  
+						description=""
+						default=""
+						class="" />
+					<field
+						name="art_id"
+						label="JGLOBAL_ARTICLES"
+						type="text"
+						description="IDs [[%1:]],JGLOBAL_ARTICLES"
+						default=""
+						filter="integer"
+						hint="12,23"
+						class="" />
+
+					<field
+						name="onoff"
+						type="radio"
+						default="1"
+						label="MOD_MULTI_FORM_ONOFF_LABEL"
+						description="MOD_MULTI_FORM_NO_LABEL"
+						class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
+						<option value="2">[[%1:]]*,JYES</option>
+						<option value="1">JYES</option>
+						<option value="0">JNO</option>
+					</field> 
+
+					<!-- <field
+					label="JEDIT"
+					type="format" 
+					default="" 
+					hint="12,23" hiddenLabel="true"
+					class=" span1" >
+					<![CDATA[
+					<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
+					</field> --> 
+				</field>
+				<!-- --> 
+			</fieldset>  
+
+			<fieldset name="assignment"  label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL"> 
+				<field
+					name="work_type_require"
+					type="radio"
+					class="btn-group "
+					default="0" 
+					multiple="true"  
+					label="MOD_MULTI_FROM_FIELD_FILTERTYPE_LABEL"   
+				>
+					<option value="0">MOD_MULTI_FROM_FIELD_FILTERTYPEALL_LABEL</option>
+					<option value="and">MOD_MULTI_FROM_FIELD_FILTERTYPEAND_LABEL</option>
+					<option value="or">MOD_MULTI_FROM_FIELD_FILTERTYPEOR_LABEL</option>
+				</field>
+				<field
+					type="spacer" class="alert alert-secondary alert-error  show row-fluid btn btn-lg"
+					showon="work_type_require:0"
+
+					label=" 
 &lt;h4 class=&quot;alert-heading row-fluid  text-center&quot;&gt; ↓ ↓  [[%1:]]  ↓ ↓ &lt;/h4&gt;,MOD_MULTI_FROM_FIELD_DISABLED_LBL" 
-                />
-                <field
-                    type="spacer"  class="alert alert-success show row-fluid btn btn-lg "
-                    showon="work_type_require!:0" 
-                    default=""
-                    label="
+				/>
+				<field
+					type="spacer"  class="alert alert-success show row-fluid btn btn-lg "
+					showon="work_type_require!:0" 
+					default=""
+					label="
 &lt;h4 class=&quot;alert-heading row-fluid text-center &quot;&gt; ↓ ↓  [[%1:]]  ↓ ↓ &lt;/h4&gt;,MOD_MULTI_FROM_FIELD_ENABLED_LBL" 
-                />
-                    
-                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="mainpage_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERMAINPAGE_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                    
-                    
-                    
-                    
-                    
-                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr&gt;
+				/>
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="mainpage_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERMAINPAGE_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+
+
+
+
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr&gt;
 &lt;style&gt; 
 .tab-pane.active > div.field-spacer > .control-label{
-    width: 100%!important;}
+width: 100%!important;}
 .control-group.field-spacer:before,
 .control-group.field-spacer:after{
 content: none;}
@@ -805,581 +805,581 @@ width: 100%;}
 
 &lt;/style&gt; 
 "
-                    description=""
-                />
-                    
-                <field
-                    name="mobile_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERMOBILEDEVICE_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                    
-                    
-                    
-                    
-                    
-                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="langs_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="JFIELD_LANGUAGE_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                <field
-                    name="langs"
-                    type="Languages"
-                    class="btn-group "
-                    default="*" 
-                    multiple="true"  
-                    label="JOPTION_SELECT_LANGUAGE"   
-                    showon="langs_is!:"
-                />  
-                    
-                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field  class="alert alert-warning  alert-info show row-fluid btn btn-lg"
-                            type="spacer"
-                            default=""
-                            label="
+					description=""
+				/>
+
+				<field
+					name="mobile_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERMOBILEDEVICE_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+
+
+
+
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="langs_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="JFIELD_LANGUAGE_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+				<field
+					name="langs"
+					type="Languages"
+					class="btn-group "
+					default="*" 
+					multiple="true"  
+					label="JOPTION_SELECT_LANGUAGE"   
+					showon="langs_is!:"
+				/>  
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field  class="alert alert-warning  alert-info show row-fluid btn btn-lg"
+					   type="spacer"
+					   default=""
+					   label="
 &lt;h4 class=&quot;alert-heading row-fluid text-center &quot;&gt; ↓ ↓  [[%1:]]  ↓ ↓ &lt;/h4&gt;,MOD_MULTI_FROM_FIELD_NO_LICENSED_LBL"
-                            description=""
-                            showon="default!:default.php[AND]jed!:jed.php"
-                />
-                <field  class="alert alert-warning  show row-fluid btn btn-lg"
-                            type="spacer"
-                            default=""
-                            label="
+					   description=""
+					   showon="default!:default.php[AND]jed!:jed.php"
+				/>
+				<field  class="alert alert-warning  show row-fluid btn btn-lg"
+					   type="spacer"
+					   default=""
+					   label="
 &lt;h4 class=&quot;alert-heading row-fluid text-center &quot;&gt; ↓ ↓  [[%1:]]  ↓ ↓ &lt;/h4&gt;,MOD_MULTI_FROM_FIELD_JED_LICENSED_LBL"
-                            description=""
-                            showon="default!:default.php[AND]jed:jed.php"
-                />
-                    
-                    
-                    
-                    
-                <!--<field name="menu_assigment" type="menuitem" default="0" label="Select a menu item" description="Select a menu item"
-                       showon="menu_is:only[OR]menu_is:without"                    >
-                    <option	value="0">JDEFAULT</option>
-                </field>-->
-                               
-                <field
-                    type="spacer" 
-                    showon="default!:default.php"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="menu_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_MENU_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                                
-                <field
-                    name="menu_assigment"
-                    type="sql"
-                    default="0"
-                    label="[[%1:]] ,MOD_MULTI_FROM_FIELD_MENUITEM_LABEL"
-                        
-                    multiple="true" key_field="id"    value_field="title" translate_default="true"  
-                    query="SELECT '- - All - -' title, 0 level, 0 id UNION(SELECT * FROM (
+					   description=""
+					   showon="default!:default.php[AND]jed:jed.php"
+				/>
+
+
+
+
+				<!--<field name="menu_assigment" type="menuitem" default="0" label="Select a menu item" description="Select a menu item"
+				   showon="menu_is:only[OR]menu_is:without">
+				<option	value="0">JDEFAULT</option>
+				</field>-->
+   
+				<field
+					type="spacer" 
+					showon="default!:default.php"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="menu_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_MENU_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+
+				<field
+					name="menu_assigment"
+					type="sql"
+					default="0"
+					label="[[%1:]] ,MOD_MULTI_FROM_FIELD_MENUITEM_LABEL"
+
+					multiple="true" key_field="id"value_field="title" translate_default="true"  
+					query="SELECT '- - All - -' title, 0 level, 0 id UNION(SELECT * FROM (
 SELECT CONCAT(if(level=1,'&#9733;',''), REPEAT('- ',level-1),title,IF(published=1,'','🚫'),IF(home,'&#127775;',''),' /',language) title, level, id /*, parent_id, lft, rgt, published, title, alias, path  , home, client_id, access*/
 FROM #__menu 
 WHERE client_id = 0  AND published >=0 AND level > 0
 ORDER BY lft)t) ;
 " 
-                    showon="menu_is:only[OR]menu_is:without"       />   
-                        
-                        
-                        
-                        
-                        
-                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="date_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERDATE_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="on">JENABLED</option>
-                </field>  
+					showon="menu_is:only[OR]menu_is:without"   />   
+
+
+
+
+
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="date_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERDATE_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="on">JENABLED</option>
+				</field>  
 				<field name="date_start" type="calendar" default="NOW"			filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
-					label="MOD_MULTI_FROM_FIELD_FILTERDATESTART_LABEL"     showon="date_is:on"  
-					showtime="false"  singleheader="true"  todaybutton="true"	filltable="true"  />     
+					   label="MOD_MULTI_FROM_FIELD_FILTERDATESTART_LABEL" showon="date_is:on"  
+					   showtime="false"  singleheader="true"  todaybutton="true"	filltable="true"  /> 
 				<field name="date_stop" type="calendar" default="NOW -1day"		filterformat="Y-m-d H:i:00" filter="USER_UTC" translateformat="false"
-					label="MOD_MULTI_FROM_FIELD_FILTERDATESTOP_LABEL"     showon="date_is:on"  
-					showtime="false"  singleheader="true" todaybutton="true"	filltable="true" 
-				/>     
-                        
-                        
-                        
-                                                                             
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="component_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENT_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                <field name="component_site" type="contenttype"
-                       label="Component"     showon="component_is:only[OR]component_is:without"  
-                       multiple="true" />        
-                      
-                                    
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="view_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENTVIEW_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>  
-                <field name="view_site" type="text" default="category, featured, article "
-                       label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENTVIEW_LABEL"      showon="view_is:only[OR]view_is:without"  
-                       multiple="true" />    
-                                                   
-                                                                       
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="domen_is"
-                    type="radio"
-                    class="btn-group btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERDOMEN_LABEL"
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>     
-                <field
-                    name="domen_site"
-                    type="assignment"   
-                    label="MOD_MULTI_FROM_FIELD_FILTERDOMENNAME_LABEL" description="THE NUMBER OF PRODUCTS IN ROW" 
-                    showon="domen_is:only[OR]domen_is:without"
-                />
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-                <field
-                    name="ip_user_is"
-                    type="radio"
-                    class="btn-group  btn-group-yesno"
-                    default=""
-                    label="MOD_MULTI_FROM_FIELD_FILTERIP_LABEL"  
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>     
-                <field
-                    name="ip_user"
-                    type="assignment"   
-                    label="MOD_MULTI_FROM_FIELD_FILTERIP_LABEL" description="THE NUMBER OF PRODUCTS IN ROW" 
-                    showon="ip_user_is:only[OR]ip_user_is:without"
-                />
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                /> 
-                <field
-                    name="is_debug"
-                    type="radio" 
-                    default=""  
-                    class="btn-group  btn-group-yesno "
-                    label="MOD_MULTI_FROM_FIELD_FILTERDEBUG_LABEL"
-                    description="url string 'index.php?deb=1'" 
-                >
-                    <option value="">JOFF</option>
-                    <option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
-                    <option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
-                </field>     
-                <field
-                    type="spacer"
-                    default=""
-                    label="&lt;hr>"
-                    description=""
-                />
-            </fieldset>     
-            <fieldset name="options"><!-- MOD_MULTI_FORM_SECONDARY_PARAMS -->
-                <field
-                    name="textbeforemassage"
-                    type="text"
-                    label="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_LABEL"
-                    description="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_DESC"
-                    default=""
-                    class="" />
-                <field
-                    name="sendfromemail"
-                    type="email"
-                    label="MOD_MULTI_FORM_EMAIL_SENDER_LABEL"
-                    description="MOD_MULTI_FORM_EMAIL_SENDER_DESC"
-                    required="false"
-                    class="" />
-                <field
-                    name="sendfromname"
-                    type="text"
-                    label="MOD_MULTI_FORM_NAME_SENDER_LABEL"
-                    description="MOD_MULTI_FORM_NAME_SENDER_DESC"
-                    required="false"
-                    class="" />
-                <field
-                    name="jsbeforesend"
-                    label="MOD_MULTI_FORM_BEFORE_SEND_CODE_LABEL"
-                    description="MOD_MULTI_FORM_BEFORE_SEND_CODE_DESC"
-                    size="30"
-                    type="textarea"
-                    default=""
-                    filter="raw"
-                    class="before-send" />
-                <field
-                    name="jsaftersend"
-                    label="MOD_MULTI_FORM_SPINE_CODE_LABEL"
-                    description="MOD_MULTI_FORM_SPINE_CODE_DESC"
-                    size="30"
-                    type="textarea"
-                    default=""
-                    filter="raw"
-                    class="ga-spine" />
-                <field
-                    name="css"
-                    label="CSS style"
-                    size="30"
-                    type="textarea"
-                    default=""
-                    filter="raw"
-                    class="ga-spine" />
-                
-                
-                <field
-                    name="clearaftersend"
-                    type="radio"
-                    default="0"
-                    label="MOD_MULTI_FORM_ONOFF_CLEAR_AFTER_SEND_LABEL"
-                    description="MOD_MULTI_FORM_ONOFF_CLEAR_AFTER_SEND_DESC"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">MOD_MULTI_FORM_ON_LABEL</option>
-                    <option value="0">MOD_MULTI_FORM_OFF_LABEL</option>
-                </field>
-                <field
-                    name="onoffjquery"
-                    type="radio"
-                    default="0"
-                    label="MOD_MULTI_FORM_ONOFF_JQUERY_LABEL"
-                    description="MOD_MULTI_FORM_ONOFF_JQUERY_DESC"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">GoogleAPI</option>
-                    <option value="0">InnerCMS</option>
-                </field>
-                <field
-                    name="icomoon"
-                    type="radio"
-                    default="1"
-                    label="IconMoon for btn Close"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">JENABLED</option>
-                    <option value="0">JDISABLED</option>
-                </field>
-                
-                <field name="versionScript"  type="hidden" default="1" value="1"/>
+					   label="MOD_MULTI_FROM_FIELD_FILTERDATESTOP_LABEL" showon="date_is:on"  
+					   showtime="false"  singleheader="true" todaybutton="true"	filltable="true" 
+				/> 
+
+
+
+ 
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="component_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENT_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+				<field name="component_site" type="contenttype"
+					   label="Component" showon="component_is:only[OR]component_is:without"  
+					   multiple="true" />
+  
+
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="view_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENTVIEW_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field>  
+				<field name="view_site" type="text" default="category, featured, article "
+					   label="MOD_MULTI_FROM_FIELD_FILTERCOMPONENTVIEW_LABEL"  showon="view_is:only[OR]view_is:without"  
+					   multiple="true" />
+   
+   
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="domen_is"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERDOMEN_LABEL"
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field> 
+				<field
+					name="domen_site"
+					type="assignment"   
+					label="MOD_MULTI_FROM_FIELD_FILTERDOMENNAME_LABEL" description="THE NUMBER OF PRODUCTS IN ROW" 
+					showon="domen_is:only[OR]domen_is:without"
+				/>
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+				<field
+					name="ip_user_is"
+					type="radio"
+					class="btn-group  btn-group-yesno"
+					default=""
+					label="MOD_MULTI_FROM_FIELD_FILTERIP_LABEL"  
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field> 
+				<field
+					name="ip_user"
+					type="assignment"   
+					label="MOD_MULTI_FROM_FIELD_FILTERIP_LABEL" description="THE NUMBER OF PRODUCTS IN ROW" 
+					showon="ip_user_is:only[OR]ip_user_is:without"
+				/>
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/> 
+				<field
+					name="is_debug"
+					type="radio" 
+					default=""  
+					class="btn-group  btn-group-yesno "
+					label="MOD_MULTI_FROM_FIELD_FILTERDEBUG_LABEL"
+					description="url string 'index.php?deb=1'" 
+				>
+					<option value="">JOFF</option>
+					<option value="only">MOD_MULTI_FROM_FIELD_FILTERWITH_LABEL</option>
+					<option value="without">MOD_MULTI_FROM_FIELD_FILTERWITHOUT_LABEL</option>
+				</field> 
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr>"
+					description=""
+				/>
+			</fieldset> 
+			<fieldset name="options"><!-- MOD_MULTI_FORM_SECONDARY_PARAMS -->
+				<field
+					name="textbeforemassage"
+					type="text"
+					label="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_LABEL"
+					description="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_DESC"
+					default=""
+					class="" />
+				<field
+					name="sendfromemail"
+					type="email"
+					label="MOD_MULTI_FORM_EMAIL_SENDER_LABEL"
+					description="MOD_MULTI_FORM_EMAIL_SENDER_DESC"
+					required="false"
+					class="" />
+				<field
+					name="sendfromname"
+					type="text"
+					label="MOD_MULTI_FORM_NAME_SENDER_LABEL"
+					description="MOD_MULTI_FORM_NAME_SENDER_DESC"
+					required="false"
+					class="" />
+				<field
+					name="jsbeforesend"
+					label="MOD_MULTI_FORM_BEFORE_SEND_CODE_LABEL"
+					description="MOD_MULTI_FORM_BEFORE_SEND_CODE_DESC"
+					size="30"
+					type="textarea"
+					default=""
+					filter="raw"
+					class="before-send" />
+				<field
+					name="jsaftersend"
+					label="MOD_MULTI_FORM_SPINE_CODE_LABEL"
+					description="MOD_MULTI_FORM_SPINE_CODE_DESC"
+					size="30"
+					type="textarea"
+					default=""
+					filter="raw"
+					class="ga-spine" />
+				<field
+					name="css"
+					label="CSS style"
+					size="30"
+					type="textarea"
+					default=""
+					filter="raw"
+					class="ga-spine" />
+
+
+				<field
+					name="clearaftersend"
+					type="radio"
+					default="0"
+					label="MOD_MULTI_FORM_ONOFF_CLEAR_AFTER_SEND_LABEL"
+					description="MOD_MULTI_FORM_ONOFF_CLEAR_AFTER_SEND_DESC"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">MOD_MULTI_FORM_ON_LABEL</option>
+					<option value="0">MOD_MULTI_FORM_OFF_LABEL</option>
+				</field>
+				<field
+					name="onoffjquery"
+					type="radio"
+					default="0"
+					label="MOD_MULTI_FORM_ONOFF_JQUERY_LABEL"
+					description="MOD_MULTI_FORM_ONOFF_JQUERY_DESC"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">GoogleAPI</option>
+					<option value="0">InnerCMS</option>
+				</field>
+				<field
+					name="icomoon"
+					type="radio"
+					default="1"
+					label="IconMoon for btn Close"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">JENABLED</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="versionScript"  type="hidden" default="1" value="1"/>
 				
-                <field
-                    name="select_editor"
-                    type="sql" 
-                    default="tinymce"
-                    label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
-                    description="JEDITOR_DESC" 
-                    readonly="1" disabled="1" 
-                    
-                    translate="true"
-                    multiple="false" key_field="value" value_field="value" translate_default="true"
-                        
-                    query="SELECT element value FROM #__extensions WHERE folder='editors' ;" />
-               
-                <!--
-                    
-                <field name="select_editor" type="editors" default="none" 
-                    label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
-                    description="JEDITOR_DESC"  />
-                -->
-                    
-                <field name="images_folder" type="folderlist" default="" label="JDIRECTORY_FILES" 
-                        description="JDIRECTORY_FILES_DESC"   filter="" fileFilter=""  exclude="" stripext="" directory="images" multiple="false"
-                /> 
-                <field
-                    name="debug"
-                    type="radio"
-                    default="0"
-                    label="Debug Ajax Not send Mail"
-                    description="&lt;b&gt;Demo:&lt;/b&gt; Not Send mail; &lt;b&gt;&lt;br&gt;Debug:&lt;/b&gt; Send with visible Errors " 
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="demo">Demo</option>
-                    <option value="debug">Debug</option>
-                    <option value="0">JDISABLED</option>
-                </field>
-                <field
-                    name="captcha"                      readonly="0" disabled="0"
-                    type="radio"
-                    default="0"
-                    label="CAPTCHA"
-                    description="Use default sytem captcha plugin"
-                    class="radio btn-group btn-group-yesno popup-yes-no">
-                    <option value="1">JENABLED</option>
-                    <option value="0">JDISABLED</option>
-                </field>
-                <!-- <field name="captcha" type="captcha" validate="captcha"
-                    namespace="contact"
-                    label="COM_CONTACT_CAPTCHA_LABEL"
-                    description="COM_CONTACT_CAPTCHA_DESC" >
-                </field> -->
-            </fieldset>
-            <fieldset name="advanced">
-                
+				<field
+					name="select_editor"
+					type="sql" 
+					default="tinymce"
+					label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
+					description="JEDITOR_DESC" 
+					readonly="1" disabled="1" 
+
+					translate="true"
+					multiple="false" key_field="value" value_field="value" translate_default="true"
+
+					query="SELECT element value FROM #__extensions WHERE folder='editors' ;" />
+   
+				<!--
 				
-                <field
-                    name="header_tag" 
-                    type="headertag" 
-                    label="[[%1:]],COM_MODULES_FIELD_HEADER_TAG_LABEL"
-                    description="COM_MODULES_FIELD_HEADER_TAG_DESC"
-                    class="chzn-color-state radio " 
+				<field name="select_editor" type="editors" default="none" 
+				label="&lt;b&gt;[[%1:]]&lt;/b&gt;,JEDITOR" 
+				description="JEDITOR_DESC"  />
+				-->
+
+				<field name="images_folder" type="folderlist" default="" label="JDIRECTORY_FILES" 
+					   description="JDIRECTORY_FILES_DESC"   filter="" fileFilter=""  exclude="" stripext="" directory="images" multiple="false"
+				/> 
+				<field
+					name="debug"
+					type="radio"
+					default="0"
+					label="Debug Ajax Not send Mail"
+					description="&lt;b&gt;Demo:&lt;/b&gt; Not Send mail; &lt;b&gt;&lt;br&gt;Debug:&lt;/b&gt; Send with visible Errors " 
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="demo">Demo</option>
+					<option value="debug">Debug</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<field
+					name="captcha"  readonly="0" disabled="0"
+					type="radio"
+					default="0"
+					label="CAPTCHA"
+					description="Use default sytem captcha plugin"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">JENABLED</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<!-- <field name="captcha" type="captcha" validate="captcha"
+				namespace="contact"
+				label="COM_CONTACT_CAPTCHA_LABEL"
+				description="COM_CONTACT_CAPTCHA_DESC" >
+				</field> -->
+			</fieldset>
+			<fieldset name="advanced">
+
+				
+				<field
+					name="header_tag" 
+					type="headertag" 
+					label="[[%1:]],COM_MODULES_FIELD_HEADER_TAG_LABEL"
+					description="COM_MODULES_FIELD_HEADER_TAG_DESC"
+					class="chzn-color-state radio " 
 					debug="false"
 					default="h5" >
-                    <option value="figcaption">&lt;figcaption></option>
-                    <option value="legend">&lt;legend></option>
-                    <option value="label">&lt;label></option> 
-                    <option value="summary">&lt;summary></option>  
+					<option value="figcaption">&lt;figcaption></option>
+					<option value="legend">&lt;legend></option>
+					<option value="label">&lt;label></option> 
+					<option value="summary">&lt;summary></option>  
 				</field>
 				
-                <field
-                    name="module_tag" debug="false"
-                    type="moduletag"   
-                    label="[[%1:]],COM_MODULES_FIELD_MODULE_TAG_LABEL"
-                    description="COM_MODULES_FIELD_MODULE_TAG_DESC"
-                    class="chzn-color-state radio "
-                    default="div" > 
-                    <option value="figure">&lt;figure></option> 
-                    <option value="fieldset">&lt;fieldset></option>
-                    <option value="li">&lt;li></option> 
-                    <option value="details">&lt;details></option>  
-                </field>
+				<field
+					name="module_tag" debug="false"
+					type="moduletag"   
+					label="[[%1:]],COM_MODULES_FIELD_MODULE_TAG_LABEL"
+					description="COM_MODULES_FIELD_MODULE_TAG_DESC"
+					class="chzn-color-state radio "
+					default="div" > 
+					<option value="figure">&lt;figure></option> 
+					<option value="fieldset">&lt;fieldset></option>
+					<option value="li">&lt;li></option> 
+					<option value="details">&lt;details></option>  
+				</field>
 				
 				
-<!--                <field name="module_tag" type="moduletag" class="fade hide"
-                       label="COM_MODULES_FIELD_MODULE_TAG_LABEL"
-                       description="COM_MODULES_FIELD_MODULE_TAG_DESC"
-                       default="div" />-->
-                
-                <field
-                    name="layout"
-                    type="modulelayout"
-                    label="JFIELD_ALT_LAYOUT_LABEL"
-                    default="_:default"
-                    description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-                <field
-                    name="stylefiles"
-                    type="filelist"
-                    Xfilter="css"
-                    fileFilter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
-                    xxfilter="^(?!(forAdmin.css)|(test.css)).*.css"
-                    xfilter="^(?!forAdmin.css).*.css"
-                    hide_default="true"
-                    hide_none="true"
-                    multiple="false"
-                    default="default.css"
-                    directory="modules/mod_multi_form/media/css/"
-                    exclude=""
-                    stripext=""
-                    label="Style"
-                    description="MOD_MULTI_FORM_COLOR_SCHEME_DESC">
-                </field>
-                            <field
-                                name="ui_bulma"
-                                type="hidden"
-                                default="0"
-                                label="MOD_MULTI_FORM_UIBULMA_LABEL"
-                                class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
-                                <option value="bulma/css/bulma.min.css">[[%1:]],JDEFAULT</option>
-                                <option value="bulma/css/bulma-rtl.min.css">Right to Left</option>
-                                <option value="0">JOFF</option>
-                            </field> 
-                <!--      <field
-                                    name="stylethemes"
-                                    type="filelist"
-                                    Xfilter="css"
-                                    fileFilter="^(theme_)[A-Za-z0-9]*(.css)"
-                                    hide_default="true"
-                                    hide_none="true"
-                                    multiple="false"
-                                    default="theme_dark.css"
-                                    directory="modules/mod_multi_form/media/css/"
-                                    exclude=""
-                                    stripext=""
-                                    label="MOD_MULTI_FORM_COLOR_SCHEME_LABEL"
-                                    description="MOD_MULTI_FORM_COLOR_SCHEME_DESC"></field>
-                -->
-                <field
-                    name="style_field"
-                    type="list"
-                    hide_default="true"
-                    hide_none="true"
-                    multiple="false"
-                    default=""
-                    label="Title field in"
-                    description="Add class style in field">
-                    <option value="">JDEFAULT</option>
-                    <option value="row">Row</option>
-                    <option value="column">Column</option>
-                    <option value="flex">Flex</option>
-                    <option value="grid">Grid</option>
-                    <option value="string">String</option>
-                </field>
-                <field
-                    name="style_width"
-                    type="list"
-                    hide_default="true"
-                    hide_none="true"
-                    multiple="false"
-                    label="Width Module"
-                    description="Width form"
-                    default="max460">
-                    <option value=" ">JOPTION_DO_NOT_USE</option>
-                    <!--<option value="max460">JDEFAULT</option>-->
-                    <option value="max310">Max 310</option>
-                    <option value="max460">Max 460</option>
-                    <option value="max640">Max 640</option>
-                    <option value="max920">Max 920</option>
-                    <option value="margin0">Margin 0</option>
-                    <option value="margin10">Margin 10</option>
-                    <option value="margin20">Margin 20</option>
-                    <option value="margin50">Margin 50</option>
-                    <option value="margin80">Margin 80</option>
-                    <option value="margin120">Margin 120</option>
-                </field>
-                <field
-                    name="fields_width"
-                    type="list"
-                    hide_default="true"
-                    hide_none="true"
-                    multiple="false"
-                    label="Width fields" 
-                    default="field256">
-                    <option value=" ">JOPTION_DO_NOT_USE</option>
-                    <!--<option value="max460">JDEFAULT</option>-->
-                    <option value="field180">Max 180</option>
-                    <option value="field240">Max 240</option>
-                    <option value="field256">Max 256</option>
-                    <option value="field300">Max 300</option>
-                    <option value="field440">Max 440</option>
-                    <option value="field600">Max 600</option>
-                    <option value="field740">Max 740</option>
-                    <option value="fieldFluid">100%</option>
-                </field>
-                <field
-                    name="classbuttonpopup"
-                    type="text"
-                    showon="popup:1"
-                    xtype="textTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    label="CSS class Button PopUp"
-                    default="btn btn-primary button  "
-                    class="call-popup" />
-                <field
-                    name="classbuttonsubmit"
-                    type="text"
-                    xtype="textTranslate"
-                    addfieldpath="modules/mod_multi_form/fields/"
-                    label="CSS class Button Submit"
-                    description="'btn button'-standart button, 'fluid'-width 100% button"
-                    default=" btn btn-primary button submit fluid "
-                    class="call-popup" />
-<!--                <field name="header_class" 
-                       type="text" 
-                       label="123"/>-->
-                <field
-                    name="moduleclass_sfx"
-                    type="text" default="fluid "
-                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-                <field
-                    name="classdialog"
-                    type="text" 
+				<!--<field name="module_tag" type="moduletag" class="fade hide"
+				label="COM_MODULES_FIELD_MODULE_TAG_LABEL"
+				description="COM_MODULES_FIELD_MODULE_TAG_DESC"
+				default="div" />-->
+
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					default="_:default"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="stylefiles"
+					type="filelist"
+					Xfilter="css"
+					fileFilter="^(?!(theme_*)|(forAdmin.css)|(test.css)).*.css"
+					xxfilter="^(?!(forAdmin.css)|(test.css)).*.css"
+					xfilter="^(?!forAdmin.css).*.css"
+					hide_default="true"
+					hide_none="true"
+					multiple="false"
+					default="default.css"
+					directory="modules/mod_multi_form/media/css/"
+					exclude=""
+					stripext=""
+					label="Style"
+					description="MOD_MULTI_FORM_COLOR_SCHEME_DESC">
+				</field>
+				<field
+					name="ui_bulma"
+					type="hidden"
+					default="0"
+					label="MOD_MULTI_FORM_UIBULMA_LABEL"
+					class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
+					<option value="bulma/css/bulma.min.css">[[%1:]],JDEFAULT</option>
+					<option value="bulma/css/bulma-rtl.min.css">Right to Left</option>
+					<option value="0">JOFF</option>
+				</field> 
+				<!--  <field
+				name="stylethemes"
+				type="filelist"
+				Xfilter="css"
+				fileFilter="^(theme_)[A-Za-z0-9]*(.css)"
+				hide_default="true"
+				hide_none="true"
+				multiple="false"
+				default="theme_dark.css"
+				directory="modules/mod_multi_form/media/css/"
+				exclude=""
+				stripext=""
+				label="MOD_MULTI_FORM_COLOR_SCHEME_LABEL"
+				description="MOD_MULTI_FORM_COLOR_SCHEME_DESC"></field>
+				-->
+				<field
+					name="style_field"
+					type="list"
+					hide_default="true"
+					hide_none="true"
+					multiple="false"
 					default=""
-                    label="CSS class Dialog Window"/>
-                <field
-                    name="cache"
-                    type="list"
-                    label="COM_MODULES_FIELD_CACHING_LABEL"
-                    description="COM_MODULES_FIELD_CACHING_DESC"
-                    default="1">
-                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-                    <option value="1">JGLOBAL_USE_GLOBAL</option>
-                </field>
-                
-            </fieldset>
-        </fields>
-    </config>
+					label="Title field in"
+					description="Add class style in field">
+					<option value="">JDEFAULT</option>
+					<option value="row">Row</option>
+					<option value="column">Column</option>
+					<option value="flex">Flex</option>
+					<option value="grid">Grid</option>
+					<option value="string">String</option>
+				</field>
+				<field
+					name="style_width"
+					type="list"
+					hide_default="true"
+					hide_none="true"
+					multiple="false"
+					label="Width Module"
+					description="Width form"
+					default="max460">
+					<option value=" ">JOPTION_DO_NOT_USE</option>
+					<!--<option value="max460">JDEFAULT</option>-->
+					<option value="max310">Max 310</option>
+					<option value="max460">Max 460</option>
+					<option value="max640">Max 640</option>
+					<option value="max920">Max 920</option>
+					<option value="margin0">Margin 0</option>
+					<option value="margin10">Margin 10</option>
+					<option value="margin20">Margin 20</option>
+					<option value="margin50">Margin 50</option>
+					<option value="margin80">Margin 80</option>
+					<option value="margin120">Margin 120</option>
+				</field>
+				<field
+					name="fields_width"
+					type="list"
+					hide_default="true"
+					hide_none="true"
+					multiple="false"
+					label="Width fields" 
+					default="field256">
+					<option value=" ">JOPTION_DO_NOT_USE</option>
+					<!--<option value="max460">JDEFAULT</option>-->
+					<option value="field180">Max 180</option>
+					<option value="field240">Max 240</option>
+					<option value="field256">Max 256</option>
+					<option value="field300">Max 300</option>
+					<option value="field440">Max 440</option>
+					<option value="field600">Max 600</option>
+					<option value="field740">Max 740</option>
+					<option value="fieldFluid">100%</option>
+				</field>
+				<field
+					name="classbuttonpopup"
+					type="text"
+					showon="popup:1"
+					xtype="textTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					label="CSS class Button PopUp"
+					default="btn btn-primary button  "
+					class="call-popup" />
+				<field
+					name="classbuttonsubmit"
+					type="text"
+					xtype="textTranslate"
+					addfieldpath="modules/mod_multi_form/fields/"
+					label="CSS class Button Submit"
+					description="'btn button'-standart button, 'fluid'-width 100% button"
+					default=" btn btn-primary button submit fluid "
+					class="call-popup" />
+				<!--<field name="header_class" 
+				type="text" 
+				label="123"/>-->
+				<field
+					name="moduleclass_sfx"
+					type="text" default="fluid "
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="classdialog"
+					type="text" 
+					default=""
+					label="CSS class Dialog Window"/>
+				<field
+					name="cache"
+					type="list"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+					default="1">
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+				</field>
+
+			</fieldset>
+		</fields>
+	</config>
 </extension>
