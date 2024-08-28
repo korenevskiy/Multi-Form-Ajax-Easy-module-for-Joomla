@@ -620,9 +620,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
             unset($this->columns[$name]);
 			return $name;
 		}
-	
-	$dataColumn = (object)$dataColumn;
-	
+		
+		$dataColumn = (object)$dataColumn;
+		
 //toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');		
 //toPrint($dataColumn->text,'$dataColumn->text');		
 		
