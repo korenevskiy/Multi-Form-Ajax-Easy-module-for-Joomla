@@ -5,10 +5,12 @@ Designed to increase sales of any sites. Sending an email and saving in article 
 [https://extensions.joomla.org/extension/multi-form-ajax-easy/](https://extensions.joomla.org/extension/multi-form-ajax-easy/)
 
 Download Last Release or copy link [mod_multi_form.zip](https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master)
+
+
+or
 ```
 https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master
 ```
-or
 
 [https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form.zip](https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form.zip)
 
