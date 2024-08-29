@@ -6,7 +6,7 @@
 Designed to increase sales of any sites. Sending an email and saving in article in the site category will allow you to follow all requests and allow you to create sections of reviews on the site.</description>
         <element>mod_multi_form</element>
         <type>module</type>
-        <version>5.1.02</version>
+        <version>5.2.03</version>
         <client>0</client>
         
         <infourl title="Multi Form Ajax Easy - from ExplorerOffice.ru/en/">http://explorer-office.ru/en/download</infourl>
