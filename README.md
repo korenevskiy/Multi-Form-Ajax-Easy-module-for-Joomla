@@ -8,6 +8,7 @@ Download Last Release or copy link [mod_multi_form.zip](https://github.com/koren
 ```
 https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/zipball/master
 ```
+or
 
 [https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form.zip](https://korenevskiy.github.io/Multi-Form-Ajax-Easy-module-for-Joomla/mod_multi_form.zip)
 
