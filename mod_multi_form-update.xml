@@ -11,7 +11,7 @@ Designed to increase sales of any sites. Sending an email and saving in article 
         
         <infourl title="Multi Form Ajax Easy - from ExplorerOffice.ru/en/">http://explorer-office.ru/en/download</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/archive/refs/tags/v5.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/korenevskiy/Multi-Form-Ajax-Easy-module-for-Joomla/archive/refs/tags/v5.2.zip</downloadurl>
             <downloadurl type="full" format="zip">http://explorer-office.ru/files/mod_multi_form_free.zip</downloadurl>
         </downloads>
         <php_minimum>8.0</php_minimum>
