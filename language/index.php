@@ -11,8 +11,8 @@
  * Technical Support:  Forum - //vk.com/placebilet
  * -------------------------------------------------------------------------
  **/ 
-//defined('_JEXEC') or die;
-//return;
+defined('_JEXEC') or die;
+return;
 
 
 
