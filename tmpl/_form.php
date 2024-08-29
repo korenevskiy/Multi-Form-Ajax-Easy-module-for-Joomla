@@ -146,7 +146,8 @@ JHtml::script("modules/$module->module/media/js/url$min.js",[],[ 'defer' => TRUE
 //	$param->scriptver;
 //}
 
-$versionScript = $param->debug == 'debug'? time() : ($param->versionScript ?: file_get_contents(JPATH_ROOT . '/modules/mod_multi_form/media/MD5SUM'));
+$fileMD5Sum = JPATH_ROOT . '/modules/mod_multi_form/media/MD5SUM';
+$versionScript = $param->debug == 'debug'? time() : ($param->versionScript ?: file_exists($fileMD5Sum) ? file_get_contents($fileMD5Sum) : '');
 $wa->registerAndUseScript('multiForm', "modules/$module->module/media/js/form$min.js",
 		['version' => ($versionScript?:'auto'), 'relative' => false, 'detectDebug' => ($min?:true)], ['defer' => true]);
 //JHtml::script("modules/$module->module/media/js/typed.js"); 
