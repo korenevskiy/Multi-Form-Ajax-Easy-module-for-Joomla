@@ -6,13 +6,13 @@
 	client="site">
 	<name>Multi Form Ajax Easy</name>
 	<creationDate>2020-05-01</creationDate>
-	<modificationsDate>2023-01-26,2024-03-07,2024-03-07,2024-03-25,2024-05-26</modificationsDate>
-	<modificationDate>2024-08-28</modificationDate>
+	<modificationsDate>2023-01-26,2024-03-07,2024-03-07,2024-03-25,2024-05-26,2024-08-28</modificationsDate>
+	<modificationDate>2025-06-22</modificationDate>
 	<author>Korenevskiy Sergei</author>
 	<authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
 	<copyright>Copyright (C) 2017 All rights reserved.</copyright>
 	<license>GNU General Public License version 2, or later.</license>
-	<version>5.2.03</version>
+	<version>5.3.00</version>
 	<element>mod_multi_form</element>
 	<description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
 	<files>
@@ -23,7 +23,9 @@
 		<folder>field</folder>
 		<folder>layouts</folder>
 		<folder>language</folder>
+		<folder>libraries</folder>
 		<folder>media</folder>
+		<folder>options</folder>
 		<folder>tmpl</folder>
 	</files>
 	<languages>
@@ -46,10 +48,50 @@
 				
 				<field
 					type="translate"
-				/>
+					><![CDATA[ 
+
+ 
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+//console.clear();
+const form = document.getElementById('module-form');
+const baseUrl = (document.querySelector('base[href]') ?? {'href':''}).href; 
+
+//console.log(baseUrl); 
+
+if(baseUrl && (window.location.pathname != '/administrator/index.php' || baseUrl !=  window.location.origin) ){
+	for(let el of Array.from(document.querySelectorAll('.mod_multi_lib'))){
+
+		if(el.tagName.toLowerCase() == 'script'){
+			const script = document.createElement('script');
+			if(el.getAttribute('src') == null) continue;
+			script.setAttribute('src', baseUrl + el.getAttribute('src'));
+			//script.setAttribute('async', '');
+			script.setAttribute('modLibs', '');
+			script.setAttribute('type', el.getAttribute('type'));
+			form.appendChild(script);
+		}
+		if(el.tagName.toLowerCase() == 'link'){
+			const script = document.createElement('link');
+			if(el.getAttribute('href') == null) continue;
+			script.setAttribute('href', baseUrl + el.getAttribute('href'));
+			//script.setAttribute('async', '');
+			script.setAttribute('rel', el.getAttribute('rel'));
+			script.setAttribute('type', el.getAttribute('type'));
+			script.setAttribute('modLibs', '');
+			form.appendChild(script);
+		}
+	}
+}
+});
+</script>
+				
+]]>
+				</field>
 
 
-				<field type="test"  icon='eye-open'/>   
+				<field type="test" name="hash_test"  icon='eye-open'/>   
  
   
 				<field  type="note" label="MOD_MULTI_FORM_FREE_VERSION_NOTE" showon="default!:default.php[AND]jed!:jed.php" heading="h4"
@@ -97,14 +139,21 @@
 
 
 
-
-				<field name="article_in_category"
-					   type="cat"  extension="com_content"
-					   show_root="false"   class=" "
-					   show_empty="true" showon="default:default.php"
-					   label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
-					   description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC">
-				</field>
+<!--				<field	name="article_in_category"
+						type="cat"  extension="com_content"
+						show_root=""   class=" "
+						show_empty="true" showon="default:default.php"
+						label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
+						description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC">
+				</field>-->
+				<field	name="article_in_category" 
+						type="category"
+						extension="com_content"
+						label="[[%1:]],MOD_MULTI_FORM_CATEGORY_ARTICLE_LABEL"
+						description="MOD_MULTI_FORM_CATEGORY_ARTICLE_DESC"
+				>
+					<option value="">JOPTION_DO_NOT_USE</option>  
+				</field> 
 
 				<field
 					name="article_published" 
@@ -156,9 +205,10 @@
 					description="MOD_MULTI_FORM_NAME_INPUT_INOUT_DESC"
 					class="radio btn-group btn-group-yesno popup-yes-no">
 					<option value="1">JDEFAULT</option>
-					<option value="in">MOD_MULTI_FORM_NAME_INPUT_INOUT_IN</option>
+					<option value="0">JHIDE</option>
+					<option value="before">MOD_MULTI_FORM_NAME_INPUT_INOUT_BEFORE</option>
 					<option value="above">MOD_MULTI_FORM_NAME_INPUT_INOUT_ABOVE</option>
-					<option value="edge">MOD_MULTI_FORM_NAME_INPUT_INOUT_EDGE</option>
+					<option value="after">MOD_MULTI_FORM_NAME_INPUT_INOUT_AFTER</option>
 				</field>
 				<field
 					name="form_use_id"
@@ -177,7 +227,8 @@
 				/>   
 				<field
 					name="textbuttonpopup"
-					showon="popup:1"  group="JNOW"
+					showon="popup:1"  
+										group="JNOW"
 					type="textTranslate"
 					xtype="textTranslate"
 					addfieldpath="modules/mod_multi_form/field/"
@@ -272,18 +323,180 @@
 
 
 
-
-
- 
- 
  
 
+				<field
+					type="spacer"
+					default=""
+					label="&lt;hr&gt;"
+					description="" />
+					
+					
+				<field
+					name="orderLink"
+					type="radio"
+					label="MOD_MULTI_FORM_ORDERLINK_LBL"
+					default="1"
+					class="radio btn-group btn-group-yesno popup-yes-no">
+					<option value="1">JALL</option>
+					<option value="0">JHIDE</option>
+					<option value="mail">Mail</option>
+					<option value="message">Message</option>
+				</field>					
+					
+					
+				<!--			<field
+						name="messageDoneId"
+						type="Modal_Article"
+						label="PLG_ORDER_PARAM_MAILDONE"
+						addfieldpath_1="administrator/components/com_content/src/Field/Modal/"
+						addfieldpath_2="administrator/components/com_content/models/field/modal/"
+						addfieldprefix="Joomla\Component\Content\Administrator\Field"
+						class="article" />
+		<field  
+		name="article_id" 
+		type="article"  hiddenLabel="true" 
+		size="5" 
+		default=""
+		label="MOD_MULTIMODULE_FIELD_ARTICLESELECT_LABEL" 
+		description="COM_CONTENT_CHANGE_ARTICLE" 
+		Xaddfieldpath="/modules/mod_multi/field"
+								
+		   showon="article_show:full[OR]article_show:intro[OR]article_show:content"
+		/>
+				-->
 
 
+				<field name="default" 
+					   type="filelist"   
+					   hide_default='false' hide_none='true'
+					   default="default.php" filter="default.php" fileFilter="default.php" 
+					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
+					   showon="default:1" /> 
 
 
+				<field name="jed" 
+					   type="filelist"   
+					   hide_default='false' hide_none='true'
+					   default="jed.php" filter="jed.php" fileFilter="jed.php" 
+					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
+					   showon="jed:1" /> 
 
- 
+			</fieldset>
+
+			<fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
+					  addfieldpath="modules/mod_multi_form/field"> 
+			</fieldset>
+
+			<fieldset name="messages" label="MOD_MULTI_FORM_TEXT_MESSAGES"  groupByFieldset="true"
+					  addfieldpath="modules/mod_multi_form/field"> 
+
+				<field
+					name="textdonesend_id"
+					type="Modal_Article"
+					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
+					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
+					Xaddfieldpath="administrator/components/com_content/models/field/modal/"
+					Zaddfieldpath="administrator/components/com_content/src/Field/Modal/ArticleField.php"
+					Daddfieldpath="/administrator/components/com_content/src/Field/Modal/"
+					addfieldprefix="Joomla\Component\Content\Administrator\Field"
+					required="false"
+					select="true"
+					new="true"
+					edit="true"
+					clear="true"
+					propagate="true"
+					translate_label="true"
+					filter="integer"
+					hint="12,23" 
+					class="article" />
+				 
+				
+				
+				<field
+					name="textdonesend_message"
+					translate_default="true"
+					type="editorTranslate"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					height="350"
+					filter="raw"
+					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
+					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
+					default="MOD_MULTI_FORM_TEXT_SUCCESS_DEF"
+					required="false"
+					class="" />
+				<field
+					name="textfailsend_id"
+					type="Modal_Article"
+					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
+					addfieldpath="administrator/components/com_content/models/field/modal/"
+					addfieldprefix="Joomla\Component\Content\Administrator\Field"
+					required="false"
+					select="true"
+					new="true"
+					edit="true"
+					clear="true"
+					propagate="true"
+					translate_label="true"
+					filter="integer"
+					hint="12,23" 
+					class="article" />
+				<field
+					name="textfailsend_message"
+					translate_default="true"
+					type="editorTranslate"
+					addfieldpath="modules/mod_multi_form/field/"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					height="350"
+					filter="raw"
+					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
+					default="MOD_MULTI_FORM_TEXT_FAIL_DEF"
+					required="false"
+					class="" />
+				
+				<field
+					type="spacer"
+					default=""  
+					label="&lt;hr>" 
+				/>   
+
+				<field
+					name="textmailsend_id"
+					type="Modal_Article"
+					label="MOD_MULTI_FORM_TEXT_MAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_MAIL_DESC"
+					addfieldpath="administrator/components/com_content/models/field/modal/"
+					addfieldprefix="Joomla\Component\Content\Administrator\Field"
+					required="false"
+					select="true"
+					new="true"
+					edit="true"
+					clear="true"
+					propagate="true"
+					translate_label="true"
+					filter="integer"
+					hint="12,23" 
+					class="article" />
+				<field
+					name="textmailsend_message"
+					translate_default="true"
+					type="editorTranslate"
+					addfieldpath="modules/mod_multi_form/field/"
+					buttons="true"
+					hide="readmore,pagebreak,module"
+					height="350"
+					filter="raw"
+					label="MOD_MULTI_FORM_TEXT_MAIL_LABEL"
+					description="MOD_MULTI_FORM_TEXT_MAIL_DESC"
+					default="MOD_MULTI_FORM_TEXT_MAIL_DEF"
+					required="false"
+					class="" />
+				
+				
 				<field
 					type="spacer"
 					default=""  
@@ -362,126 +575,9 @@
 					required="false"
 					class="" />
 
-
-				<field
-					type="spacer"
-					default=""
-					label="&lt;hr&gt;"
-					description="" />
-					
-				<!--			<field
-						name="messageDoneId"
-						type="Modal_Article"
-						label="PLG_ORDER_PARAM_MAILDONE"
-						addfieldpath_1="administrator/components/com_content/src/Field/Modal/"
-						addfieldpath_2="administrator/components/com_content/models/field/modal/"
-						addfieldprefix="Joomla\Component\Content\Administrator\Field"
-						class="article" />
-		<field  
-		name="article_id" 
-		type="article"  hiddenLabel="true" 
-		size="5" 
-		default=""
-		label="MOD_MULTIMODULE_FIELD_ARTICLESELECT_LABEL" 
-		description="COM_CONTENT_CHANGE_ARTICLE" 
-		Xaddfieldpath="/modules/mod_multi/field"
-								
-		   showon="article_show:full[OR]article_show:intro[OR]article_show:content"
-		/>
-				-->
-				<field
-					name="textsuccesssend1"
-					type="Modal_Article"
-					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
-					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
-					Xaddfieldpath="administrator/components/com_content/models/field/modal/"
-					Zaddfieldpath="administrator/components/com_content/src/Field/Modal/ArticleField.php"
-					Daddfieldpath="/administrator/components/com_content/src/Field/Modal/"
-					addfieldprefix="Joomla\Component\Content\Administrator\Field"
-					required="false"
-					select="true"
-					new="true"
-					edit="true"
-					clear="true"
-					propagate="true"
-					translate_label="true"
-					translateDefault="true"
-					filter="integer"
-					hint="12,23" 
-					class="article" />
-				 
-				
-				
-				<field
-					name="textsuccesssend2"
-					translate_default="true"
-					type="editorTranslate"
-					buttons="true"
-					hide="readmore,pagebreak,module"
-					height="350"
-					filter="raw"
-					label="MOD_MULTI_FORM_TEXT_SUCCESS_LABEL"
-					description="MOD_MULTI_FORM_TEXT_SUCCESS_DESC"
-					default="MOD_MULTI_FORM_TEXT_SUCCESS_DEF"
-					required="false"
-					class="" />
-				<field
-					name="textfailsend1"
-					type="Modal_Article"
-					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
-					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
-					addfieldpath="administrator/components/com_content/models/field/modal/"
-					addfieldprefix="Joomla\Component\Content\Administrator\Field"
-					required="false"
-					select="true"
-					new="true"
-					edit="true"
-					clear="true"
-					propagate="true"
-					translate_label="true"
-					translateDefault="true"
-					filter="integer"
-					hint="12,23" 
-					class="article" />
-				<field
-					name="textfailsend2"
-					translate_default="true"
-					type="editorTranslate"
-					addfieldpath="modules/mod_multi_form/field/"
-					buttons="true"
-					hide="readmore,pagebreak,module"
-					height="350"
-					filter="raw"
-					label="MOD_MULTI_FORM_TEXT_FAIL_LABEL"
-					description="MOD_MULTI_FORM_TEXT_FAIL_DESC"
-					default="MOD_MULTI_FORM_TEXT_FAIL_DEF"
-					required="true"
-					class="" />
-
-
-				<field name="default" 
-					   type="filelist"   
-					   hide_default='false' hide_none='true'
-					   default="default.php" filter="default.php" fileFilter="default.php" 
-					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
-					   showon="default:1" /> 
-
-
-				<field name="jed" 
-					   type="filelist"   
-					   hide_default='false' hide_none='true'
-					   default="jed.php" filter="jed.php" fileFilter="jed.php" 
-					   directory="modules/mod_multi_form/field/" exclude="" stripext="" 
-					   showon="jed:1" /> 
-
 			</fieldset>
 
-			<fieldset name="description" _label="Table Fields" _class="haha" groupByFieldset="true"
-					  addfieldpath="modules/mod_multi_form/field"> 
-
-			</fieldset>
-
-			<fieldset name="table_fieldsx" label="Table Fields" class="haha" groupByFieldset="true"
+			<fieldset name="table_fieldsx" label="MOD_MULTI_FORM_FIELDSET_TABLE" class="haha" groupByFieldset="true"
 					  addfieldpath="modules/mod_multi_form/field"> 
 <!--			-->
 <!-- 
@@ -491,26 +587,26 @@
 				icon="list" 
 				description=""
 				label="MOD_MULTI_FORM_LIST_FIELD_LABEL"
-				default="{   &quot;namefield&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;nameforpost&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;typefield&quot;:[&quot;text&quot;,&quot;text&quot;], &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],  &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],&quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]   }">
+				default="{   &quot;field_label&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;placeholder&quot;:[&quot;Name&quot;,&quot;Phone&quot;],   &quot;field_type&quot;:[&quot;text&quot;,&quot;text&quot;], &quot;paramsfield&quot;:[&quot;&quot;,&quot;&quot;],  &quot;art_id&quot;:[&quot;&quot;,&quot;&quot;],&quot;onoff&quot;:[&quot;2&quot;,&quot;2&quot;]   }">
 				<fields name="formfields">
 				<fieldset
 				hidden="true"
 				name="list_fields_modal"
 				repeat="true">
 				<field
-				name="namefield"
+				name="field_label"
 				type="text"
 				label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
 				description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
 				class="" />
 				<field
-				name="nameforpost"
+				name="placeholder"
 				type="text"
 				label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
 				description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
 				class="" />
 				<field
-				name="typefield"
+				name="field_type"
 				type="list" class="far fa-edit"
 				default=""
 				label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
@@ -619,10 +715,12 @@
 				<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
 				</field>
 -->
+			
+			
 				<field 
 					name="list_fields"
 					type="gridfields"
-					label="New Table"
+					label="Fields"
  
 					addfieldpath="modules/mod_multi_form/field"
 					creatable="true"
@@ -630,41 +728,47 @@
 					removable="true" 
 					removableClass="btn-sm"
 					removable-class="btn-sm"
+
 				>   
 					<default>
 						{
-						"namefield":["Name","Phone"],
-						"nameforpost":["Name","Phone"],
-						"typefield":["text","text"],
-						"paramsfield":["",""],
+						"field_label":["Name","Phone"],
+						"placeholder":["",""],
+						"field_type":["text","text"],
+						"option_params":["",""],
 						"art_id":["",""],
 						"onoff":["2","2"]
 						}
 					</default>
 					<field
-						name="namefield" 
+						name="field_label" 
 						type="text" 
 						label="MOD_MULTI_FORM_TITLE_FIELD_LABEL"
 						description="MOD_MULTI_FORM_TITLE_FIELD_DESC"
-						class="" />
+						_required="false"
+						translateLabel="true"
+						/>
 					<field
-						name="nameforpost"
+						name="placeholder"
 						type="text"
-						label="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_LABEL"
-						description="MOD_MULTI_FORM_TITLE_FIELD_FOR_MESSAGE_DESC"
-						class="" /> 
+						label="MOD_MULTI_FORM_TITLE_FIELD_HINT"
+						/> 
 					<field style="-width:10%"
-						   name="field"
+						   name="field_name"
 						   type="text"
-						   label="{Field}"
+						   label="name={Field}"
 						   description=""
 						   class=" w-5  form-control-sm" /> 
 					<field
-						name="typefield"
-						type="list" class="far fa-edit   form-select-sm"
-						default="" style="min-width: 100px;"
+						name="field_type"
+						type="options" class="far fa-edit   form-select-sm"
+						default="text" style="min-width: 100px;"
 						label="MOD_MULTI_FORM_TYPE_FIELD_LABEL"
-						description="MOD_MULTI_FORM_TYPE_FIELD_DESC">
+						description="MOD_MULTI_FORM_TYPE_FIELD_DESC"
+						_required="true" 
+						onchange="
+document.getElementById('module-form').dispatchEvent(new CustomEvent('selectTypeField',{detail:{name:this.value,id:this.id,control:this}}));
+//console.log('onchange=!!! ',this,this.value,this.id)">
 						<option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
 						<option class="text" value="text">MOD_MULTI_FORM_TYPE_FIELD_TEXT</option>
 						<option class="textarea" value="textarea">MOD_MULTI_FORM_TYPE_FIELD_TEXTAREA</option>
@@ -696,30 +800,53 @@
 						<option class="startblock" value="_htmltagstart">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_START</option>
 						<option class="finishblock" value="_htmltagfinish">MOD_MULTI_FORM_TYPE_FIELD_HTML_TAG_FINISH</option>
 					</field>
+ 
+
 					<field
-						name="paramsfield"
+						name="option_params"
+						type="btn"
 						label="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
-						size="30"
-						type="textarea"  
-						description=""
-						default=""
-						class="" />
+						description="MOD_MULTI_FORM_FIELD_PARAMETERS_LABEL"
+						class="btn btn-sm btn-outline-secondary "
+						parentclass="center"
+						style="max-width:80px;"
+						filter="html"
+						translateLabel="true"
+						_click="console.log(123)"
+						_open="console.log(this)"
+					>
+						<![CDATA[ <i class='fa fa-cog' aria-hidden='true'></i> ]]>
+					</field>
 					<field
-						name="art_id"
-						label="JGLOBAL_ARTICLES"
-						type="text"
-						description="IDs [[%1:]],JGLOBAL_ARTICLES"
-						default=""
+						name="sort_show"
+						label="Sort show"
+						description="Sorting of the displayed message."
+						type="number"
+						min="0"
+						default="0"
 						filter="integer"
-						hint="12,23"
-						class="" />
+						class="form-control form-control form-control-sm sort" 
+						parentclass="center"/>
+					<field
+						name="sort_mail"
+						label="Sort mail"
+						description="Sorting messages in an email."
+						type="number"
+						min="0"
+						default="0"
+						style="width:30px"
+						width="30"
+						filter="integer"
+						class="form-control form-control form-control-sm sort" 
+						parentclass="center"/>
 
 					<field
 						name="onoff"
-						type="radio"
-						default="1"
+						type="radio" 
 						label="MOD_MULTI_FORM_ONOFF_LABEL"
 						description="MOD_MULTI_FORM_NO_LABEL"
+						default="1"
+						_layout="joomla.form.field.radio.switcher"
 						class="btn-group-sm btn-group-toggle  btn-group btn-sm _btn-group-yesno  _button btn-mini btn_ input_small _input-mini ">
 						<option value="2">[[%1:]]*,JYES</option>
 						<option value="1">JYES</option>
@@ -736,6 +863,46 @@
 					<a href="/administrator/index.php?option=com_modules&view=module&layout=edit&id=$id" target="_blank">%1$s</a> ]]>
 					</field> --> 
 				</field>
+				
+				
+				
+				
+				
+				<field
+					name="frame"
+					label="Url IFRAME: "
+					type="hash" 
+					default=""
+					hiddenLabel="true"
+					class=" span1 btn-group"
+					parentclass="btn-group"
+				>
+				</field>
+				
+				<field
+					name="api"
+					label="Url API: "
+					type="hash" 
+					default=""
+					hiddenLabel="true"
+					class=" span1 btn-group"
+					parentclass="btn-group"
+				>
+				</field>
+				
+				<field
+					name="ajax"
+					label="Url AJAX: "
+					description="For redirect form"
+					type="hash" 
+					default=""
+					hiddenLabel="true"
+					class=" span1 btn-group"
+					parentclass="btn-group"
+				>
+					
+				</field>
+
 <!-- --> 
 			</fieldset>  
 
@@ -1068,13 +1235,6 @@ ORDER BY lft)t) ;
 			</fieldset> 
 			<fieldset name="options"><!-- MOD_MULTI_FORM_SECONDARY_PARAMS -->
 				<field
-					name="textbeforemassage"
-					type="text"
-					label="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_LABEL"
-					description="MOD_MULTI_FORM_TEXT_BEFORE_MESSAGE_DESC"
-					default=""
-					class="" />
-				<field
 					name="sendfromemail"
 					type="email"
 					label="MOD_MULTI_FORM_EMAIL_SENDER_LABEL"
@@ -1112,7 +1272,7 @@ ORDER BY lft)t) ;
 					size="30"
 					type="textarea"
 					default=""
-					filter="raw"
+					filter="html"
 					class="ga-spine" />
 
 
@@ -1174,13 +1334,15 @@ ORDER BY lft)t) ;
 				<field
 					name="debug"
 					type="radio"
-					default="0"
-					label="Debug Ajax Not send Mail"
-					description="&lt;b&gt;Demo:&lt;/b&gt; Not Send mail; &lt;b&gt;&lt;br&gt;Debug:&lt;/b&gt; Send with visible Errors " 
+					default=""
+					label="Top/Demo Not send Mail"
+					description="&lt;b&gt;Top/Demo:&lt;/b&gt; Not Send mail; &lt;b&gt;&lt;br&gt;Debug:&lt;/b&gt; allways dialog top" 
 					class="radio btn-group btn-group-yesno popup-yes-no">
 					<option value="demo">Demo</option>
-					<option value="debug">Debug</option>
-					<option value="0">JDISABLED</option>
+					<option value="top">Top</option>
+					<option value="errors">Errors</option>
+					<option value="get">?deb=multiForm</option>
+					<option value="">JDISABLED</option>
 				</field>
 				<field
 					name="captcha"  readonly="0" disabled="0"
@@ -1358,29 +1520,29 @@ ORDER BY lft)t) ;
 					default=" btn btn-primary button submit fluid "
 					class="call-popup" />
 				<!--<field name="header_class" 
-				type="text" 
-				label="123"/>-->
-				<field
-					name="moduleclass_sfx"
-					type="text" default="fluid "
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field
-					name="classdialog"
-					type="text" 
+                       type="text" 
+                       label="123"/>-->
+                <field
+                    name="moduleclass_sfx"
+                    type="text" default="fluid "
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+                <field
+                    name="classdialog"
+                    type="text" 
 					default=""
-					label="CSS class Dialog Window"/>
-				<field
-					name="cache"
-					type="list"
-					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC"
-					default="1">
-					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-					<option value="1">JGLOBAL_USE_GLOBAL</option>
-				</field>
-
-			</fieldset>
-		</fields>
-	</config>
+                    label="CSS class Dialog Window"/>
+                <field
+                    name="cache"
+                    type="list"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC"
+                    default="1">
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                </field>
+                
+            </fieldset>
+        </fields>
+    </config>
 </extension>

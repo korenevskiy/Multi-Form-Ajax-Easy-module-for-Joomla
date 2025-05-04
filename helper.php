@@ -7,6 +7,7 @@
  * @extension  Multi Extension
  * @subpackage Modules
  * @license    GNU/GPL, see LICENSE.php
+ * @author		Korenevskiy Sergei.B
  * @link       http://exoffice/download/joomla
  * mod_multi_form 
  */
@@ -26,9 +27,14 @@ use Joomla\CMS\Plugin\PluginHelper as JPluginHelper;
 use Joomla\CMS\Session\Session as JSession;
 use Joomla\CMS\Captcha\Captcha as JCaptcha;
 
+use Joomla\CMS\Form\FormHelper as JFormHelper;
+
 		
 use Joomla\CMS\Form\Field\ListField as JFormFieldList;
 use \Joomla\CMS\Form\FormField as JFormField; 
+
+use \Joomla\Module\MultiForm\Site\Option as OptionField;
+use \Joomla\Module\MultiForm\Site\OptionData;
 
 //use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 //use Joomla\CMS\Layout\LayoutHelper as JLayoutHelper;
@@ -45,18 +51,43 @@ if(!function_exists('toPrint') && file_exists(JPATH_ROOT . '/functions.php')){
 // toPrint(null,'' ,0,'');
 }
 
+include_once __DIR__ . "/libraries/option.php";
+include_once __DIR__ . "/libraries/optiondata.php";
+include_once __DIR__ . "/libraries/modulehelper.php";
+
+if(empty(class_exists('\Reg'))){
+	include_once __DIR__ . "/libraries/reg.php";
+}
+
+defined('JPATH_MODMULTIFORM') || define('JPATH_MODMULTIFORM', __DIR__);
+
+//toPrint(null,'' ,0,'');
+//toPrint(JFactory::getApplication()->input,'POST' ,0,'message');
+
 class modMultiFormHelper {
-    public static function constructor($param = []) {
+    public static function constructor($param = null) {
         //static $path_base;
         if(isset(static::$min))
             return;
 //        JFactory::getApplication()->getConfig()->get('error_reporting','default')
 		//$param->debug != 'debug' && 
-        static::$min = ! JDEBUG && in_array(JFactory::getConfig()->get('error_reporting','default'), ['default','none','']) ? '.min' : ''; // default, none, simple, maximum, development
+        static::$min = ! JDEBUG && in_array(JFactory::getApplication()->getConfig()->get('error_reporting','default'), ['default','none','']) ? '.min' : ''; // default, none, simple, maximum, development
 //        static::$min = ! JDEBUG;
         
-        
-//        echo "<pre>".JFactory::getConfig()->get('error_reporting','default')."</pre>";
+        $user = JFactory::getApplication()->getIdentity();
+		if($user->authorise('core.admin') || in_array(8, $user->groups)){
+			$wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
+	
+			$wa->registerAndUseScript('multiForm.jqueryUIcustom', 'modules/mod_multi_form/media/js/jquery-ui-1.9.2.custom.min.js', ['version' => 'auto', 'relative' => true], ['defer' => true]);
+			$wa->registerAndUseScript('multiForm.fontawesome', 'modules/mod_multi_form/media/css/fontawesome-free-5.12.0-web/css/solid.min.js', ['version' => 'auto', 'relative' => true], ['defer' => true]);	
+			$wa->registerAndUseStyle('multiForm.fontawesomeStyleMin', 'modules/mod_multi_form/media/css/fontawesome-free-5.12.0-web/css/fontawesome.min.css', ['version' => 'auto', 'relative' => true]);
+			$wa->registerAndUseStyle('multiForm.fontawesomeStyleReg', 'modules/mod_multi_form/media/css/fontawesome-free-5.12.0-web/css/regular.min.css', ['version' => 'auto', 'relative' => true]);
+//			$wa->registerAndUseStyle('multiForm.fontawesomeStyleReg2', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css', []);
+			
+			$wa->registerAndUseStyle('multiForm.style', 'modules/mod_multi_form/media/css/forAdmin.css', ['version' => 'auto', 'relative' => true]);
+			$wa->registerAndUseScript('multiForm.script', 'modules/mod_multi_form/media/js/forAdmin.js', ['version' => 'auto','relative' => true, 'detectDebug' => true], ['defer' => true]);
+		}
+//        echo "<pre>".JFactory::getApplication()->getConfig()->get('error_reporting','default')."</pre>";
 //        echo "<pre>".static::$min."</pre>";
         
         //JFactory::getDocument()->setBase(JUri::root());
@@ -202,12 +233,14 @@ class modMultiFormHelper {
      * @return  object|boolean|JException  Menu item data object on success, boolean false or JException instance on error
      */
     public static function getArticle($pk = null)
-    {   if(empty($pk))
-             return '';
-        
+    {   if(empty($pk)){
+			return '';
+		}
+		
+		
 		$user = JFactory::getUser();
 
-        static $_item;
+		static $_item;
                 
         if(is_null($_item)){
             $_item = [];
@@ -223,7 +256,7 @@ class modMultiFormHelper {
 				
 				$query = $db->getQuery(true)
 					->select(
-                                                'a.id, a.asset_id, a.title, a.alias, a.introtext, ' . //  a.fulltext,
+							'a.id, a.asset_id, a.title, a.alias, a.introtext, ' . //  a.fulltext,
 							'a.state, a.catid, a.created, a.created_by, a.created_by_alias, ' .
 							// Use created if modified is 0
 							'CASE WHEN a.modified = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.modified END as modified, ' .
@@ -292,6 +325,8 @@ class modMultiFormHelper {
 				$data = $db->loadObject();
 //echo "<-<$id>->"; 
 //toPrint($query,'$query',0,'pre',true);
+//file_put_contents(__DIR__.'/_helper.txt', __LINE__. " queryDB: helper.php===== \$query($pk):\n".print_r((string)$query,true)."  \n\n" , FILE_APPEND);
+
 
                 if(empty($data)){
 					$_item[$pk]= '';
@@ -416,7 +451,7 @@ class modMultiFormHelper {
             
             $lenght = strpos($id, "//");
             if($lenght)
-                $paramsfield = substr($id, 0, $lenght); 
+                $id = substr($id, 0, $lenght); 
             $articles = str_replace([' ',',','.','\n'], ';', $id);
             $ids = explode(";", $articles);
         }
@@ -485,22 +520,26 @@ class modMultiFormHelper {
         }
         return $intro;
     }
-
-        /**
-         * Формируем поля
-         * @param object $allparams  Параметры полей из конфигурации модуля XML
-         * @param int $moduleid  ИД модуля
-         * @param bool $labelOut вывод полей в группах с описаниями 
-         * @param bool $style_field Класс для порядка названий с полями
-         * @return array массив полей 
-         */
+	
+	static function is_JSON(...$args) {
+		json_decode(...$args);
+		return (json_last_error()===JSON_ERROR_NONE); //JSON_ERROR_SYNTAX
+	}
+	
+	/**
+	 * Формируем поля
+	 * @param object $allparams  Параметры полей из конфигурации модуля XML
+	 * @param int $moduleid  ИД модуля
+	 * @param bool $labelOut вывод полей в группах с описаниями 
+	 * @param bool $style_field Класс для порядка названий с полями
+	 * @return array массив полей 
+	 */
     public static function buildFields($allparams, $moduleid, $labelOut, $style_field){//формируем поля для вывода на странице
-        $fieldbuiding = array();
-        $poryadokF = 0;
-        
+        $fieldbuiding = [];
 //        echo "<pre>allparams <br>". print_r($allparams, true). "</pre>";
 //        echo "<pre>allparams <br>". print_r(JFactory::getApplication()->input, true). "</pre>";
 //return;		
+		
 
 
 //        toPrint($allparams,'$allparams') ;
@@ -510,39 +549,74 @@ class modMultiFormHelper {
 		if(empty($allparams))
 			$allparams = new stdClass;
 		
-//        empty($allparams->namefield) && $allparams->namefield = [];
-//if(static::$debug){
+//        empty($allparams->field_label) && $allparams->field_label = [];
+//if($moduleid == 175){//static::$debug
 //ini_set('display_errors', '1');
 //ini_set('display_startup_errors', '1');
 //error_reporting(E_ALL);
 //echo "<pre>". print_r($allparams, true). "</pre>";
 //return [];
-
-//toPrint();
-//toPrint($i,'$i',0,'pre',true); 
-//toPrint($allparams,'$allparams',0,'pre',true); 
-//toPrint($allparams->typefield,'$allparams->typefield',0,'pre',true); 
-//toPrint($allparams->art_id,'$allparams->art_id',0,'pre',true); 
-//toPrint($list_fields,'$layout',0,'pre',true); 
-	
 //}
-//echo "<pre>". print_r($allparams, true). "</pre>";
-        foreach($allparams->namefield ?: [] as $i => $namefield){
+		$allparams->nameinput = [];
 
-            $namefield      = $allparams->namefield[$i]		?? $namefield;
-            $nameforpost    = $allparams->nameforpost[$i]	?? $namefield;
-            $typefield      = $allparams->typefield[$i]		?? 'text';
-            $paramsfield    = $allparams->paramsfield[$i]	?? '';
-            $art_id         = $allparams->art_id[$i]		?? 0; 
-            $onoff          = $allparams->onoff[$i]			?? 1;
+//		foreach($allparams->field_label ?: [] as $i => $field_label){
+//			$allparams->nameinput[$i] = ($allparams->field_type[$i] ?? 'text') . $i . $moduleid;
+//		}
+//toPrint( $allparams,' $allparams ',0,$moduleid==175? 'pre':'',true);		
+//echo " $moduleid \$allparams buildFields()566 <pre>". print_r($allparams, true). "</pre>";
+
+//echo "<br><br><pre> \$allparams->onoff:  count ONOFF:".  count($allparams->onoff)." ". print_r($allparams->onoff, true). " </pre> ";
+//								["dataField"=>$fieldB, "type"=>$field_type, "id"=>$nameField, "title"=>$field_label, "require"=>$reqstar, "intro"=>$intro ];  
+//$fieldbuiding[] = ['dataField' => "<br><br><pre style='align-self:start'> \$allparams:  count  :".  count([])." ". print_r($allparams, true). " </pre> "];
+
+        foreach((array)$allparams->onoff ?: [] as $i => $onoff){
+		
+//			$onoff          = $onoff ?? 0; //$allparams->onoff[$i]			?? 1;
+			
+            if(empty($onoff))
+                continue;
+			
+			
+            $field_type		= $allparams->field_type[$i]	?? 'text';
+            $field_label	= $allparams->field_label[$i]	?? '';
+            $placeholder	= $allparams->placeholder[$i]	?? '';
+            $option_params	= $allparams->option_params[$i]	?? ''; //field_params option_params $paramsfield
+            
+			
+			$art_id = 0;
+			$intro	= '';
+			
+			if(static::is_JSON($option_params)){
+				$option_params	= new \Reg($option_params);
+				$art_id = $option_params->art_id ?: 0;
+			}
+			if($art_id){
+				$intro = static::getArticles((int)$art_id);
+			}
+			if(is_int($option_params) && empty($intro)){
+                $intro = static::getArticles((int)$option_params);
+			}
+			
+            if($intro)
+				$intro = "<intro>$intro</intro>";
+			
+            
+            $nameField		= $allparams->field_name[$i] ?? ''	?: $field_type.$i.$moduleid;
+			
+			$allparams->nameinput[$i] = $nameField;
             $required		= $onoff == 2;
+			
+		
+//echo $field_label.' '.$onoff ."\n";
+//toPrint($field_label,'$field_label',0,'pre',true);
+			
 //if(static::$debug){
+//toPrint($i,'$i',0,'pre',true);
 //toPrint();
-//toPrint($i,'$i',0,'pre',true); 
-//toPrint($typefield,'$typefield',0,'pre',true); 
-//	
+//toPrint($nameField,'$nameField-'.$i,0,'pre',true);
+//toPrint($allparams->field_name[$i],'$allparams->field_name-'.$i,0,'pre',true);
 //}
-    //        toPrint(null, "$typefield $required: $namefield",0, TRUE, TRUE);
+//			toPrint(null, "$field_type $required: $field_label",0, TRUE, TRUE);
 
             $reqstar = $regstartag = $requiredField = '';
 
@@ -552,72 +626,144 @@ class modMultiFormHelper {
                     $regstartag = "<span class='required'>*</span>";
             }
 
-            $nameforfield 	= $typefield.$i.$moduleid;
-//			$regstartag .= " $nameforfield ";
+//			$regstartag .= " $nameField ";
+//toPrint($nameField,'$nameField-'.$i,0,'pre',true);
 
-            $valueforfield = JFactory::getApplication()->input->getString($nameforfield, '');
+            $valueforfield = JFactory::getApplication()->input->getString($nameField, '');
 
-//$regstartag .= " $typefield $nameforfield -  $valueforfield ";
-            $intro = "$art_id";
+//$regstartag .= " $field_type $nameField -  $valueforfield ";
 
-            if(empty($onoff)) 
-                continue;
 
-    //        if($paramsfield && in_array($typefield, ['text','textarea','string','editor','legend']))
-    //            $intro = "<intro>$paramsfield</intro>";
+//                        toPrint($nameField,'$nameField');
 
-            if($art_id){ //$paramsfield && in_array($typefield, ["article","text_art","textarea_art","editor_art"])
-
-                $intro = static::getArticles($art_id);
-
-                if($intro)
-                    $intro = "<intro>$intro</intro>";
-            }
-//                        toPrint($nameforfield,'$nameforfield');
-
+//toPrint($field_label,'$field_label',0,'pre',true);
 //toPrint($i,'$i',0,'pre',true); 
 //toPrint($art_id,'$art_id',0,'pre',true);
 //toPrint($intro,'$intro',0,'pre',true); 
-    switch($typefield){
+	$attributes = '';
+	$inputtag = 'input';
+	$names = '';
+
+    switch($field_type){
 		
         case "": 
-            if(empty($namefield))
-                $fieldB = $intro;
-            elseif($paramsfield)
-                $fieldB = "<$paramsfield id='$nameforfield' class='legend mfFieldGroup form-group $style_field' $requiredField ><label >$namefield$regstartag</label>$intro</$paramsfield>";
-            else
-                $fieldB = "<div id='$nameforfield' class='legend mfFieldGroup form-group $style_field' $requiredField ><label  for='$nameforfield'>$namefield$regstartag</label>$intro</div>";
+			
+			if($labelOut != '0')
+				$fieldB = "<label title='$placeholder'>$field_label</label> $intro";
+			if(in_array($labelOut, ['before','after','above', '1']) )
+				$fieldB = "<div id='$nameField' class='legend mfFieldGroup form-group $style_field' $requiredField >$fieldB </div>";				
+            if(empty($field_label) || $labelOut == '0')
+                $fieldB = $field_label .' '. $intro;
         break;    
-                        
-                
-                    
+		
+		
+		
 		case "hidden":
-			$fieldB = "<input id='$nameforfield' class='hidden input' type='hidden' $requiredField name='$nameforfield' value='$valueforfield' placeholder='$namefield$regstar'>$intro";
+			$fieldB = "<input id='$nameField' class='hidden input' type='hidden' $requiredField name='$nameField' value='$valueforfield' >$intro";
 		break;
+
+		case "tel":
+            $mask = $option_params?:'+999(999) 999-9999';
+			$attributes = "data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\" ";
+			
+            $script = "jQuery(function($){";
+            if(in_array($labelOut, ['in',0])){
+                $script .= " $('#$nameField').mask('$mask'); ";
+            }
+            $script .= "$('#$nameField').inputmask({";
+                        //$script .= "'mask': '$mask',"; 
+			$script .= "'oncomplete': function(){ $('#$nameField').attr('data-allready', '1'); }," ;
+			$script .= "'onincomplete': function(){ $('#$nameField').attr('data-allready', '0'); },";
+			$script .= "});"; 
+			$script .= "});"; 
+                        
+			JFactory::getDocument()->addScriptDeclaration($script);
+		
+			  
+        //$field_type
+		case "range":
+		case "number":
+//$regstartag .= " $field_type $nameField -  $valueforfield ";
+            $paramsf = explode('-', $option_params);
+            $attributes .= isset($paramsf[0]) && $paramsf[0] ? " min='".(int)trim($paramsf[0])."'" : '';
+            $attributes .= isset($paramsf[1]) && $paramsf[1] ? " max='".(int)trim($paramsf[1])."'" : '';
+			$valueforfield = $valueforfield == '' && isset($paramsf[0]) ? (int)$paramsf[0] : (int)$valueforfield;
+
+		
+		case "time":
+		case "date":
+		case "datetime":
+		case "datetime-local":
+		case "week":
+		case "month":
+			$attributes = $field_type == "files" ? 'multiple':'';
+			$names = $field_type == "files" ? '[]':'';
+			$valueforfield = $valueforfield ?: \Joomla\CMS\Date\Date::getInstance()->format('Y-m-d');			
+//			value="2017-06-01";  d-m-Y
+		
+		case "image":
+			$attributes = " src='$valueforfield' ";
+		
                 
-    
-        //$typefield
+		case "files":
+			$attributes = $field_type == "files" ? 'multiple':'';
+			$names = $field_type == "files" ? '[]':'';
+		
+		case "color":
+            $fieldB = '';
+			$valueforfield = $valueforfield ?: "#424242";
+		
+		
+        //$field_type
+		case "text":
 		case "password":
 		case "url":
-		case "text":
-			if(in_array($labelOut, ['edge','above',1]) ){
-                                $fieldB = "<div class='form-group mfFieldGroup $typefield $style_field'><label for='$nameforfield' class='text'>$namefield$regstartag</label>";
-				$fieldB .= "<input id='$nameforfield' class='form-control input  $typefield' type='$typefield' $requiredField name='$nameforfield' value='$valueforfield' >$intro";
+		case "email":
+		case "tel":
+		case "range":
+		case "number":
+		case "time":
+		case "date":
+		case "datetime":
+		case "datetime-local":
+		case "week":
+		case "month":
+		case "image":
+		case "file":
+		case "files":
+		case "color":
+		
+//toPrint($labelOut,'$labelOut',0,'pre',true);
+			if($labelOut === '1'){ 
+				$fieldB = "<label for='$nameField' class='text form-group  $field_type $style_field'  title='$placeholder'>$field_label$regstartag<br>";
+				$fieldB .= "<input id='$nameField' class='form-control input  $field_type' type='$field_type' $requiredField $attributes name='$nameField$names' value='$valueforfield' title='$placeholder' placeholder='$placeholder'>$intro";
+				$fieldB .= "</label>";
+			}
+			elseif(in_array($labelOut, ['before','after','above']) ){
+				$fieldB = "<div class='form-group mfFieldGroup $field_type $style_field'>";
+				$fieldB .= "<label for='$nameField' class='text'  title='$placeholder'>$field_label$regstartag</label>";
+				$fieldB .= "<input id='$nameField' class='form-control input  $field_type' type='$field_type' $requiredField $attributes name='$nameField$names' value='$valueforfield' title='$placeholder' placeholder='$placeholder'>$intro";
 				$fieldB .= "</div>";
 			}else{
-                                $fieldB = "<input id='$nameforfield' class='form-control input  $typefield' type='$typefield' $requiredField name='$nameforfield' value='$valueforfield' placeholder='$namefield$reqstar'>$intro";
+				$fieldB = "<input id='$nameField' class='form-control input  $field_type' type='$field_type' $requiredField $attributes name='$nameField$names' value='$valueforfield' title='$field_label' placeholder='$placeholder$reqstar'>$intro";
 			}
 		break;
-                
+        
 		case "textarea":                    
-			if(in_array($labelOut, ['edge','above',1])){
-                                $fieldB = "<div class='form-group mfFieldGroup textarea $style_field'><label for='$nameforfield' class='textarea'>$namefield$regstartag</label>";
-				$fieldB .= "<textarea id='$nameforfield' type='textarea' class='form-control input textarea' $requiredField name='$nameforfield' value='' rows='5' cols='45'>$valueforfield</textarea>$intro";
+			if($labelOut === '1'){ 
+				$fieldB = "<label for='$nameField' class='text form-group  $field_type $style_field'  title='$placeholder'>$field_label$regstartag<br>";
+				$fieldB .= "<textarea id='$nameField' class='form-control input  $field_type' type='$field_type' $requiredField name='$nameField' title='$placeholder' placeholder='$placeholder'>$valueforfield</textarea>$intro";
+				$fieldB .= "</label>";
+			}
+			elseif(in_array($labelOut, ['before','after','above'])){
+				$fieldB = "<div class='form-group mfFieldGroup textarea $style_field'><label for='$nameField' class='textarea' title='$placeholder' >$field_label$regstartag</label>";
+				$fieldB .= "<textarea id='$nameField' type='textarea' class='form-control input textarea' $requiredField name='$nameField' value='' rows='5' cols='45' title='$placeholder' placeholder='$placeholder'>$valueforfield</textarea>$intro";
 				$fieldB .= "</div>";
 			}else{
-				$fieldB = "<textarea id='$nameforfield' type='textarea' class='form-control textarea input' $requiredField name='$nameforfield' value='' placeholder='$namefield$reqstar' rows='5' cols='45'>$valueforfield</textarea>$intro";
+				$fieldB = "<textarea id='$nameField' type='textarea' class='form-control textarea input' $requiredField name='$nameField' placeholder='$placeholder'  title='$placeholder' rows='5' cols='45'>$valueforfield</textarea>$intro";
 			}
 		break; 
+		
 		case "editor":
             $paramsEditor = [];// ['advlist'=>'1','syntax'=>'css','height'=>200,'width'=>100,'tabmode'=>'shift','linenumbers'=>1,];
             $paramsEditor = ['contextmenu'=>FALSE, 'advlist'=>'1','syntax'=>'css','tabmode'=>'shift','linenumbers'=>1, 'class'=>'form-control mfEditor input editor','joomlaExtButtons'=>false];//'width'=>450,'height'=>200,
@@ -625,39 +771,15 @@ class modMultiFormHelper {
 //                    $editor = JEditor::getInstance('tinymce');
 //                     toPrint($editor,'Editor') ;
                 //arkeditor, tinymce,  codemirror none   
-            $fieldB = JEditor::getInstance($select_editor)->display($nameforfield, $valueforfield/*$namefield.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameforfield, NULL, NULL,$paramsEditor);
+            $fieldB = JEditor::getInstance($select_editor)->display($nameField, $valueforfield/*$field_label.$reqstar*/, '100%', 'auto', 10, 4, TRUE, $nameField, NULL, NULL,$paramsEditor);
             $fieldB .= " $intro";
-			if(in_array($labelOut, ['edge','above',1])){
+			if(in_array($labelOut, ['before','after','above'])){
                 $fieldB = "<div class='form-group mfFieldGroup editor mfEditor $style_field'>"
-                    ."<label for='$nameforfield' class='editor'>$namefield$regstartag</label>"
+                    ."<label for='$nameField' class='editor' title='$placeholder' >$field_label$regstartag</label>"
                     ."$fieldB </div>"; 
             }
 		break;
 			
-		case "tel":
-            $mask = $paramsfield?:'+999(999) 999-9999';
-			if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup tel $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' class='form-control input tel' $requiredField  data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //data-inputmask='\"mask\": \"$mask\"'
-                $fieldB .= " $intro</div>";
-            }else{
-                $fieldB = "<input id='$nameforfield' name='$nameforfield' value='$valueforfield' type='tel' placeholder='$namefield$reqstar' class='form-control input tel' data-allready='0' $requiredField  data-inputmask=\"'mask': '$mask'\" _pattern=\"\+?[0-9]{1,3}-[0-9]{3}\s[0-9]{3}-[0-9]{4}\" inputmode=\"tel\">"; //  data-inputmask='\"mask\": \"$mask\"'
-                $fieldB .= " $intro";
-            }
-         
-            $script = "jQuery(function($){";
-            if(in_array($labelOut, ['in',0])){
-                $script .= " $('#$nameforfield').mask('$mask'); ";
-            }
-            $script .= "$('#$nameforfield').inputmask({";
-                        //$script .= "'mask': '$mask',"; 
-			$script .= "'oncomplete': function(){ $('#$nameforfield').attr('data-allready', '1'); }," ;
-			$script .= "'onincomplete': function(){ $('#$nameforfield').attr('data-allready', '0'); },";
-			$script .= "});"; 
-			$script .= "});"; 
-                        
-                        JFactory::getDocument()->addScriptDeclaration($script);
-		break;
 // Требуется создать JS скрипт который будет генерировать патерн из маски
 //https://htmlweb.ru/html/form/form_input_pattern.php
 //https://webref.ru/html/input/pattern
@@ -678,59 +800,11 @@ class modMultiFormHelper {
 //[\)]{0,1}		)
 //9[0-9]{2}		1-3 цифры
 			
-		case "email":
-            if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup email $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' class='form-control input email' type='email' $requiredField name='$nameforfield' value='$valueforfield' >";
-                $fieldB .= "$intro</div>";
-            }else{
-                $fieldB = "<input id='$nameforfield' class='form-control input email' type='email' $requiredField name='$nameforfield' value='$valueforfield' placeholder='$namefield$reqstar'>$intro";
-            }
-		break;
-          
-        //$typefield
-		case "range":
-		case "number":
-//$regstartag .= " $typefield $nameforfield -  $valueforfield ";
-            $paramsf = explode('-', $paramsfield);
-            $min = isset($paramsf[0]) ? (int)trim($paramsf[0]) : '';
-            $max = isset($paramsf[1]) ? (int)trim($paramsf[1]) : '';
-			$valueforfield = $valueforfield == '' ? (int)$min : (int)$valueforfield;
-//$regstartag .= "$paramsfield - $min/$max -  $valueforfield $ <pre>".$max.'</pre> ' ;
-//$dd = "<pre>xxx $min $valueforfield</pre>";
-            $min =  " min='$min' ";
-            $max = $max ? " max='$max' " : '';
-            if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup $typefield $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-				$fieldB .= "<input id='$nameforfield' $min $max class='form-control input  $typefield' type='$typefield' $requiredField name='$nameforfield' value='$valueforfield' >$intro";
-				$fieldB .= "</div>";
-			}else{
-                $fieldB = "<input id='$nameforfield' $min $max class='form-control input  $typefield' type='$typefield' $requiredField name='$nameforfield' value='$valueforfield' placeholder='$namefield$reqstar'>$intro";
-			}
-		break;
+        
         
         
 
         
-		case "time":
-		case "date":
-		case "datetime":
-		case "datetime-local":
-		case "week":
-		case "month":
-			$multiple = $typefield == "files" ? 'multiple':'';
-			$arr = $typefield == "files" ? '[]':'';
-			$valueforfield = $valueforfield ?: \Joomla\CMS\Date\Date::getInstance()->format('Y-m-d');			
-//			value="2017-06-01";  d-m-Y
-			
-            if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup $typefield $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' src='' class='form-control input $typefield' type='$typefield' $multiple $requiredField name='$nameforfield$arr' title='$namefield$reqstar' value='$valueforfield' >";
-                $fieldB .= "$intro</div>";
-                    }else{
-                        $fieldB = "<input id='$nameforfield' src='' class='form-control input $typefield' type='$typefield' $multiple $requiredField name='$nameforfield$arr' value='$valueforfield' placeholder='$namefield$reqstar' title='$namefield$reqstar'>$intro";
-                    }
-		break;
 //time
 //date
 //datetime
@@ -740,44 +814,19 @@ class modMultiFormHelper {
 //image
 
         
-		case "image":
-			$multiple = $typefield == "files" ? 'multiple':'';
-			$arr = $typefield == "files" ? '[]':'';
-			
-            if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup image $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' src='' class='form-control input image' type='image' $multiple $requiredField name='$nameforfield$arr' title='$namefield$reqstar' value='$valueforfield' >";
-                $fieldB .= "$intro</div>";
-                    }else{
-                        $fieldB = "<input id='$nameforfield' src='' class='form-control input image' type='image' $multiple $requiredField name='$nameforfield$arr' value='$valueforfield' placeholder='$namefield$reqstar' title='$namefield$reqstar'>$intro";
-                    }
-		break;
-                
-		case "file":
-		case "files":
-                    $multiple = $typefield == "files" ? 'multiple':'';
-                    $arr = $typefield == "files" ? '[]':'';
-			if(in_array($labelOut, ['edge','above',1])){
-                $fieldB = "<div class='form-group mfFieldGroup file $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
-                $fieldB .= "<input id='$nameforfield' class='form-control input file' type='file' $multiple $requiredField name='$nameforfield$arr' title='$namefield$reqstar' value='$valueforfield' >";
-                $fieldB .= "$intro</div>";
-                    }else{
-                        $fieldB = "<input id='$nameforfield' class='form-control input file' type='file' $multiple $requiredField name='$nameforfield$arr' value='$valueforfield' placeholder='$namefield$reqstar' title='$namefield$reqstar'>$intro";
-                    }
-		break;
-			
+		/** Править, доделыват формат полей ниже */
 		case "select":
 			$fieldB = '';
-//			$selects = explode(";", $paramsfield);
-			$selects = (array)explode("\n", $paramsfield);
+//			$selects = explode(";", $option_params);
+			$selects = (array)explode("\n", $option_params);
 
-			if(in_array($labelOut, ['edge','above',1]))
-				$fieldB .= "<div class='form-group mfFieldGroup select $style_field'><label for='$nameforfield'>$namefield$regstartag</label>";
+			if(in_array($labelOut, ['before','after','above','1']))
+				$fieldB .= "<div class='form-group mfFieldGroup select $style_field'><label for='$nameField' title='$placeholder'>$field_label$regstartag</label>";
 			
-            $fieldB .= "<select  class='form-control input select' id='$nameforfield' name='$nameforfield' $requiredField>";
+            $fieldB .= "<select  class='form-control input select' id='$nameField' name='$nameField' $requiredField title='$placeholder' placeholder='$placeholder'>";
 			
 			if(in_array($labelOut, ['in',0]))
-				$fieldB .= "<option disabled selected>$namefield$regstartag</option>";
+				$fieldB .= "<option disabled selected>$field_label$reqstar</option>";
 			
 			foreach($selects as $y =>  $sel ){
 				$sel = trim($sel);
@@ -788,16 +837,16 @@ class modMultiFormHelper {
 			}
 			$fieldB .= "</select>$intro";
 			
-			if(in_array($labelOut, ['edge','above',1]))
+			if(in_array($labelOut, ['before','after','above','1']))
 				$fieldB .= "</div>";
 		break;
 					
 		case "radio":
             $fieldB = '';
-//			   $radios = explode(";", $paramsfield);
-            $selects = (array)explode("\n", $paramsfield);
-			if(in_array($labelOut, ['edge','above',1]))
-                $fieldB .= "<div class='mfFieldGroup radio $style_field'><label class='radio'>$namefield$regstartag</label>"; 
+//			   $radios = explode(";", $option_params);
+            $selects = (array)explode("\n", $option_params);
+			if(in_array($labelOut, ['before','after','above','1']))
+                $fieldB .= "<div class='mfFieldGroup radio $style_field'><label class='radio' title='$placeholder'>$field_label$regstartag</label>"; 
                 
             $fieldB .= "<div class='form-group input rad'>";
             foreach($selects as $y => $rad ){
@@ -806,27 +855,27 @@ class modMultiFormHelper {
 					continue;
                 $check = ($valueforfield==$rad)?' checked ':''; 
 //                $fieldB .= "<div class='form-group input rad '>";
-                $fieldB .= "<label for='$nameforfield.$y'  class='rad'>";
-                $fieldB .= "<input id='$nameforfield.$y' type='radio' $requiredField name='$nameforfield' value='$rad' $check class='form-control form-check-input radio '>";
+                $fieldB .= "<label for='$nameField.$y'  class='rad' title='$placeholder'>";
+                $fieldB .= "<input id='$nameField.$y' type='radio' $requiredField name='$nameField' value='$rad' $check class='form-control form-check-input radio '>";
                 $fieldB .= "$rad</label>"; 
 //                $fieldB .= "</div>";
             }
             $fieldB .= "<br>$intro"; 
             $fieldB .= "</div>";
-			if(in_array($labelOut, ['edge','above',1]))
+			if(in_array($labelOut, ['before','after','above','1']))
                 $fieldB .= "</div>";
 		break;
 					
 		case "checkbox":
             $fieldB = '';
-//						$checkboxes = explode(";", $paramsfield);
-            $selects = array_filter(explode("\n", $paramsfield));
-			if(in_array($labelOut, ['edge','above',1])){
+//						$checkboxes = explode(";", $option_params);
+            $selects = array_filter(explode("\n", $option_params));
+			if(in_array($labelOut, ['before','after','above','1'])){
                 $fieldB .= "<div class='mfFieldGroup checkbox $style_field'>";
 				if($selects)
-					$fieldB .= "<label class='checkbox'>$namefield$regstartag</label>";
+					$fieldB .= "<label class='checkbox' title='$placeholder'>$field_label$regstartag</label>";
 			}
-//$fieldB = "<fieldset for='$nameforfield' class='check'><legend> </legend></fieldset>";
+//$fieldB = "<fieldset for='$nameField' class='check'><legend> </legend></fieldset>";
 //toPrint($selects,'$selects',0,'pre',true); 
 			$count = count($selects);
             $fieldB .= "<div class='form-group input chk opts$count '>";
@@ -834,8 +883,8 @@ class modMultiFormHelper {
 			if(empty($selects)){
 				$chk = ($valueforfield)?' checked ':'';
 			
-                $fieldB .= "<input id='$nameforfield.$i' type='checkbox'  name='$nameforfield' value='✓' $chk $requiredField  class='form-check form-check-input checkbox '>";
-                $fieldB .= "<label for='$nameforfield.$i' class='check chk '>$namefield</label>";
+                $fieldB .= "<input id='$nameField.$i' type='checkbox'  name='$nameField' value='✓' $chk $requiredField  class='form-check form-check-input checkbox ' title='$placeholder' placeholder='$placeholder'>";
+                $fieldB .= "<label for='$nameField.$i' class='check chk ' title='$placeholder'>$field_label</label>";
 			}
 				
             foreach($selects as $y => $check ){
@@ -845,8 +894,8 @@ class modMultiFormHelper {
                 $chk = ($valueforfield == $check)?' checked ':'';
                 if(is_array($valueforfield))
                     $chk = (in_array($check,$valueforfield))?' checked ':'';
-                $fieldB .= "<input id='$nameforfield.$y' type='checkbox'  $requiredField name='$nameforfield' value='$check' $chk  class='form-check form-check-input checkbox '>";
-                $fieldB .= "<label for='$nameforfield.$y' class='check chk '>$check</label>";
+                $fieldB .= "<input id='$nameField.$y' type='checkbox'  $requiredField name='$nameField' value='$check' $chk  class='form-check form-check-input checkbox ' title='$placeholder'>";
+                $fieldB .= "<label for='$nameField.$y' class='check chk ' title='$placeholder'>$check</label>";
             }
             $fieldB .= "</div>";
             $fieldB .= "$intro";
@@ -854,52 +903,138 @@ class modMultiFormHelper {
                 $fieldB .= "</div>";
 		break;
 					
-		case "color":
-                    $fieldB = '';
-                    $col = $valueforfield ?: "#424242";
-			if(in_array($labelOut, ['edge','above',1])){
-                        $fieldB .= "<div class='mfFieldGroup color $style_field'><label for='$nameforfield' class='color '>$namefield$regstartag</label>";                    
-                    }
-				$fieldB .= "<div class='form-group input col'>";
-				$fieldB .= "<input id='$nameforfield'  class='form-control  color ' type='color' value='$col'  name='$nameforfield' placeholder='$namefield$reqstar'>"; 
-                                            
-			if(in_array($labelOut, ['in',0]))
-					$fieldB .= "<label for='$nameforfield' class='col '>$namefield$regstartag</label>"; 
-				$fieldB .= "<br>$intro"; 
-				$fieldB .= "</div>";
-                                            
-			if(in_array($labelOut, ['edge','above',1])){
-                        $fieldB .= "</div>";
-                    }                                
-		break;
 					
 		case "_separate":
 		case "separate":
-                    $fieldB = "<hr id='$namefield' class='separate' />$intro";
+                    $fieldB = "<hr id='$field_label' class='separate' />$intro";
 		break;
 					
 		case "_htmltagstart": 
 		case "htmltagstart": 
-                    if($namefield){
-                        $fieldB = "<$namefield class='$nameforpost'>$intro";
+                    if($field_label){ // $field_label		$option_params
+                        $fieldB = "<$field_label  title='$placeholder' class='$nameField'>$intro";
                     }else{
-			$fieldB = "<div class='$nameforpost'>$intro";
+			$fieldB = "<div  title='$placeholder' class='$nameField'>$intro";
                     }
 		break;
 					
 		case "_htmltagfinish": 
 		case "htmltagfinish": 
-            if($namefield){
-			$fieldB = "$intro</$namefield>";
+            if($field_label){
+			$fieldB = "$intro</$field_label>";
                     }else{
 			$fieldB = "$intro</div>";
                     }
                 break;
+	
+		default:
+			$fieldB = '';
+
+			if(file_exists(__DIR__ . "/options/$field_type.php")){
+				include_once __DIR__ . "/options/$field_type.php";
+			}elseif(file_exists(__DIR__ . "/options/$field_type.xml")){
+				$dom = new DOMDocument();
+				$dom->load(__DIR__ . "/options/$field_type.xml");
+				$field_type = $dom->getElementsByTagName('form')->item(0)->getAttribute('type') ?: $field_type;
+		
+				if(file_exists(__DIR__ . "/options/$field_type.php"))
+					require_once __DIR__ . "/options/$field_type.php";
 			}
-            $fieldbuiding[$poryadokF] = array( "dataField"=>$fieldB, "type"=>$typefield, "id"=>$nameforfield, "title"=>$namefield, "require"=>$reqstar, "intro"=>$intro);  
 			
-            $poryadokF++;
+//		echo '<pre style="color:black;">'.print_r($dom,true) .'</pre>';
+//			$field = JFormHelper::loadFieldType($field_type);
+//			$optionClass = 'Option' . ucfirst($field_type);
+			$optionClass = "\Joomla\Module\MultiForm\Site\Option" . ucfirst($field_type);
+//toPrint( class_exists($optionClass)?$optionClass ." YES":"$optionClass NO",'',0,$moduleid==175? 'pre':'',true);
+			if(empty(class_exists($optionClass))){
+				break; //continue 2;
+			}
+//$fieldB .= $field_type;
+
+//toPrint($nameField,'$nameField:',0,$moduleid==175? 'pre':'',true);
+			 
+			$field = new $optionClass;
+
+			if($field instanceof OptionField){
+				
+//echo "<pre> ". __LINE__.' '. print_r($field_label, true). " $i</pre><br><br><br>";
+//echo "<pre> ". __LINE__."  [$i]{$nameField}:  </pre><br><br><br>";
+
+				$props = [];
+				$props['field_label']	= $field_label;
+				$props['placeholder']	= $placeholder;
+				$props['field_name']	= $allparams->field_name[$i];
+				$props['field_type']	= $field_type;
+				$props['art_id']		= $art_id;
+				$props['onoff']			= $onoff;
+				$props['paramsOption']	= $option_params;
+				$props['nameinput']		= $nameField;
+				$props['index']			= $i;
+				$props['moduleID']		= $moduleid;
+				
+				$field->setParams($props, OptionField::MODE_FORM, $valueforfield ?? null);
+				$field->setFields($i, $allparams->nameinput, $allparams->field_type, $allparams->field_label);
+				
+				
+				$labels	= (array)$field->getLabels();
+				
+				$arrs = (array)$field->renderFields($nameField, $valueforfield, "form-control input", $placeholder);
+//echo "<br><br><pre></pre> \$arrs: $field_type count:".  count($arrs)." ". print_r($valueforfield, true). " ";
+				
+				foreach ($arrs as $idFld => $renderFld){
+					
+					$label = $labels[$idFld] ?? '';
+					
+					if(is_numeric($idFld) && empty($label)){
+						$fieldB .= $renderFld;
+						continue;
+					}
+					
+					if(is_numeric($idFld)){
+//						$idFld
+						$idFld .= $nameField . $idFld;// = $allparams->field_name[$i] ?? ''	?: $field_type.$i.$moduleid;
+					}
+					
+					if($labelOut === '1'){ 
+						$fieldB .= "<label for='$idFld' class='text form-group  $field_type $style_field'  title='$placeholder'>$label$regstartag<br>";
+						$fieldB .= $renderFld;
+						$fieldB .= "</label>";
+					}
+					elseif(in_array($labelOut, ['before','after','above']) ){
+						$fieldB = "<div class='form-group mfFieldGroup $field_type $style_field'>";
+						if($label)
+						$fieldB .= "<label for='$idFld' class='text'  title='$placeholder'>$label$regstartag</label>";
+						$fieldB .= $renderFld;
+						$fieldB .= "</div>";
+					}else{
+						$fieldB .= $renderFld;
+					}
+//$fieldB .= "<hr><code> type=$field_type i=$idFld </code><br>";
+				}
+				$fieldB .= $intro;
+				
+				
+				
+				
+			}
+
+//$fieldB = '123';
+//break;
+//			$fieldB .= ' --->>>$nameinput '.$nameinput; 
+			// renderField(); $value    ,'id'=>$field->id.'_'.$i
+
+//			return $this->getRenderer($this->layout)->render($this->getLayoutData());
+//		$field->html = JLayoutHelper::render($field->layout, $dataField, $field->layoutPath);//, $basePath,
+
+		
+		break;
+	}
+			
+			if($fieldB)
+			$fieldbuiding[] = ["dataField"=>$fieldB, "type"=>$field_type, "id"=>$nameField, "title"=>$field_label, "require"=>$reqstar, "intro"=>$intro ];  
+			
 //			toLog($fieldB,'$fieldB','/tmp/multiform.txt');
+		
         }
                 
 //		foreach ($fieldbuiding as $key => $row) {
@@ -910,9 +1045,9 @@ class modMultiFormHelper {
                 
                 //toPrint($fieldbuiding,'Sorting',0) ;
                 
-        $fields = $fieldbuiding;// Joomla\Utilities\ArrayHelper::sortObjects($fieldbuiding, 'sort'); 
+        $fields = &$fieldbuiding;// Joomla\Utilities\ArrayHelper::sortObjects($fieldbuiding, 'sort'); 
                 
-	return $fields;
+		return $fields;
     }
 	
         /**
@@ -932,81 +1067,81 @@ class modMultiFormHelper {
                 if(is_string($allparams)){
                     $allparams = json_decode($allparams);
                 } 
-                if(empty($allparams) || empty($allparams->namefield)){
+                if(empty($allparams) || empty($allparams->field_label)){
                     return $fieldGetVal;
                 }
                 
-		foreach($allparams->namefield as $i => $namefield){
+		foreach($allparams->field_label as $i => $field_label){
 			
-			$namefield 		= $allparams->namefield[$i];
-			$typefield 		= $allparams->typefield[$i];
-			$paramsfield 	= $allparams->paramsfield[$i];
+			$field_label 		= $allparams->field_label[$i];
+			$field_type 	= $allparams->field_type[$i];
+			$option_params 	= $allparams->option_params[$i];
 			//$sortnumber 	= $allparams->sortnumber[$i];
 			$onoff 			= $allparams->onoff[$i];
 			
-			$nameforfield 	= $typefield.$i.$moduleid;
+			$nameinput 	= $field_type.$i.$moduleid;
                         
                         $fieldGet = '';
-//                toPrint($typefield,'$typefield',0);
-//                         toPrint($typefield,'$onoff->'.$onoff,0);   
+//                toPrint($field_type,'$field_type',0);
+//                         toPrint($field_type,'$onoff->'.$onoff,0);   
 			
-			if($onoff && !in_array($typefield, ['separate','htmltagstart','htmltagfinish','']) && substr($typefield, 0,1)!='_'):
+			if($onoff && !in_array($field_type, ['separate','htmltagstart','htmltagfinish','']) && substr($field_type, 0,1)!='_'):
 			
-//                         toPrint($typefield,'$typefield',0);   
-                            switch($typefield){
+//                         toPrint($field_type,'$field_type',0);   
+                            switch($field_type){
                                  
                                 
                                                                 
                             
                             
 				case "hidden":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]').val();\n";
 				break;
 				
 				case "text":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]').val();\n";
 				break;
 				
 				case "textarea":
-				$fieldGet = "var $nameforfield = $('textarea[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('textarea[name=$nameinput]').val();\n";
 				break;
                             
                                 case "editor": 
-				$fieldGet = "var $nameforfield = $('textarea[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('textarea[name=$nameinput]').val();\n";
 				break;
 				
 				case "email":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]').val();\n";
 				break;
                             
 				case "file":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]')[0].files;\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]')[0].files;\n";
 				break;
                             
 				case "files":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]')[0].files;\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]')[0].files;\n";
 				break;
 				
 				case "telephone":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]').val();\n";
 				break;
 				
 				case "select":
-				$fieldGet = "var $nameforfield = $('select[name=$nameforfield] option:selected').val();\n";
+				$fieldGet = "var $nameinput = $('select[name=$nameinput] option:selected').val();\n";
 				break;
 				
 				case "radio":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]:checked').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]:checked').val();\n";
 				break;
 				
 				case "checkbox":				
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]:checked').map( function() {\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]:checked').map( function() {\n";
 				$fieldGet .= "return this.value;\n";
 				$fieldGet .= "}).get().join(',');\n";
 				break;
 				
 				case "color":
-				$fieldGet = "var $nameforfield = $('input[name=$nameforfield]').val();\n";
+				$fieldGet = "var $nameinput = $('input[name=$nameinput]').val();\n";
 				break;
 			}
                         //$fieldGet .= "var XXX = 666 ;\n";
@@ -1036,19 +1171,19 @@ class modMultiFormHelper {
                 if(is_string($allparams)){
                     $allparams = json_decode($allparams);
                 } 
-                if(empty($allparams) || empty($allparams->namefield)){
+                if(empty($allparams) || empty($allparams->field_label)){
                     return $ajaxData;
                 }
-//                toPrint($allparams->namefield,'$allparams->namefield');
-		foreach ($allparams->namefield as $i => $namefield){
+//                toPrint($allparams->field_label,'$allparams->field_label');
+		foreach ($allparams->field_label as $i => $field_label){
 			
-			//$namefield 		= $allparams->namefield[$i];
-			$typefield 		= $allparams->typefield[$i];
+			//$field_label 		= $allparams->field_label[$i];
+			$field_type 		= $allparams->field_type[$i];
 			$onoff 			= $allparams->onoff[$i];
-			$nameforfield 	= $typefield.$i.$moduleid;
+			$nameinput 	= $field_type.$i.$moduleid;
 			
-			if($onoff && !in_array($typefield, ['separate','htmltagstart','htmltagfinish','']) && substr($typefield, 0,1)!='_')  :
-			$ajaxData	.= "'$nameforfield' : $nameforfield,\n";
+			if($onoff && !in_array($field_type, ['separate','htmltagstart','htmltagfinish','']) && substr($field_type, 0,1)!='_')  :
+			$ajaxData	.= "'$nameinput' : $nameinput,\n";
 			endif; 
 		}
 		return $ajaxData;
@@ -1061,76 +1196,136 @@ class modMultiFormHelper {
          */
 	public static function ajaxListFields($allparams, $moduleid){
 		                
-                if(empty($allparams)){
-                    return '';
-                }
-                //($allparams) || $allparams = new stdClass;
-                if(is_string($allparams)){
-                    $allparams = json_decode($allparams);
-                } 
-                if(empty($allparams) || empty($allparams->namefield)){
-                    return '';
-                }
-//                toPrint($allparams->namefield,'$allparams->namefield');
-                $fields = [];
-		foreach ($allparams->namefield as $i => $namefield){
-			
-			//$namefield 		= $allparams->namefield[$i];
-			$typefield 		= $allparams->typefield[$i];
-			$onoff 			= $allparams->onoff[$i];
-			$nameforfield 	= $typefield.$i.$moduleid;
-			
-                    if($onoff && !in_array($typefield, ['separate','htmltagstart','htmltagfinish','']) && substr($typefield, 0,1)!='_'){
-			$fields[] = '"'.$nameforfield.'"';
-                    }
+		if(empty($allparams)){
+			return '';
 		}
-		return implode(',', $fields);
-	}
-	
-        /**
-         * Получаем массив называний полей для формы
-         * @param object $allparams Объект полей формы из параметров модуля XML
-         * @param int $moduleid
-         * @return array
-         */
-	public static function ajaxDataField($allparams, $moduleid){
-		
-		$allparams = (object)$allparams;
-		
-		$ajaxDataFields = [];
-		
-//                toLog($allparams,'$allparams','/tmp/multiform.txt',true, true);
-//                toPrint($allparams,'$allparams',0,true,true);
-//                empty($allparams) && $allparams = new stdClass;
-//                empty($allparams->namefield) && $allparams->namefield = [];
-//                if($allparams instanceof \Joomla\Registry\Registry){
-//                    $allparams = $allparams->toObject ();
-//                }
-//                if($allparams->namefield && is_string($allparams->namefield)){
-//                    $allparams->namefield = (new \Joomla\Registry\Registry)->loadString($allparams->namefield);
-//                }
-//toPrint($allparams->typefield,'$allparams->typefield',0,'pre');
-//static::$error .= toPrint($allparams->typefield,'$params->typefield',0,TRUE);//"<pre>".print_r($allparams->typefield,true)."</pre>";
-//static::$error .= toPrint($allparams,'$params!',0,TRUE);//"<pre>".print_r($allparams->typefield,true)."</pre>";
-		
-		if(empty($allparams->namefield))
-			return [];
-		
-		
-		foreach ($allparams->typefield as $i => $namefield){
+		//($allparams) || $allparams = new stdClass;
+		if(is_string($allparams)){
+			$allparams = json_decode($allparams);
+		} 
+//if($moduleid == 175) { 
+//	toPrint(empty($allparams) || empty($allparams->field_label),'$allparams',0,'message'); 
+//	toPrint($allparams,'$allparams',0,'message'); 
+////	toPrint($param->list_fields,'$param->list_fields',0,'message');
+//}
+		if(empty($allparams) || empty($allparams->field_label)){
+			return '';
+		}
+
+//toPrint($allparams->field_label,'$allparams->field_label');
+		$fields = [];
+		foreach ($allparams->onoff as $i => $onoff){
+			if(empty($onoff))
+				continue;
 			
-			//$namefield 		= $allparams->namefield[$i];
-			$typefield 		= $allparams->typefield[$i];
-			$onoff 			= $allparams->onoff[$i];
-			$nameforpost	= $allparams->nameforpost[$i];
-			$nameforfield 	= $typefield.$i.$moduleid;
+//			$onoff 		= $allparams->onoff[$i];
+			$field_label 	= $allparams->field_label[$i]	?? '';
+			$field_type = $allparams->field_type[$i]?? 'text';
+			$nameinput 	= $field_type.$i.$moduleid;
 			
-			if($onoff && $typefield != "separate" && $typefield != "htmltagstart" && $typefield != "htmltagfinish" && substr($typefield, 0,1)!='_'){
-				$ajaxDataFields[] = ["nameforfield"=>$nameforfield, "nameforpost"=>$nameforpost, 'type'=>$typefield];
+			if(!in_array($field_type, ['separate','htmltagstart','htmltagfinish','']) && substr($field_type, 0,1)!='_'){
+//				$fields[] = '"'.$nameinput.'"';
+				$fields[] = $nameinput;
 			}
 		}
-		return $ajaxDataFields;
+		return json_encode($fields);// implode(',', $fields);
 	}
+	
+	public static function getDataFieldFromObjectArraysByIndex(object $multiArray = null, $index = 0, $useOnOff = true) {
+		
+		if(empty($multiArray) || $useOnOff && empty($multiArray->onoff[$i]))
+			return [];
+		
+		return [
+			'nameinput'	=>$multiArray->field_name[$i] ?: $field_type.$i.$moduleid,
+			'placeholder'	=>$multiArray->placeholder[$i],
+			'type'			=>$multiArray->field_type[$i],
+			'field_label'		=>$multiArray->field_label[$i]
+		];
+	}
+	
+	
+	
+	public static function LoadOptionsAjax($name = '', $data = [], $type = ''){
+//		return 123;
+//		JFactory::getApplication()->getConfig()->get('error_reporting','default');
+		if($name == '')
+			$name = JFactory::getApplication()->input->getCommand('name');// module id
+		
+		if($type == '')
+			$type = JFactory::getApplication()->input->getCommand('type');// module id raw
+		
+		
+//		$session = JFactory::getApplication()->getSession();
+//		$user = JFactory::getUser();
+		
+//		echo "<b>:";
+//		echo 'user: '.$user->get('id');
+//		echo "<br>";
+//		echo 'sess->getToken() '.$session->getToken();
+//		echo "<br>";
+//		echo 'sess::getFormToken() '.$session::getFormToken();
+//		echo "<br>post ";
+//		echo $session::checkToken('post')? 'true':'false';
+//		echo "<br> get ";
+//		echo JSession::checkToken('get')? 'true':'false';
+//		echo "<br>";
+////		echo static::checkToken();
+//		echo "!</b>";
+//		JFactory::getApplication()->enqueueMessage( (JFactory::getApplication()->getSession()->getToken().' sess->getToken()'));
+//		JFactory::getApplication()->enqueueMessage( (JFactory::getApplication()->getSession()::getFormToken().' sess::getToken()'));
+		
+		
+		$ext = $type == 'raw' ? 'xml' : ($type?:'xml');
+		
+		
+		$file = __DIR__ . "/options/$name.$ext";
+		
+//toPrint($data,'$data',0,'pre',true);
+//toPrint($file,'$file',0,'pre',true);
+		
+
+		if(empty(file_exists($file)))
+			return '';
+		
+		if($type == 'json'){
+			echo file_get_contents($file);
+			return;
+		}
+		static::constructor();
+		
+		$form = new \Joomla\CMS\Form\Form($name);
+		$form->loadFile($file);
+		$form->addFieldPath(JPATH_ROOT . '/modules/mod_multi_form/field');
+		$form->addFieldPath(JPATH_ROOT . '/modules/mod_multi_form/options/field');
+		
+		
+		if(empty($data))
+			$data = JFactory::getApplication()->input->getString('data');// json data value
+		
+		
+//toPrint(JFactory::getApplication()->input->getString('data'),'$data',0,'pre',true);
+		
+		if($data && is_string($data))
+			$data = new \Joomla\Registry\Registry($data);
+		
+//		$data = ['name'=>123,'pass'=>55555,];
+		
+		if($data){
+			$form->bind($data);
+		}
+		
+		echo "<title style='display:none'>$name</title>";
+		
+		echo $form->renderFieldset('');
+		
+//		echo "123 +".$name;
+		
+//toPrint($data,'$data',0,'pre',true);
+//toPrint($data,'$data',0,'pre',true);
+		
+	}
+	
 	
         /**
          * 
@@ -1140,17 +1335,17 @@ class modMultiFormHelper {
          */
 	public static function validateFieldsForm($allparams, $moduleid){
                 empty($allparams) && $allparams = new stdClass;
-                empty($allparams->namefield) && $allparams->namefield = [];
+                empty($allparams->field_label) && $allparams->field_label = [];
 		$validateFieldName = "";
 		$validateRules = "";
-		foreach ($allparams->namefield as $i => $namefield){
-			//$namefield 		= $allparams->namefield[$i];
-			$typefield 		= $allparams->typefield[$i];
+		foreach ($allparams->field_label as $i => $field_label){
+			//$field_label 		= $allparams->field_label[$i];
+			$field_type 		= $allparams->field_type[$i];
 			$onoff 			= $allparams->onoff[$i];
 			$required		= $onoff == 2 || $allparams->required[$i];
-			$nameforfield 	= $typefield.$i.$moduleid;
+			$nameinput 	= $field_type.$i.$moduleid;
 			if($onoff and $required):
-				$validateFieldName[] = $nameforfield;
+				$validateFieldName[] = $nameinput;
 			endif;
 		}
 		$validateRules .= "if(";
@@ -1177,39 +1372,38 @@ class modMultiFormHelper {
 	 */
     public static function &getModules($mod_ids)
     {
+		$is4 = \Joomla\CMS\Version::MAJOR_VERSION > 3;
         
-        $is4 = \Joomla\CMS\Version::MAJOR_VERSION > 3;
-        
-        $mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
-        foreach ($mod_ids as $i => $m){
-            $mod_ids[$i] = $is4? (string)$m : (string)$m;
-        }  
-
+		$mod_ids = (array)$mod_ids;//ID модули которых нужно вернуть
+		foreach ($mod_ids as $i => $m){
+			$mod_ids[$i] = $is4? (string)$m : (string)$m;
+		}
+		
+		
+		$modules = [];//Массив объектов модулей для возрвата
+//		$ids = [];//ID для которых нужно инициализировать объекты модулей
             
-        $results = [];//Массив объектов модулей для возрвата
-//            $ids = [];//ID для которых нужно инициализировать объекты модулей
-            
-        static $mods;//Массив объектов модулей уже инициализированныъх прежде
-            
+		static $mods;//Массив объектов модулей уже инициализированныъх прежде
+		
         if(isset($mods)){
-                foreach ($mod_ids as $i => $id){
-                    if(isset($mods[$id])){
-                        $results[$id] = $mods[$id];
-                        unset($mod_ids[$i]);
-                    }
-//                    else {
-//                        $ids[] = $id;
-//                    }
-                }
-        }
-        else{
-//                $ids = $mod_ids;
-                $mods = [];
-        }
-               
-        if(empty($mod_ids) ){//&& empty($ids)
-                return $results;
-        }
+			foreach ($mod_ids as $i => $id){
+				if(isset($mods[$id])){
+					$modules[$id] = &$mods[$id];
+					unset($mod_ids[$i]);
+				}
+//				else {
+//					$ids[] = $id;
+//				}
+			}
+		}
+		else{
+//			$ids = $mod_ids;
+			$mods = [];
+		}
+		
+		if(empty($mod_ids) ){//&& empty($ids)
+			return $modules;
+		}
 
 
 //$mods = JModuleHelper::getModuleList(); 
@@ -1217,37 +1411,56 @@ class modMultiFormHelper {
 //echo "<pre>1095\n". print_r($mods, true). "</pre><br>\n\n";
 //echo "<pre>1097\n". print_r(gettype($mods[0]->id), true). "</pre><br>\n\n"; 
 
-            jimport('joomla.application.module.helper');
+		jimport('joomla.application.module.helper');
+		
         foreach ($mod_ids as $id){
             //$id = (int)$id;
-            $mod = mfModuleHelper::getModuleById($id); // JModuleHelper::getModuleById($id); 
+            $mod = \Joomla\Module\MultiForm\Site\JModuleHelper::getModuleById($id); // JModuleHelper::getModuleById($id); 
             
 //echo "<pre>1102\n". print_r($mod, true). "</pre><br>\n\n";
 //echo "<pre>1103\n". print_r($id, true).':'.gettype($id). "</pre><br>\n\n";
-//        echo "<pre>Проверка - ";
-//        echo  print_r($id,true);
-//        echo "<br>";
-//        echo  print_r($mod,true); 
-//        echo "</pre>";
+//			echo "<pre>Проверка - ";
+//			echo  print_r($id,true);
+//			echo "<br>";
+//			echo  print_r($mod,true); 
+//			echo "</pre>";
         
 //toPrint($mod,'$mod '.$id,0,'pre',true);  
         
-            if($mod){
-                $mod->params = new Reg($mod->params);
-                $mods[$mod->id] = $mod;
-                $results[$mod->id] = $mod;
+//echo "<pre>\$mod ". __LINE__.' '. print_r($mod, true). "  </pre>";
+//return null;
+            if($mod && $mod->id){
+				$mod = new Reg($mod);
+				$mod->params = new Reg($mod->params);
+				$mod->loadString($mod->params);
+				
+				if(isset($mod->params->list_fields->onoff) && is_object($mod->params->list_fields->onoff))
+					settype($mod->params->list_fields->onoff, 'array');
+				
+				
+			$mod->params->list_fields->onoff		= array_values((array)($mod->params->list_fields->onoff		?? []));
+			$mod->params->list_fields->field_type		= array_values((array)($mod->params->list_fields->field_type	?? []));
+			$mod->params->list_fields->field_label		= array_values((array)($mod->params->list_fields->field_label	?? []));
+			$mod->params->list_fields->placeholder		= array_values((array)($mod->params->list_fields->placeholder	?? []));
+			$mod->params->list_fields->option_params	= array_values((array)($mod->params->list_fields->option_params	?? []));
+			$mod->params->list_fields->art_id		= array_values((array)($mod->params->list_fields->art_id	?? []));
+				
+//echo "$mod->id 1412 list_fields <pre>". print_r($mod->params->list_fields->onoff, true). "</pre>";
+//				$mod->params = new Reg($mod->params);
+				$mods[$mod->id] = &$mod;
+				$modules[$mod->id] = &$mod;
             }
             
-//            $mod->params = [];
-//        echo "<pre>".$id.'-'. print_r($mod, true). "</pre>";
+//			$mod->params = [];
+//			echo "<pre>".$id.'-'. print_r($mod, true). "</pre>";
             
-//        toPrint($mod,'$mod-'.$mod->id,0,'pre',true); 
-//        continue;
-//        $mod->params = '';//
-//        toPrint($mod,'$mod-'.$mod->id,0,'pre',true); 
+//			toPrint($mod,'$mod-'.$mod->id,0,'pre',true); 
+//			continue;
+//			$mod->params = '';//
+//			toPrint($mod,'$mod-'.$mod->id,0,'pre',true); 
         }
         
-        return $results;
+        return $modules;
         
         
             
@@ -1269,7 +1482,7 @@ class modMultiFormHelper {
                 if(in_array($mod->id, $mod_ids)){
                     $mod->params = new JRegistry($mod->params);
                     $mods[$mod->id] = $mod;
-                    $results[$mod->id] = $mod;
+                    $modules[$mod->id] = $mod;
                 }
 //        $mod->params = '';//
 //        toPrint($mod,'$mod-'.$mod->id,0,'pre',true); 
@@ -1285,34 +1498,77 @@ class modMultiFormHelper {
 //			$result->showtitle = 0;
 //			$result->control   = '';
 //			$result->params    = ''; 
-            return $results;
+            return $modules;
     }
     
-    
+     
     /**
      * Получает 
-     * @return type
+     * @return Reg
      */
-    public static function getParams(){
+    public static function getParams($sessionUse = true){
         
-		$moduleid = JFactory::getApplication()->input->getInt('id');// module id
-    
-	
-		$moduleid = (int)$moduleid;
+		$moduleid = (int)JFactory::getApplication()->input->getInt('id');// module id
+		
+		
 		$moduleDeb = JFactory::getApplication()->input->getString('deb');// module id
 //echo "<script type='text/javascript'>console.log('helper id',$moduleid);</script>";
 //		$moduleTitle	= JFactory::getApplication()->input->get('modtitle','','STRING'); //
 //echo $moduleid.'-<br>';
 //toPrint($moduleid,'$moduleid',0,'pre',true); 
 //toPrint(Factory::getApplication()->input,'Factory::getApplication()->input',0,'pre',true); 
-
-    
+		
+		static $paramstore;
+		
+		if($paramstore && $sessionUse)
+			return $paramstore;
         
+		$app = JFactory::getApplication();
+//		$param = null;
+		$param = $app->getUserState("multiForm.{$moduleid}.param");//->toString()
+//echo "$moduleid 1489 getParams() \$param <pre>". print_r($param, true). "</pre>";
+//if($moduleid == 175)
+//file_put_contents(JPATH_ROOT . '/modules/mod_multi_form/getParams.txt', __LINE__."    $moduleid   getUserState(param)\n ". print_r($param, true). " \n \n \n", FILE_APPEND);//
+
+//$file = JPATH_ROOT . '/modules/mod_multi_form/debug.txt';
+//file_put_contents($file, "Helper:getParams() ". print_r($param, true) ."\n", FILE_APPEND);
+		if($param && $sessionUse){
+			
+			if(! is_a($param, \Reg::class))
+				$param = new \Reg($param);
+//echo "$moduleid 1497 list_fields->onoff <pre>". print_r($param->list_fields, true). "</pre>";
+			$param->deb = $moduleDeb;
+			$param->id = $moduleid;
+			if(is_object($param->list_fields->onoff))
+				settype($param->list_fields->onoff, 'array');
+			
+//			$param->list_fields->onoff			= array_values($param->list_fields->onoff);
+//			$param->list_fields->field_type		= array_values($param->list_fields->field_type);
+//			$param->list_fields->field_label	= array_values($param->list_fields->field_label);
+//			$param->list_fields->placeholder	= array_values($param->list_fields->placeholder);
+//			$param->list_fields->option_params	= array_values($param->list_fields->option_params);
+//			$param->list_fields->art_id			= array_values($param->list_fields->art_id);
+			
+            
+			
+//echo "$param->id 1502 list_fields <pre>". print_r($param->list_fields->onoff, true). "</pre>";
+//			if($param instanceof \Reg)
+//				return $param;
+			return $param;
+		}
+		
+		
+		
 //echo "<pre>". print_r($moduleid, true). "</pre>";
         
-        $modules = self::getModules($moduleid);
-        
-        
+        $modules = static::getModules($moduleid);
+		
+		if(empty($modules))
+			return null;
+		
+		$param = reset($modules);
+		
+		$app->setUserState("multiForm.{$moduleid}.param", (string)$param);//->toString()
 //echo "<pre>". print_r($modules, true). "</pre>";
 
 
@@ -1323,439 +1579,1176 @@ class modMultiFormHelper {
 //            $mod->params = '';
 //            toPrint($mod->id,'$mod-'.$mod->id.'-'.$i,0,'pre',true); 
 //}
+//		$param->params->loadObject($module);
+		$param->deb = $moduleDeb;
         
-        foreach ($modules as &$mod){ 
-			$mod->deb = $moduleDeb;
-			$mod->param = &$mod->params; //$mod->params->toObject();//$mod->params = $mod->params->toObject();
-            if($mod->param->list_fields && is_string($mod->param->list_fields)){
-//                $mod->param->list_fields = new Reg($mod->param->list_fields);
-            }
-//            if($mod->params instanceof Reg || $mod->params instanceof Registry || $mod->params instanceof Joomla\Registry\Registry || $mod->params instanceof JRegistry){
-//                
-//            }
-        }
-//toPrint($modules,'$modules',0,'pre',true); 
-//return;
-//        toPrint($moduleid,'$moduleid',0,'pre',true);
-//        toPrint($modules,'$modules',0,'pre',true);
-        return $modules;        
+        return $param;
     }
 
 
+	/*
+	 * Вызывается при отправке формы
+	 */
     public static function getAjax(){
-        //JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')
-        //"&".JSession::getFormToken().'=1&show=1';
-        
-        
-		$bodymail = "";
-        
-        $textsuccesssendAjax = '';//text1251
-        
-//        $input = JFactory::getApplication()->input;
-//$textsuccesssendAjax .= "<pre class='message'>Factory::getApplication()->input: ".print_r($input ,TRUE)."</pre>";
+		
+		sleep(1);
+		
+		
+		
+		
+        $param = static::getParams();
+		
+		if(empty($param))
+			return;
 
-
-        $config			= JFactory::getConfig()->toObject();
-        //$sitenameForForm	= $config->sitename;
-        //$mailfromForForm	= $config->mailfrom;
-            
-        $ar = ['cat'];
-                
+		$app = JFactory::getApplication();
+		
+//		$modID = (int)$app->input->getInt('id',0);
+//		$api	= $app->getUserState("multiForm.api$modID");
+//		$ajax	= $app->getUserState("multiForm.ajax$modID
+//		$app->setUserState("multiForm.api$modID", $param->api );
+//		$app->setUserState("multiForm.ajax$modID", $param->ajax );
+		
+        $config		= JFactory::getApplication()->getConfig()->toObject();
+		$orderID	= $app->input->getInt('order', 0);
+		
+		$modeApiAjax = OptionField::MODE_SUBMIT;
+		switch (true){
+			case($param->api == $app->input->getAlnum('api',time().rand(1,512)));
+				$modeApiAjax	= OptionField::MODE_API;
+				break;
+			case($param->ajax == $app->input->getAlnum('ajax',time().rand(1,512)));
+				$modeApiAjax	= OptionField::MODE_AJAX;
+				break;
+			case($param->frame == $app->input->getAlnum('frame',time().rand(1,512)));
+				$modeApiAjax	= OptionField::MODE_FRAME;
+				break;
+			case($app->input->getAlnum('pass','') ==  md5($config->secret . $param->id . $orderID));
+				$modeApiAjax	= OptionField::MODE_PASS;
+				break;
+			default;
+		}
+		
+		if($modeApiAjax == OptionField::MODE_SUBMIT && $orderID)
+			return '';
+		
+//		echo $modeApiAjax . "<br>".$app->input->getAlnum('pass',''). "<br>";
+//static::debugPRE(NULL, '', $modeApiAjax);
+		
+//1.
+//проверка токена и получение параметров из сесси
+//2
+//загрузк параметров и проверка хеша модуля
+		
+        $messageHtmlShowFinal = '';//text1251
+		
+//$messageHtmlShowFinal .= "<pre class='message'>Factory::getApplication()->input: ".print_r($input ,TRUE)."</pre>";
+		
+//		$ar = ['cat'];
+		
+		
+		
+		static::constructor($param);
+		
+//        $ar[] = 'php';
+		
+		
+		if(is_string($param))
+			$param = new Reg($param);
+		
+		if(is_string($param->list_fields))
+			$param->list_fields = new Reg($param->list_fields);
+		
+//        $f_cat = join('.', $ar);
+//        $ f = fi le_exi sts(__DIR__.'/fie'.'ld/'.$f_cat); 
         
 		
-        $modules = self::getParams();
-        
-        
-        
-        if(empty($modules)){                    
-            return;
-        }
-        $ar[] = 'php';
-        $module = reset($modules);
 		
-//$bodymail .= toPrint($module->params->list_fields,'$module->params',0,TRUE);
-        
-		if(is_string($module->params))
-			$module->params = new Reg($module->params);
-		
-		if(is_string($module->params->list_fields))
-			$module->params->list_fields = new Reg($module->params->list_fields);
-		
-		$param = &$module->params;
-		$params = &$module->params;
-//$bodymail .= toPrint($module->params->list_fields,'$module->params',0,TRUE);
-		
-        $f_cat = join('.', $ar);
-        $f = file_exists(__DIR__.'/fie'.'ld/'.$f_cat); 
-        
-//        $param->header_tag = $params->set('header_tag', $param->head_tag);
-//        $param->module_tag = $params->set('module_tag', $param->mod_tag);
+//        $param->header_tag = $param->set('header_tag', $param->head_tag);
+//        $param->module_tag = $param->set('module_tag', $param->mod_tag);
         
 //
-//        $textsuccesssendAjax .= ' Param-'.$param->captcha.' ---- ';
+//        $messageHtmlShowFinal .= ' Param-'.$param->captcha.' ---- ';
         $captcha_verify = TRUE;
+					
+		
+		/** HTML с текстом сообщения для статьи, письма */
+		$htmlContent = '';
         
-//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                    . '1233  Helper: '.print_r($module,true).'</pre>';
-//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//            $messageHtmlShowFinal .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                    . '1233  Helper: '.print_r($param,true).'</pre>';
+//            $messageHtmlShowFinal .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
 //                    . '1235  Helper: '.print_r($param,true).'</pre>';
-            
+		
+//echo '<fieldset><legend>$param</legend> 1615 <pre>'. print_r($param , true)."</pre></fieldset>";
+//echo "<b>$modeApiAjax</b><br>";
+//echo "<b>".OptionField::MODE_SUBMIT."</b><br>";
+//echo "<b>!".($modeApiAjax == OptionField::MODE_SUBMIT).":</b><br>"; 
+
+//if($modeApiAjax == OptionField::MODE_SUBMIT){
+//$messageHtmlShowFinal .= "<style>";
+//$messageHtmlShowFinal .= "#mfForm_175{max-width:97%} ";
+//$messageHtmlShowFinal .= "#mfForm_175 :is(fieldset,legend,hr,details,summary){opacity:1; border:1px solid #888f; border-radius:10px; margin:1px; background-color:black;} ";
+//$messageHtmlShowFinal .= "#mfForm_175 :is(fieldset,details){background-color:black !important; text-align:left; color:white !important; padding:5px;font-size: smaller;} ";
+//$messageHtmlShowFinal .= "#mfForm_175 :is(legend,summary){font-size: large;}";
+//$messageHtmlShowFinal .= "</style>";}
 
 
-        if($params->captcha && $config->captcha){
+
+        if($param->captcha && $config->captcha){
             $captcha_type = $config->captcha;//recaptcha, recaptcha_invisible, 0
+//                $captcha_type = JFactory::getApplication()->getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
 //            
+//            $plugin = JPluginHelper::getPlugin('captcha', $captcha_type); //return [] or {type, name, params, id}
+//        JPluginHelper::importPlugin('captcha'); 
+//        $captcha_input = JFactory::getApplication()->input->getString('g-recaptcha-response');  
 //            toPrint($captcha_type,'$captcha_type',0,'pre',true);
 //            toPrint(JFactory::getApplication()->get('captcha'),'AplicationCaptcha',0,'pre',true);
 //            toPrint(JFactory::getApplication()->getParams()->get('captcha'),'AplicationCaptchaParam',0,'pre',true);
 //            if(empty($captcha_type)|| $captcha_type == "0")
 //                return null;
-//            $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
-//            $textsuccesssendAjax .= $anwer= $plugin->onCheckAnswer();
+//            $messageHtmlShowFinal .= $anwer= $plugin->onCheckAnswer();
             
         ///$token = $input->get('gToken','','STRING'); 
-//        $captcha_input = JFactory::getApplication()->input->getString('g-recaptcha-response');  
-//        JPluginHelper::importPlugin('captcha'); 
-//    $textsuccesssendAjax .= $anwer = JDispatcher::getInstance()->trigger('onCheckAnswer', $captcha_input);      
-//            $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
+//    $messageHtmlShowFinal .= $anwer = JDispatcher::getInstance()->trigger('onCheckAnswer', $captcha_input);      
+//            $messageHtmlShowFinal .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
 //                    .JFactory::getApplication()->triggerEvent('onCheckAnswer', [$captcha_input]).'</pre>';
-            //$textsuccesssendAjax .= toPrint(JFactory::getApplication()->input,'Inputs ' , 0 ,false,true);
-//            $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">1247  Helper: '
+            //$messageHtmlShowFinal .= toPrint(JFactory::getApplication()->input,'Inputs ' , 0 ,false,true);
+//            $messageHtmlShowFinal .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">1247  Helper: '
 //                    .print_r(JFactory::getApplication()->input->post,true).'</pre>';
 //            return 'Привет дружечек мой!';
             
-            
-            try {
-                
-                
-        
-                
-                
-//        $deb = "";
-//            $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0                
-//            JPluginHelper::importPlugin('captcha');        
-//            $plugin = JPluginHelper::getPlugin('captcha', $captcha_type); //return [] or {type, name, params, id}
-//            
-//            
-//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                . '1264- $captcha_type: '.print_r($captcha_type,true).'</pre>';
-//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                . '1266- Helper: $plugin '.print_r($plugin,true).'</pre>';
-//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                . '1268- Helper: $plugin->params '.print_r($plugin->params,true).'</pre>';
-//            
 //            if($plugin && $plugin->params){
 //                $plugin->params = new JRegistry($plugin->params);// return public_key, private_key, badge, tabindex, callback, expired_callback, error_callback
 //                $plugin->param = $plugin->params->toObject();
 //            }
-//            
-//
-//        $deb .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                . '1276- Helper: $plugin->params '.print_r($plugin->param,true).'</pre>';
-//        
-////        
-////        
-//return  $deb;
-//                JPluginHelper::importPlugin('captcha');  
-//                $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
-//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
-//                    .print_r($captcha_type,true).'</pre>';
-//                $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
-//                
-//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
-//                    .print_r($plugin->params,true).'</pre>';
-//                return $textsuccesssendAjax;
-//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
-//                    .print_r($plugin->params->get('public_key'),true).'</pre>';
-//                $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  Helper: '
-//                    .print_r($plugin->params->get('private_key'),true).'</pre>';
-                
-                $captcha_verify = static::captcha();
-                
-//            $textsuccesssendAjax .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                    . '1298  Helper: '.print_r($params,true).'</pre>';
             
-                if ($params->debug == 'debug'){
-                    
-//toPrint($captcha_verify,'$captcha_verify',0,'pre',true);
-                    
-$textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border:1px solid #0008;border-radius:10px; padding:5px;}</style>';
-//               $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
-//                       . '1300  Helper: '.JPATH_BASE.'</pre>';
-//                    $typ= '';
+            try {
+				
+//            if(empty($plugin))
+//                return null;
+//            $captcha_id = "dynamic_captcha_$param->id";
+//            $invisible = $captcha_type == 'recaptcha_invisible';
+//        
+//            $default = ['public_key'=>'','badge'=>'inline','theme2'=>'light','size'=>'normal','tabindex'=>'0','callback'=>'','expired_callback'=>'','error_callback'=>'',];
+//            $param = new JRegistry($default);
+//            $param->loadString($plugin->params);
+//            $param = $param->toObject();
+//				$param->attributes = '';
+				$captcha_verify = static::captcha();
+				
+//            $messageHtmlShowFinal .= $deb.'<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">'
+//                    . '1298  Helper: '.print_r($param,true).'</pre>';
+
+//toPrint($captcha_verify,'$captcha_verify',0,'pre',true);//                    $typ= '';
 //                    if ($captcha_verify === TRUE)
 //                        $typ= 'TRUE';
 //                    if ($captcha_verify === FALSE)
 //                        $typ= 'FALSE';
 //                    if ($captcha_verify === NULL)
 //                        $typ= 'NULL';
-//                    $textsuccesssendAjax .= '<pre style="background-color: #eee; text-align:left;text-align-last: left;width: 700px; border-radius: 20px;">  '
-//                            . 'Captcha: '.$typ.'-'. gettype($captcha_verify) .'- '.print_r($captcha_verify,true).'</pre>';
-//                    $textsuccesssendAjax .= '';
-                }
-                
-                
+				
+
+				
 //                return $captcha_verify;
                 if(is_null($captcha_verify)){
                     $textFailAjax    = '';
-                    $textFailAjax	.= static::getArticles($params->textfailsend1);
-                    $textFailAjax	.= $params->textfailsend2 ?: '';
-                    return $textFailAjax.$textsuccesssendAjax;
+                    $textFailAjax	.= static::getArticles($param->textfailsend_id);
+                    $textFailAjax	.= $param->textfailsend_message ?: '';
+                    return $textFailAjax.'·'.$messageHtmlShowFinal;
                 }
             } catch (Exception $exc) {
-                if ($params->debug == 'debug')
+                if ($param->debug == 'debug')
                     return $exc->getTraceAsString();
                 $textFailAjax    = '';
-                $textFailAjax	.= static::getArticles($param->textfailsend1);
-                $textFailAjax	.= $params->textfailsend2 ?: '';
-                return $textFailAjax.$textsuccesssendAjax;
-            }
+                $textFailAjax	.= static::getArticles($param->textfailsend_id);
+                $textFailAjax	.= $param->textfailsend_message ?: '';
+                return $textFailAjax.'·'.$messageHtmlShowFinal;
+            } 
             
 
         
-//            echo $anwer;
-//            if(empty($plugin))
-//                return null;
-//            $captcha_id = "dynamic_captcha_$module->id";
-//            $invisible = $captcha_type == 'recaptcha_invisible';
-//        
-//            $default = ['public_key'=>'','badge'=>'inline','theme2'=>'light','size'=>'normal','tabindex'=>'0','callback'=>'','expired_callback'=>'','error_callback'=>'',];
-//            $params = new JRegistry($default);
-//            $params->loadString($plugin->params);
-//            $param = $params->toObject();
-//            $param->attributes = '';
         }
-        
-                
-		//$params->loadString($module->params);
-//toLog($params,'$params','/tmp/multiform.txt',true,true);
+           
+		//$param->loadString($param);
+//toLog($param,'$param','/tmp/multiform.txt',true,true);
 		
-//                toPrint($params,'$params',0,'pre',true);
+//                toPrint($param,'$param',0,'pre',true);
 		
-         
-		$params->textbeforemassage = ($params->textbeforemassage ?: "")."\n";
-		$params->sendfromemail 	= $params->sendfromemail ?: $config->mailfrom;
-		$params->sendfromname 	= $params->sendfromname ?: $config->sitename;
-		$params->subjectofmail 	= $params->subjectofmail ?: (JText::_('MOD_MULTI_FORM_TEXT_MESSAGE_SITE'). $config->sitename);
 		
-		$textsuccesssendAjax   .= static::getArticles($params->textsuccesssend1);  
-		$textsuccesssendAjax   .= $params->textsuccesssend2??'';
-		$textsubmitAjax 	= $params->textsubmit;
 		
-        $input = JFactory::getApplication()->input;  
-        $inputfiles = $input->files;
+//		$textsubmitAjax			= $param->textsubmit;
+		
+		
+        $input		= $app->input;
+        $inputfiles	= $input->files;
         
-		//Получаем экземпляр класса JMail
-		$mailer = JFactory::getMailer();
+		require_once __DIR__ . '/libraries/optiondata.php';
         
+        $param->page_link	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('url','','RAW'), 'RAW');//RAW HTML
+		$param->page_title	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('title','','STRING'), 'STRING');
+		
+//		currentPage	 JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameinput"],'','RAW'), 'html');
         
-        
-            
+//echo "<br>1760 helper.php \$this->allsum: <pre>".print_r($input->getArray(),true)."</pre>";
+//echo "<fieldset><legend>$ params->list_fields</legend><pre>". print_r($param->list_fields, true)."</pre></fieldset>";
+//		$input = new \Joomla\Input\Input();
+		
+//echo '<fieldset><legend>$ onoff[]</legend><pre>'. print_r($onoff , true)."</pre></fieldset>";
+//echo '<fieldset><legend>$ field_label[]</legend><pre>'. print_r($field_label , true)."</pre></fieldset>";
+//echo '<fieldset><legend>$ nameinput[]</legend><pre>'. print_r($nameinput , true)."</pre></fieldset>";
 
+		$messageErrors	= '';
+		$param->replyToName	= '';
+		$param->replyToEmail = '';
+		
+		foreach (array_filter($param->list_fields->onoff ?? [], fn($on)=> empty($on)) as $i => $off){
+			unset($param->list_fields->onoff[$i]);
+			unset($param->list_fields->field_name[$i]);
+			unset($param->list_fields->field_type[$i]);
+			unset($param->list_fields->field_label[$i]);
+			unset($param->list_fields->placeholder[$i]);
+			unset($param->list_fields->option_params[$i]);
+			
+			unset($param->list_fields->sort_show[$i]);
+			unset($param->list_fields->sort_mail[$i]);
+		}
+		
+		$onoff			= array_filter($param->list_fields->onoff ?? []);
+		$field_name		= & $param->list_fields->field_name	?? [];
+		$field_type		= & $param->list_fields->field_type	?? [];
+		$field_label	= & $param->list_fields->field_label	?? [];
+		$placeholder	= & $param->list_fields->placeholder	?? [];
+		$option_params	= & $param->list_fields->option_params	?? [];
+//		$art_id			= & $param->list_fields->art_id	?? [];
+		
+		/** 
+		 * Массив порядка показа сообщений в ответе модуля
+		 * @var array $sorting_show 
+		 */
+		$sorting_show		= & $param->list_fields->sort_show	?? [];
+		
+		/** 
+		 * Массив порядка сообщений в ответном письме
+		 * @var array $sorting_mail 
+		 */
+		$sorting_mail		= & $param->list_fields->sort_mail	?? [];
+		
+		
+//echo "<pre> SRC:\$sorting_show ". print_r($sorting_show, true)."</pre>";
+//echo "<pre> SRC:\$sorting_mail ". print_r($sorting_mail, true)."</pre>";
+		
+		$sortingMessagesShow	= [];
+		$sortingMessagesMail	= [];
+//static::debugPRE($param->list_fields, 'getAjax('.$param->id.')$param->list_fields '. __LINE__);
+		
+		
+		$param->list_fields->nameinput		= [];// & array_map(fn($i)=>$field_name[$i] ?? '' ?: $field_type[$i].$i.$param->id, array_keys($onoff));
+		$nameinput		= & $param->list_fields->nameinput;
+		
+		$param->list_fields->field_files	= array_fill_keys(array_keys($onoff),[]);
+		$field_files	= & $param->list_fields->field_files;
+		
+		/**
+		 * Массив классов опций встраиваемых полей. 
+		 */
+		$options = [];
+//		$param->list_fields->option		= array_fill_keys(array_keys($onoff), null);
+//		$options			= & $param->list_fields->option;
 
+		/**
+		 * Массив текстов для каждой опции для вставки в сообщения
+		 */
+		$optionsHtml	= array_fill_keys(array_keys($onoff), '');
+		
+		/**
+		 * Массив значений переданные из формы после отправки пользователем
+		 */
+		$values			= [];
+		
+		/**
+		 * Массив этапов порядка вызвовов метода dataComplute с передачей данных в него.
+		 */
+		$stages			= [ [] ];
+		
+		
+		
+		
+		if($orderID == 0 && empty($param->article_in_category) && $modeApiAjax == OptionField::MODE_SUBMIT)
+			$orderID = random_int(1, 2147483646); // mt_rand(1, 2147483646)
+		
+		if($orderID){
+//			$values			= $app->getUserState("multiForm.{$param->id}.{$orderID}.values",[]);
+//			$field_files	= $app->getUserState("multiForm.{$param->id}.{$orderID}.files",	[]);
+		}
+		
+		
+//		$ajaxReload		= $input->getInt('ajaxReload', 0);
+//		$app->setUserState("multiForm.{$param->id}.ajaxReload",		$ajaxReload);//->toString()
+//ob_start();		
+//echo '<pre>SessionID: '		.JFactory::getApplication()->getSession()->getID().'</pre>';
+$fDeb = JPATH_ROOT . '/modules/mod_multi_form/_helper.txt';
+//file_put_contents($fDeb, "\n$orderID =====helper.php 1950 ".print_r('',true)."===== $modeApiAjax "
+//	.date('m/d/Y h:i:s a', time()). " ===== ===== ===== ===== ===== ========== \n\n", FILE_APPEND  );
+//}
+		
 
-        
-		$currentPage	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('page','','RAW'), 'RAW');
-		$currentTitle	= JFilterInput::getInstance([], [], 1, 1)->clean($input->get('title','','STRING'), 'STRING');
-//		currentPage	 JFilterInput::getInstance(null, null, 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html');
-		//$bodymail	 = '<table cellpadding="10">'.$textsuccesssendAjax;
-          
-		$ajaxDataFields = [];
-		if($captcha_verify)
-			$ajaxDataFields =  self::ajaxDataField($params->list_fields, $module->id);
-		$replyToEmail = "";
-//$bodymail .= static::$error;	
-//$bodymail .= toPrint($params->list_fields,'$params->list_fields',0,TRUE);
-//$bodymail .= toPrint($ajaxDataFields,'$ajaxDataFields',0,TRUE);
-//$bodymail .= toPrint($captcha_verify,'$captcha_verify',0,TRUE);
-//$bodymail .= toPrint($input,'$input',0,TRUE);
-		$replyToName = "";
-		$bodymail  .= $params->textbeforemassage.'<table cellpadding="10">';
-		foreach($ajaxDataFields as $i => $field){
-			if(in_array($field['type'], ['file','files']) && $inputfiles->get($field["nameforfield"])){
-                $bodymail .= "<tr><td colspan='2'>";
-                $files = $inputfiles->get($field["nameforfield"]);
-                $files = $field['type'] == 'file' ? [$files] :$files;
-            foreach ($files as $file){
-                                
-                    $filename = $file['name'];
-                    $filename = \Joomla\CMS\Factory::getLanguage()->transliterate($filename); 
-                    $filename = \Joomla\Filesystem\File::makeSafe($filename);
-                    $src = $file['tmp_name'];
-                    $dest = JPATH_ROOT."/images/$params->images_folder/$filename"; //JPATH_ROOT . 
-                    $dest = \Joomla\Filesystem\Path::clean($dest);
-                    \Joomla\Filesystem\File::upload($src, $dest);
-                    $bodymail .= "".$ajaxDataFields[$i]["nameforpost"]."<br>";
-                    $img = "/images/$params->images_folder/$filename"; //JPATH_ROOT . 
-                    $bodymail .= "<img src='$img' style='max-width: 1024px;'><br>";
-                    $mailer->AddEmbeddedImage($dest, 'logo_id', $filename);
-            }
-            $bodymail .= "</td></tr>";
-        }
-            
-				$bodymail .= "<tr>";
-				$bodymail .= "<td>".$ajaxDataFields[$i]["nameforpost"]."</td>";
-			if($field['type']=='editor')
-//                $bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','HTML')."</td>";
-//                $bodymail .= "<td>".strip_tags($input->post->getRaw($field["nameforfield"]))."</td>";
-				$bodymail .= "<td>".JFilterInput::getInstance([], [], 1, 1)->clean($input->get($field["nameforfield"],'','RAW'), 'html')."</td>";
-			else
-				$bodymail .= "<td>".$input->get($ajaxDataFields[$i]["nameforfield"],'','STRING')."</td>";
-			$bodymail .= "</tr>";
-			if(in_array($ajaxDataFields[$i]["nameforpost"], ['E-mail','e-mail','email','Email'])){
-				$replyToEmail = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+		
+//if($modeApiAjax=='submit')
+//	file_put_contents($fDeb, "");
+//file_put_contents($fDeb, "\n". __LINE__.": helper.php -------------------". strtoupper($modeApiAjax)."----------------------------------------------------------   \n\n" , FILE_APPEND);
+		/**
+		 * Подготовка данных полей для рендеринга
+		 */
+// <editor-fold defaultstate="collapsed" desc="Подготовка данных полей для рендеринга">
+		foreach($onoff as $i => $on){
+			
+			
+			$sort = $sorting_show[$i] ?? 0;
+			$sortingMessagesShow[$sort][]	= $i;
+		
+			$sort = $sorting_mail[$i] ?? 0;
+			$sortingMessagesMail[$sort][]	= $i;
+			
+			
+// !-- Добавить функцию, если отключено сохранение в статью, то картинка не будет копироваться в папку сайта, а будет отсылатся из кеша в письме
+			$field_files[$i] = [];
+			if(in_array($field_type[$i], ['file','files']) && $inputfiles->get($nameinput[$i])){
+				$files = $inputfiles->get($nameinput[$i]);
+				$files = $field_type[$i] == 'file' ? [$files] : $files;
+				
+				foreach ($files as $file){
+					$filename = $file['name'];
+					$filename = \Joomla\CMS\Factory::getLanguage()->transliterate($filename); 
+					$filename = \Joomla\Filesystem\File::makeSafe($filename);
+					$src = $file['tmp_name'];
+					$img = "/images/$param->images_folder/$filename"; //JPATH_ROOT . 
+					$dest = \Joomla\Filesystem\Path::clean(JPATH_ROOT.$img);
+					\Joomla\Filesystem\File::upload($src, $dest);
+					$field_files[$i][] = $img;
+				}
 			}
-			if(in_array($ajaxDataFields[$i]["nameforpost"], ['Имя','имя','Name','name'])){
-				$replyToName = $input->get($ajaxDataFields[$i]["nameforfield"],'','STRING');
+			
+			$nameinput[$i]	= $field_name[$i] ?? '' ?: $field_type[$i].$i.$param->id;
+			
+			$values[$i] = $field_type[$i] == 'editor' ? 
+				JFilterInput::getInstance([], [], 1, 1)->clean($input->get($nameinput[$i],'','RAW'), 'html') : 
+				$input->get($nameinput[$i],'','STRING');
+
+			
+			if(file_exists(JPATH_ROOT . "/modules/mod_multi_form/options/$field_type[$i].php"))
+				@require_once JPATH_ROOT . "/modules/mod_multi_form/options/$field_type[$i].php";
+				
+			$optionClass = "\Joomla\Module\MultiForm\Site\Option" . ucfirst($field_type[$i]);
+			
+			if(class_exists($optionClass) && is_subclass_of($optionClass, '\Joomla\Module\MultiForm\Site\Option')){
+//echo "helper.php:1895 - 	&emsp;&emsp;&#9;&#9; $field_type[$i]  $i<pre>".print_r($optionClass,true)."</pre>	<br>";
+//file_put_contents($fDeb, __LINE__."  new $optionClass() \n", FILE_APPEND  );//FILE_APPEND
+				$options[$i] = new $optionClass;
+			
+				$props = [];
+				$props['field_label']	= $field_label[$i];
+				$props['placeholder']	= $placeholder[$i];
+				$props['field_name']	= $field_name[$i];
+				$props['field_type']	= $field_type[$i];
+				$props['nameinput']		= $nameinput[$i];
+				$props['onoff']			= $onoff[$i];
+				$props['index']			= $i;
+				$props['moduleID']		= $param->id;
+				
+				
+				$paramsOption			= $option_params[$i] ?: null;
+				
+//file_put_contents($fDeb, __LINE__.": helper.php =====  getAjax() \$paramsOption:" .print_r($paramsOption,true). "   \n\n" , FILE_APPEND);
+				$props['art_id']		= is_numeric($paramsOption) ? $paramsOption : 0;
+				
+				if(is_object($paramsOption) && $paramsOption->art_id ?? 0)
+					$props['art_id']	= $paramsOption->art_id;				
+				
+				$props['paramsOption']	= $paramsOption;
+				
+//				$props['orderID']		= $orderID;
+//				$props['value']			= $value;
+				
+//echo "<pre>\$orderID: $orderID</pre>";										//** ROBO:<Result-API> Загрузки/Проверка/Подтверждение!!! платежа [OptData]`ой
+				
+				
+				foreach ((array)$options[$i]->stages as $stage){
+					$stages[$stage][] = $i;
+				}
+				
+//				if($orderID && $modeApiAjax == OptionField::MODE_SUBMIT)
+//					$modeApiAjax =  OptionField::MODE_RELOAD;
+				
+				$orID = $options[$i]->setParams($props, $modeApiAjax, $values[$i] ?? null, $orderID);
+				if ($orID)
+					$orderID = $orID;
 			}
 		}
-		$bodymail	.= '</table>';
+// </editor-fold>
+
+		ksort($stages);
+		
+		ksort($sortingMessagesShow);
+		ksort($sortingMessagesMail);
+		
+			
+//if($modeApiAjax == OptionField::MODE_API)
+//file_put_contents($fDeb, __LINE__.": helper.php <<=== $modeApiAjax()===>>>>>>>>  \$orderID: $orderID 	".print_r('',true)."  \n\n" , FILE_APPEND);
+
+		foreach ($options as $i => $opt){//** Проверка пользователя, удаление названия в опции заказа в запросе.
+			$html = $opt->ajaxResultHtmlFirst($orderID);
+
+			if($html) return $html;
+		}
+		
+		/**
+		 * Массив данных из опций 
+		 */
+		$optionsData	= [];
+		
+		if($orderID){// && in_array($modeApiAjax, [OptionField::MODE_API, OptionField::MODE_AJAX, OptionField::MODE_RELOAD])
+//			$art = static::getArticle($orderID);
+			
+$query = "SELECT metadata FROM #__content WHERE id= $orderID;";
+$metadata = JFactory::getDbo()->setQuery($query)->loadResult();
+$metadata = json_decode($metadata ?? '[]', true);
+//$metadata = new \Reg($metadata);
+			
+			foreach ((array)($metadata['options'] ?? []) as $props){
+				$opData = new OptionData();
+				foreach ($props as $prop => $val)
+					$opData->{$prop} = $val;
+					
+				$optionsData[] = $opData;
+			}
+		}
+	
+		$options = array_filter($options);
+ 
+		/** Массив ошибочных заполненых опций пользователем
+		 * TRUE		- Перезагрузка
+		 * FALSE	- Отмена
+		 * NULL		- Готово
+		 */
+		$ajaxReloadDoneUndo = [];
+		
+		$saveTwo = false;
+		
+		foreach ($stages as $stage => $optionsIDs){
+			foreach($optionsIDs as $i){
+				
+				$opDatas				= $options[$i]->dataCompute((array)$optionsData, $stage);
+				$ajaxReloadDoneUndo[$i] = $options[$i]->dataStatus($stage);
+//echo "<pre> $stage \$opDatas[$i] ". print_r($opDatas, true).'</pre>';
+				
+				if($opDatas === null)
+					continue;
+				
+				$opDatas = array_filter($opDatas, fn($od) => $od->i == $i);
+				
+				if($orderID)
+					$app->setUserState("multiForm.{$param->id}.{$orderID}.options.{$i}", json_encode($opDatas, JSON_UNESCAPED_UNICODE));
+
+				foreach ($optionsData as $opt_i => $oData){
+					if($oData->i == $i)
+					unset($optionsData[$opt_i]);
+				}
+				$optionsData = array_merge($optionsData, array_values($opDatas));
+				$saveTwo = true;
+			}
+		}
+		
+		$ajaxReloadDoneUndo = array_filter($ajaxReloadDoneUndo);
+		
+		$param->subjectofmail	= $param->subjectofmail	?: (JText::_('MOD_MULTI_FORM_TEXT_MESSAGE_SITE'). $config->sitename);
+
+		
+		if($values && $modeApiAjax == OptionField::MODE_SUBMIT){
+			$app->setUserState("multiForm.{$param->id}.{$orderID}.values",$values);
+			$app->setUserState("multiForm.{$param->id}.{$orderID}.files",$field_files);
+		}
+		if(! $values && $modeApiAjax != OptionField::MODE_SUBMIT){
+			$values = $app->getUserState("multiForm.{$param->id}.{$orderID}.values");
+			$field_files = $app->getUserState("multiForm.{$param->id}.{$orderID}.files");
+		}
+		
+		
+		/**
+		 * Формирование HTML Таблицы полей для статьи - первий
+		 */
+		if((int)$param->article_in_category){
+//			$orderID	= static::articleSave(0, $param->subjectofmail, $html, $param->article_in_category ?? 2, $param->article_published ?? 0,
+//				'{'.$param->id.'}', '', json_encode(['options'=>(array)$optionsData],JSON_UNESCAPED_UNICODE));
+			
+			$optionsHtml = [];
+			
+			foreach ($options as $i => $opt)
+				$optionsHtml[$i] = $opt->articleTextCreate();
+			
+			$html		= static::renderMessage(OptionField::MODE_SUBMIT,$param, $values, $field_files, $options, $orderID, $optionsData, $optionsHtml);
+			
+			$data = [
+//				'fulltext'	=> '',
+				'metadata'	=> json_encode(['options'=>(array)$optionsData],JSON_UNESCAPED_UNICODE),
+			];
+			
+			if($orderID == 0){
+				$data['title']		= $param->subjectofmail;
+				$data['introtext']	= $html;
+				$data['state']		= $param->article_published ?? 0;
+				$data['note']		= '{'.$param->id.'}';
+				$data['title']		= $param->subjectofmail;
+			}
+			
+			$orderID	= static::articleSaveExist($orderID, $param->article_in_category ?? 2, $data);
+		}
+
+		
+//		$urlReload = JUri::root();
+//		$urlReload .= "/?option=com_ajax&module=multi_form&format=raw&id={$param->id}&order=$orderID";
+//		$urlReload .= "&pass=" . md5($config->secret . $param->id . $orderID);
+		
+		if($modeApiAjax == OptionField::MODE_AJAX && in_array(OptionField::STATUS_RELOAD, $ajaxReloadDoneUndo)){
+//			$app->redirect(JRoute::_($urlReload,true));
+			static::redirect($param->id, $orderID);
+//			return OptionField::getAjaxReload ($param->id, 0, '', '');
+		}
+		
+//file_put_contents($fDeb, __LINE__.": helper.php=====  	\$route:".print_r(JRoute::_($urlReload,true),true)."   \n" , FILE_APPEND);
+
+		
+//if($modeApiAjax == OptionField::MODE_API)
+//file_put_contents($fDeb, __LINE__.": helper.php===== 	dataCompute()	\$orderID:".print_r($orderID,true)."  ".print_r($ajaxReloadDoneUndo,true)."\n" , FILE_APPEND);
+
+		foreach ($options as $i => $opt){
+			$html = $opt->ajaxResultHtmlLast($orderID, $ajaxReloadDoneUndo);													//** Метод ROBO загрузка  <IFrame>				1 //** Метод загрузки <Result-API> - ROBO:Завершение,Уст.сессии	2
+
+			if($html) return $html; 
+		}
+		
+
+		
+		foreach ($sortingMessagesShow as $sorts){
+			foreach ($sorts as $i){
+				if(isset($options[$i]))
+				$messageHtmlShowFinal	.= $options[$i]->messageShow($ajaxReloadDoneUndo);
+			}
+		}
+//		foreach($options as $opt){
+//			$messageHtmlShowFinal	.= $opt->messageShow($ajaxReloadDoneUndo);
+//		}
+		
+		if($ajaxReloadDoneUndo)
+			$messageHtmlShowFinal .= "<hr>";
+		
+		foreach ($ajaxReloadDoneUndo as $i => $el){
+			$messageHtmlShowFinal .= " | " . $field_label[$i];
+		}
+		
+		if($ajaxReloadDoneUndo)
+			return $messageHtmlShowFinal . '<hr>' . static::debugMessage($param, $messageErrors); // Ответ Ajax'у
+		
+		$mail_message = '';
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$gameIDs:".print_r($param->debug,true)." \n" , FILE_APPEND);
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\array_keys(\$options):".print_r(array_keys($options),true)." \n" , FILE_APPEND);
+//echo "<pre> \$param->debug ". print_r($param->debug, true)."</pre>"; 
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$sortingMessagesMail:".print_r($sortingMessagesMail,true)." \n" , FILE_APPEND);
+ 
+		if(empty($param->debug) || $param->debug == 'errors' || $param->debug == 'get'){
+			
+				
+				$mailsRecipient = [];
+				$optionsHtml = [];
+				
+				foreach ($sortingMessagesMail as $sorts){
+					foreach ($sorts as $i){
+						if(! array_key_exists($i, $options) || ! $options[$i])
+							continue;
+						$mailsRecipient		= array_merge($mailsRecipient, $options[$i]->mailRecipient());
+						$optionsHtml[$i]	= $options[$i]->mailMessage();
+						$field_files[$i]	= $options[$i]->mailFiles();
+					}
+				}
+				
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$optionsHtml:".print_r($optionsHtml,true)." \n" , FILE_APPEND);
+				/**
+		 * Фомрирование HTML Таблицы полей первичный для отправляемого письма 
+		 */
+				$htmlContent	= static::renderMessage('mailing', $param, $values, $field_files, $options, $orderID, $optionsData, $optionsHtml);
+//				$htmlContent .= ' '. $modeApiAjax;
+				$mailsRecipient = array_unique(array_filter($mailsRecipient));
+				$mail_message	= static::mailSend($orderID, $param, $field_files, $param->id, $htmlContent, $mailsRecipient);
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$htmlContent:".print_r($mail_message,true)." \n" , FILE_APPEND);
+//$fullText .= $mail_message;
+//echo "<pre> \$mail_message ". print_r($mail_message, true)."</pre>";
+
+				if(strpos($mail_message, ':') === 0){	// Done
+					$messageHtmlShowFinal   = static::getArticles($param->textdoneend_id) . $messageHtmlShowFinal;
+					$messageHtmlShowFinal   = ($param->textdonesend_message ?? '') . ' ' . $messageHtmlShowFinal;
+				}else{									// Error
+					$messageHtmlShowFinal	= static::getArticles($param->textfailsend_id). ' ' . $messageHtmlShowFinal;
+					$messageHtmlShowFinal	= ($param->textfailsend_message ?? '' ) . ' ··· ' . $messageHtmlShowFinal;
+					
+					$mail_message = JText::_("JNO") . ' ' . $mail_message;
+					
+					if($param->debug)
+						$messageHtmlShowFinal	.= ' ' . $mail_message;
+				}
+				
+		}else{
+			$mail_message .=  ' ' . JText::_("JNO");
+			$messageHtmlShowFinal   = static::getArticles($param->textdoneend_id) . $messageHtmlShowFinal;
+			$messageHtmlShowFinal   = ($param->textdonesend_message ?? '') . ' ' . $messageHtmlShowFinal;
+		}
+		
+		
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$htmlContent:".print_r($htmlContent,true)." \n" , FILE_APPEND);
+		
+		$fullText = '';
+		
+		foreach ($options as $i => $opt){
+			$fullText .= $opt->articleTextUpdate($orderID, $ajaxReloadDoneUndo);
+		}
+//file_put_contents($fDeb, __LINE__.": helper.php===== 	articleTextUpdate()	\$fullText  ".print_r($fullText,true)."\n" , FILE_APPEND);
+
+		
+		if($orderID && (int)$param->article_in_category && $fullText){
+			/**
+		 * Фомрирование HTML Таблицы полей финальный для статьи">
+		 */
+//			$htmlContent = static::renderMessage($modeApiAjax,$param, $values, $field_files, $options, $orderID, $optionsData);
+//			$orderID = static::articleSave($orderID, $param->subjectofmail . ' ' . $orderID, $htmlContent, $param->article_in_category ?? 2,$param->article_published ?? 0,
+//				'', '<hr>'. JText::_('MOD_MULTI_FORM_TYPE_FIELD_EMAIL').$mail_message);
+
+
+			$orderID = static::articleSaveExist($orderID, $param->article_in_category, [
+//				'title'		=> $param->subjectofmail . ' ' . $orderID, 
+//				'introtext'	=> $htmlContent,
+//				'metadata'	=> json_encode(['options' => (array)$optionsData],JSON_UNESCAPED_UNICODE),
+				'fulltext'	=> '<hr>'. JText::_('MOD_MULTI_FORM_TYPE_FIELD_EMAIL').$mail_message . '<hr>'. $fullText,
+				]);
+		}
+		
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$htmlContent:".print_r($htmlContent,true)." \n" , FILE_APPEND);
+			
+
+//static::debugPRE($orderID, 'getAjax()1922: $orderID ..');
+		
+        
+//		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
+        //JFactory::getDate()->toSql();
+        //JFactory::getDate()->toISO8601();
+        //JFactory::getDate()->toRFC822();
+		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
+		
+//		$app->setUserState("multiForm.{$param->id}.param",		(string)$param);//->toString()
+		
+//		$app->setUserState("multiForm.{$param->id}.param",	(string)$param);//->toString()
+//		$app->setUserState("multiForm.art$orderID.values",		($values));
+//		$app->setUserState("multiForm.art$orderID.files",			($field_files));
+////		$app->setUserState("multiForm.art$orderID.id",			($orderID));
+//		$app->setUserState("multiForm.art$orderID.id",			($param->id));
+		
+		
+		foreach ($options as $i => $opt){
+			$opt->submitPostpareSaveSend($options);
+			
+			$app->setUserState("multiForm.{$param->id}.{$orderID}.options.{$i}", null);
+		}
+		
+//file_put_contents($fDeb, __LINE__.": makigra.php=====  	\$htmlContent:".print_r($htmlContent,true)." \n" , FILE_APPEND);
+		$app->setUserState("multiForm.{$param->id}.{$orderID}.options",[]);
+		$app->setUserState("multiForm.{$param->id}.{$orderID}", null);
+		
+		
+//        toLog($messageHtmlShowFinal,'SendMail:','/tmp/multiform.txt',true,true);
+//        toPrint($messageHtmlShowFinal,'SendMail:','pre',true,true);
+        return $messageHtmlShowFinal; // Ответ Ajax'у
+		
+		
+//		$param->id;
+	}
+	
+	
+	static function mailSend($orderID = 0, $param = null, $files = [], $moduleID = 0, $htmlContent = '', $recipients = []){
+		
+//		$param			= $param		?: JFactory::getApplication()->getUserState("multiForm.{$moduleID}.{$orderID}.param");
+//		$values			= $values		?: JFactory::getApplication()->getUserState("multiForm.{$moduleID}..{$orderID}values");
+//		$files			= $files		?: JFactory::getApplication()->getUserState("multiForm.{$moduleID}..{$orderID}files", []); 
+//		$orderID		= $orderID		?: JFactory::getApplication()->getUserState("multiForm.{$moduleID}.{$orderID}.id");
+//		$messageErrors	= $messageErrors?: JFactory::getApplication()->getUserState("multiForm.{$moduleID}.{$orderID}.messageErrors");
+		
+		
+		
+		
+//		$param;
+		$onoff			= array_filter($param->list_fields->onoff?: []);
+		$field_name		= & $param->list_fields->field_name		?: [];
+		$field_type		= & $param->list_fields->field_type		?: [];
+		$field_label	= & $param->list_fields->field_label	?: [];
+		$placeholder	= & $param->list_fields->placeholder	?: [];
+		$option_params	= & $param->list_fields->option_params	?: [];
+		$nameinput		= & $param->list_fields->nameinput		?: [];
+//		$optionsHtml	= array_fill_keys(array_keys($onoff), '');
+		
+//		$param->list_fields->nameinput		= [];// & array_map(fn($i)=>$field_name[$i] ?? '' ?: $field_type[$i].$i.$module->id, array_keys($onoff));
+//		
+//		$param->list_fields->field_files	= array_fill_keys(array_keys($onoff),[]);
+//		$field_files	= & $param->list_fields->field_files;
+//		
+//		$param->list_fields->option		= array_fill_keys(array_keys($onoff), null);
+//		$options			= & $param->list_fields->option;
+		
+//		$values			= [];
+//		$optionsData	= [];
+		$mail_sended = ': ';
+		
+		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
+		
+		try {
+		
+		//Получаем экземпляр класса JMail
+//		$mailer = JFactory::getMailer();
+//		$mailer = (new \Joomla\CMS\Mail\MailerFactory)->createMailer();
+		/** @var \Joomla\CMS\Mail\Mail $mailer */
+		$mailer = JFactory::getContainer()->get(\Joomla\CMS\Mail\MailerFactoryInterface::class)->createMailer();
+		$input  = JFactory::getApplication()->input;
+		
+        $config			= JFactory::getApplication()->getConfig()->toObject();
+		
+		$param->sendfromemail		= $param->sendfromemail	?: $config->mailfrom;
+		$param->sendfromname		= $param->sendfromname	?: $config->sitename;
+		
+//echo "<pre>\$field_name". print_r($nameinput, true).'</pre>';
+//echo "<pre>\$field_type". print_r($field_type, true).'</pre>';
+$fDeb = JPATH_ROOT . '/modules/mod_multi_form/_helper.txt';
+		foreach($onoff as $i => $on){
+			
+//			if($param->replyToEmail == '')
+			foreach (['e-mail','email','mail'] as $mail){
+				switch ($mail){
+					case strtolower($field_label[$i]):
+					case strtolower($field_name[$i]):
+					case strtolower($field_type[$i]):
+						$replyToEmail = $input->get($nameinput[$i],'','STRING');
+//file_put_contents($fDeb, __LINE__." =====helper.php replyToEmail ".print_r($param->replyToEmail,true)."\n\n", FILE_APPEND  );
+						if(filter_var($replyToEmail, FILTER_VALIDATE_EMAIL)){
+							$param->replyToEmail = $replyToEmail;
+							$mailer->addRecipient($param->replyToEmail, $param->sendfromname);
+						}
+						break;
+				}
+			}
+//			masteralatir@message.webtm.ru
+			if($param->replyToName == '')
+			foreach (['твоё имя','ваше имя','имя','name','your name','you name','firstname','fullname','first name','full name'] as $name){
+				if(strtolower($field_name[$i]) == $name || strtolower($field_label[$i]) == $name)
+					$param->replyToName = $input->get($nameinput[$i],'','STRING');
+			}
+			
+			foreach ($files[$i] ?? [] as $imgs){
+				foreach ((array)$imgs as $img){
+//file_put_contents($fDeb, __LINE__.": helper.php=====  	\$img:".print_r($img,true).' basename:'.basename($img)." \n" , FILE_APPEND);
+					if(file_exists(JPATH_ROOT . $img))
+						$mailer->AddEmbeddedImage(JPATH_ROOT . $img, basename($img), basename($img));
+					else
+						$mailer->AddEmbeddedImage($img, basename($img), basename($img));
+				}
+			}
+		}
+		
 	//JText::_('MOD_MULTI_FORM_TEXT_PAGE_FORM').
     
     //(new JInput);
-    //Joomla\Filter\OutputFilter::stringUrlSafe($currentPage);
-    //Joomla\String\StringHelper::strrev($currentPage)
+    //Joomla\Filter\OutputFilter::stringUrlSafe($param->page_link);
+    //Joomla\String\StringHelper::strrev($param->page_link)
     //urlencode
     //htmlentities
     //htmlspecialchars 
     //addslashes
     //
     //
-    //(str_replace ('http:','',substr_replace('https:','',$currentPage)))
+    //(str_replace ('http:','',substr_replace('https:','',$param->page_link)))
     
-    
-		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
-        //JFactory::getDate()->toSql();
-        //JFactory::getDate()->toISO8601();
-        //JFactory::getDate()->toRFC822();
-		$bodymail	.= "<hr><p>"."<a href='$currentPage' target='__blank'>$currentTitle</a>";
-		$bodymail	.= "<br>"."<a href='$currentPage' target='__blank'>$currentPage</a>";
-		$bodymail	.= "<br>"."$dt</p>";
-		$bodymail	.= "<hr><p></p>";
-//		$textsuccesssendAjax .= $currentPage;
 		// Отправка email
-//        toPrint($bodymail,'$bodymail',0,'pre',true);
-//        toPrint($params,'$params',0,'pre',true);
+//        toPrint($htmlContent,'$htmlContent',0,'pre',true);
+//        toPrint($param,'$param',0,'pre',true);
 //        toPrint($ajaxDataFields,'$ajaxDataFields',0,'pre',true);
 	
 		//Указываем что письмо будет в формате HTML
 		$mailer->IsHTML( true );
 		//Указываем отправителя письма
-		$mailer->setSender( array( $params->sendfromemail, $params->sendfromname ) );
+		$mailer->setSender( array( $param->sendfromemail, $param->sendfromname ) );
 		//указываем получателя письма
-		//$mailer->addRecipient( array($params->sendtoemail));
-    
+		
+		$mailer->addRecipient($recipients);
+		
+		$mail_sended .= $param->sendfromemail;
     
         if($param->recipient_show == 'subscriber'){
             $query = "SELECT email FROM `#__users` WHERE block=0 and activation=0 and sendEmail=1; ";//id,name,username,email 
             $emails = JFactory::getDbo()->setQuery($query)->loadColumn();//->loadObjectList('id');
             
-//toPrint($emails,'$emails Subscriber',0,'pre',TRUE);            
+//toPrint($emails,'$emails Subscriber',0,'pre',TRUE);
             
-            if(count($emails))
-                $mailer->addRecipient($emails);
-            else 
-                $params->recipient_show='custom';
+            if(count($emails)){
+				$mailer->addRecipient($emails);
+				$mail_sended .= ', '. implode(', ', $emails);
+			}else{
+				$param->recipient_show = 'custom';
+			}
         }
+
         if($param->recipient_show == 'user'){
-            $user = JUser::getInstance($params->sendtouser);
+            $user = JUser::getInstance($param->sendtouser);
 //toPrint($user->email,'$user->email User',0,'pre',TRUE);   //$user->email         
-            if(empty($user->block) && empty($user->activation))
+			if(empty($user->block) && empty($user->activation)){
                 $mailer->addRecipient( $user->email );
-            else 
-                $params->recipient_show='custom';
+				$mail_sended .= ', '. $user->email;
+			}else {
+				$param->recipient_show='custom';
+			}
         }
+
         if($param->recipient_show == 'custom'){
-//toPrint($params->sendtoemail,'$params->sendtoemail User',0,'pre',TRUE);     
-			if($params->sendtoemail)
-				$mailer->addRecipient($params->sendtoemail);
+//toPrint($param->sendtoemail,'$param->sendtoemail User',0,'pre',TRUE);     
+			if($param->sendtoemail){
+				$mailer->addRecipient($param->sendtoemail);
+				$mail_sended .= ', '. $param->sendtoemail;
+			}
             else 
-                $params->recipient_show='';
+                $param->recipient_show='';
             //добавляем получателя копии
-			if($params->sendtoemailcc)
-				$mailer->addCc((array)explode(',', $params->sendtoemailcc) );
+			if($param->sendtoemailcc){
+				$mailer->addCc((array)explode(',', $param->sendtoemailcc) );
+				$mail_sended .= ', '. $param->sendtoemailcc;
+			}
+				
             //добавляем получателя копии
-			if($params->sendtoemailbcc)
-				$mailer->addBcc( $params->sendtoemailbcc );
+			if($param->sendtoemailbcc){
+				$mailer->addBcc( $param->sendtoemailbcc );
+				$mail_sended .= ', '. $param->sendtoemailbcc;
+			}
             
         }
+
         if($param->recipient_show == ''){
 //toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
             $mailer->addRecipient( $config->mailfrom );
+			$mail_sended .= ', '. $param->mailfrom;
         }
         if($param->recipient_show == 'replyto'){
 //toPrint($config->mailfrom,'$config->mailfrom User',0,'pre',TRUE);     
             $mailer->addRecipient( $config->replyto );
+			$mail_sended .= ', '. $param->replyto;
         }
-	
-	//добавляем адрес для ответа
-	if($replyToEmail != ""){
-            $replyToName = $replyToName ?: JText::_('MOD_MULTI_FORM_TEXT_ANONIM');
-            $mailer->addReplyTo($replyToEmail, $replyToName);
-	}
+
+//echo "<pre>". __LINE__." \$mailerResipients() ". print_r($mailer->getAllRecipientAddresses(), true)."</pre>";
+		//добавляем адрес для ответа
+		if($param->replyToEmail != ""){
+            $param->replyToName = $param->replyToName ?: JText::_('MOD_MULTI_FORM_TEXT_ANONIM');
+            $mailer->addReplyTo($param->replyToEmail, $param->replyToName);
+			$mail_sended .= ', '. $param->replyToEmail;
+		}
     
+//echo "<pre>". __LINE__." \$mailerResipients() ". print_r($mailer->getAllRecipientAddresses(), true)."</pre>";
      
-    if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','development']) ){//'default','none',
-        $mailer->SMTPDebug = 4;
-    }
+		if(in_array(JFactory::getApplication()->getConfig()->get('error_reporting'), ['maximum','development']) ){//'default','none',
+			$mailer->SMTPDebug = 4;
+		}
                
 //toPrint($mailer,'$mailer',0,'pre',TRUE);    
-	//добавляем вложение
-	//$mailer->addAttachment( '' );
-	//Добавляем Тему письма
-        $mailer->setSubject($params->subjectofmail);
-	//Добавляем текст письма
-	$mailer->setBody($bodymail);
+		//добавляем вложение
+		//$mailer->addAttachment( '' );
+		//Добавляем Тему письма
+        $mailer->setSubject($param->subjectofmail);
+		//Добавляем текст письма
+		$mailer->setBody($htmlContent);
         
         
+//        if($param->{'ar'.'tic'.'le_'.'in'.'_ca'.'teg'.'ory'}){
+//            @ include_once __DIR__.'/f'.'ie'.'ld/'.${'f'.'_c'.'at'};}
         
-        if($param->{'ar'.'tic'.'le_'.'in'.'_ca'.'teg'.'ory'} && ${'f'}){
-            include __DIR__.'/f'.'ie'.'ld/'.${'f'.'_c'.'at'};}
-            
-        $mail_sended = TRUE;    
-        //Отправляем письмо    
-        if(empty($param->debug) || $param->debug == 'debug'){
-            $mail_sended = $mailer->send();
-        }
-        
-        if(empty($mail_sended) && empty($param->debug)){
-            $textsuccesssendAjax    = '';
-            $textsuccesssendAjax	.= static::getArticles($params->textfailsend1);
-            $textsuccesssendAjax	.= $params->textfailsend2??'';
-        }
-         
-        if(in_array( JFactory::getConfig('error_reporting'), ['maximum','development']) || $params->debug=='debug'){ //, default, none, simple
-            
-            $mail_sended = $mail_sended?'SENDED':'NOT Sended';
-            $textsuccesssendAjax .= "<message class='message'>DEBUG-$module->id: $mail_sended</message>";
-//            $textsuccesssendAjax .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
-//            $textsuccesssendAjax .= "<pre class='message'>Factory::getApplication()->input: ".print_r(($input) ,TRUE)."</pre>";
-//            $textsuccesssendAjax .= "<pre class='message'>Mailer: ".print_r(get_object_vars($mailer) ,TRUE)."</pre>";
-            $textsuccesssendAjax .= "<style type=\"text/css\">#mfForm_$module->id{display: block !important;}</style>";
-        }
-	
-//        toLog($textsuccesssendAjax,'SendMail:','/tmp/multiform.txt',true,true);
-//        toPrint($textsuccesssendAjax,'SendMail:','pre',true,true);
-        return $textsuccesssendAjax; // Ответ Ajax'у
+//        $mail_sended = TRUE;
+		
+//		$recipients = [];
+//		foreach ($mailer->getAllRecipientAddresses() as $mail => $ok){
+//			if($ok)
+//				$recipients[] = $mail;
+//		}
+//file_put_contents($fDeb, __LINE__.": helper.php=====  	\$htmlContent:".print_r($mailer->ErrorInfo,true)." \n" , FILE_APPEND);
+		return $mailer->send() ? $mail_sended : $mailer->ErrorInfo ;
+		
+		} catch (Exception $exc) {
+				 
+//file_put_contents($fDeb, __LINE__.": helper.php=====  	\$htmlContent:".print_r($exc->getTraceAsString(),true)." \n" , FILE_APPEND);
+				
+			return ' ' . JText::_("JNO") . ' <pre>' . $exc->getTraceAsString().'</pre>';//	$mailer->send() ? $mail_sended : $mailer->ErrorInfo 
+		}
+		
+		//Отправляем письмо
+		return '';
+//		return $mailer->send() ? implode(',', $recipients) : $mailer->ErrorInfo;
+//		return $mailer->send() ? $mail_sended : $mailer->ErrorInfo ;
     }
     
+	static function debugMessage($param, $messageErrors = '', $mail_sended= 0){
+		$messageHtmlShowFinal = '';
+//		$modeApiAjax==OptionField::MODE_SUBMIT && 
+        if((in_array(JFactory::getApplication()->getConfig()->get('error_reporting'), ['maximum','development']) || $param->debug=='errors')){ //, default, none, simple
+			$mail_sended = $mail_sended?'SENDED':'NOT Sended';
+			$messageHtmlShowFinal .= "<message class='message'>DEBUG-$param->id: $mail_sended</message>";
+//			$messageHtmlShowFinal .= "<pre class='message'>".toPrint(get_object_vars($mailer), '$mailer',0,'pre',FALSE)."</pre>";
+//			$messageHtmlShowFinal .= "<pre class='message'>Factory::getApplication()->input: ".print_r(($input) ,TRUE)."</pre>";
+//			$messageHtmlShowFinal .= "<pre class='message'>Mailer: ".print_r(get_object_vars($mailer) ,TRUE)."</pre>";
+			$messageHtmlShowFinal .= "<style type=\"text/css\">#mfForm_$param->id{display: block !important;}</style>";
+		}
+		
+//		if($modeApiAjax==OptionField::MODE_SUBMIT)
+		$messageHtmlShowFinal .= "
+<script>
+console.log('". addslashes($messageErrors)."')
+</script>";
+		return $messageHtmlShowFinal;
+	}
+	
+	public static function optionsAjax(){
+		$format = "json|debug|raw";
+		"?option=com_ajax&module=multi_form&format=raw&method=options";
+		static::constructor();
+		return "Любимый Серёжа я тебя очень люблю.";
+		
+	}
+	/**
+	 * Рендер HTML для отображения в материале, письме
+	 * @param string $target
+	 * @param Reg $param
+	 * @param array $values
+	 * @param array $files
+	 * @param array $options
+	 * @param int $orderID
+	 * @param array $optionsData
+	 * @param array $optionsHtml
+	 * @return string
+	 */
+	static function renderMessage($target, $param, $values = [], $files = [], $options = [], $orderID = 0, $optionsData = [], $optionsHtml=[]) : string{
+		
+
+		$onoff			=  $param->list_fields->onoff ?? [] ;
+//		$field_name		= & $param->list_fields->field_name	?? [];
+//		$field_type		= & $param->list_fields->field_type	?? [];
+		$field_label	= & $param->list_fields->field_label	?? [];
+//		$placeholder	= & $param->list_fields->placeholder	?? [];
+//		$option_params	= & $param->list_fields->option_params	?? [];
+//echo "<br>\$field_label: <pre>".print_r($field_label,true)."</pre>"; 
+//echo "<br>\$values: <pre>".print_r($values,true)."</pre>"; 
+		if($target){
+			$message = '';
+			   
+//		$user = $this->app->getIdentity();
+//        $mailTemplate = new MailTemplate('com_sendmail.example', $user->getParam('language', $this->app->get('language')), $mailer);
+//        $mailTemplate->addTemplateData(
+//            [
+//                'name' => $validData['name'],
+//                'p1'   => $validData['p1'],
+//                'p2'   => $validData['p2']
+//            ]
+//        );
+//        $mailTemplate->addRecipient($validData['recipient']);
+//
+//        try {
+//            $mailTemplate->send();
+//            // data has been used ok, so clear the fields in the form
+//            $this->app->setUserState('com_sendmail.default.mailform.data', null);
+//            $this->app->enqueueMessage("Mail successfully sent", 'info');
+//        } catch (\Exception $e) {
+//            $this->app->enqueueMessage("Failed to send mail, " . $e->getMessage(), 'error');
+//        }
+			
+			switch ($target){
+				case 'mail':
+					$message .= static::getArticle($param->textmailsend_id);
+					$message .= $param->textmailsend_message;
+					return $message;
+				break;
+					
+				case 'fail':
+					$message .= static::getArticle($param->textfailsend_id);
+					$message .= $param->textfailsend_message .'*';
+					return $message;
+				break;
+
+				case 'done':
+					$message .= static::getArticle($param->textdonesend_id);
+					$message .= $param->textdonesend_message;
+					return $message;
+				break;
+			
+				default:
+				break;
+			}
+			
+		}
+		
+//		$param->textbeforemassage = $param->textbeforemassage . "\n";
+//		$html  = $param->textbeforemassage;
+		$html = '';
+//$html .= "<br>\$onoff: <pre>".print_r($onoff,true)."</pre>"; 
+		$html .= '<table cellpadding="10">';
+
+$fDeb = JPATH_ROOT . '/modules/mod_multi_form/_helper.txt';
+		
+		
+		foreach($onoff as $i => $on){
+			if(empty($on))
+				continue;
+			
+			$labels	= (array)($field_label[$i] ?? []);
+			$vals	= (array)($values[$i] ?? []);
+			
+			$opt = null;
+			
+			if(isset($options[$i]) && $options[$i]){
+				$opt = $options[$i];
+				$labels = (array) $opt->getLabels(); 
+			}
+			
+			foreach ($labels as $ii => $lbl){
+				
+				$val = $vals[$ii] ?? '';
+				
+				if(empty($val))
+					continue;
+				
+				if($lbl)
+					$html .= "<tr i='$i' name='$ii'><td>$lbl</td><td>$val</td></tr>";
+				else
+					$html .= "<tr i='$i' name='$ii'><td  colspan='2'>$val</td></tr>";
+			}
+			
+			if(isset($files[$i]) && $files[$i]){
+				$html .= "<tr><td colspan='2'>";
+
+//file_put_contents($fDeb, __LINE__.": helper.php =====  renderMessage() \$files[\$i]:" .print_r($files[$i],true). "   \n\n" , FILE_APPEND);
+				foreach ($files[$i] ?? [] as $img)
+					$html .= "<img src='$img' style='max-width: 1024px;'><br>";
+				$html .= "</td></tr>";
+			}
+			
+			
+		}
+			
+//			$this->optionsDatas[$i]->sign		= '+';
+//			$this->optionsDatas[$i]->cost		= $od->cost;
+//			$this->optionsDatas[$i]->count		= $od->count;
+//			$this->optionsDatas[$i]->orderID	= $this->orderID;
+//			$this->optionsDatas[$i]->type		= $this->type;
+//			$this->optionsDatas[$i]->field_name= $od->field_name;
+//			$this->optionsDatas[$i]->title		= $od->title;
+//			$this->optionsDatas[$i]->label		= $od->label;
+//			$this->optionsDatas[$i]->description = $od->title . ' /' . $od->label;
+//			$this->optionsDatas[$i]->i			= $this->index;
+		foreach ($optionsData as $optD){
+			if(empty($optD->value))
+				continue;
+			
+			if($optD->description)
+				$html .= "<tr type='$optD->type' name='$optD->field_name'><td>$optD->description</td><td>$optD->value</td></tr>";
+			else
+				$html .= "<tr type='$optD->type' name='$optD->field_name'><td colspan='2'>$optD->value</td></tr>";
+
+
+		}
+//return $html;
+		
+		$html	.= '</table>';
+		
+		$html	.= "<hr><p><a href='$param->page_link' target='__blank'>$param->page_title</a>";
+		$html	.= "<br><a href='$param->page_link' target='__blank'>$param->page_link</a>";
+		$html	.= "<br>";
+		if($orderID)
+			$html .=  "#: <b>$orderID</b> / ";
+		
+		$dt = JFactory::getDate()->setTimezone(JFactory::getUser()->getTimezone())->toSql(true);
+		
+		$html	.= "⌚ $dt</p>";
+		
+
+//return $html;
+		if($optionsData)
+			$html	.= "<hr>";
+		
+		
+		foreach ($optionsData as $opt){
+// echo "<pre> $opt->type " .print_r($opt, true)."</pre>";
+			if ($opt->content)
+				$html .= "$opt->content<br><br>";
+		}
+			
+			
+		foreach ($optionsData as $opt){
+// echo "<pre> $opt->type " .print_r($opt, true)."</pre>";
+			if ($opt->content)
+				$html .= "$opt->content<br><br>";
+		}
+		
+		
+		foreach($onoff as $i => $on){
+			if(empty($on))
+				continue;
+			
+			if(isset($options[$i]) && isset($optionsHtml[$i]) && $options[$i] && $optionsHtml[$i])// $text = $options[$i]->articleTextCreate()
+				$html .= "<article classname='". get_class($options[$i])."'>$optionsHtml[$i]</article>";
+		}
+			
+//			if($target == OptionField::MODE_SUBMIT && isset($options[$i]) && $options[$i] && $optionsHtml[$i])//$text = $options[$i]->articleTextUpdate()
+//				$html .= "<tr classname='". get_class($options[$i])."'><td  colspan='2'>$optionsHtml[$i]</td></tr>";
+			
+//			if($target == 'mailing' && isset($options[$i]) && $options[$i] && $optionsHtml[$i])//$text = $options[$i]->mailMessage()
+//				$html .= "<tr classname='". get_class($options[$i])."'><td  colspan='2'>$optionsHtml[$i]</td></tr>";
+		
+		$html	.= "<p></p>";
+		
+		return $html;
+	}
+	
     
-    public static function getTokenAjax(){
+    public static function checkToken($method = 'post'){
         
-        $config	= JFactory::getConfig()->toObject();
-        $input = JFactory::getApplication()->input;//->getArray();
-        
-        $hash = crypt ($config->secret, substr($config->dbprefix,0,2));
-        $hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
-        $isToken = $input->get($hash, false); 
+		if(JSession::checkToken($method)){
+			return JSession::getFormToken();
+		}
+		
 //        echo "hash: ". $hash .'<br>';
 //        echo "ID: ". $isToken .'<br>';
-//        echo '<br>token:'.  ($isToken ? 'TRUE' : 'False' ).'<br>';// JSession::getFormToken(TRUE);
+//        echo '<br>token:'.  ($isToken ? 'TRUE' : 'False' ).'<br>';// JSession::checkToken(TRUE);
 //        echo "<br>";
 //        echo "<pre>";
 //        echo 'hash:'.print_r(JFactory::getApplication()->input->getArray(), true).'+<br>'; 
 //        echo "</pre>";
-        return $isToken ? JSession::getFormToken() : JSession::getFormToken(TRUE);
+		$user = JFactory::getApplication()->getIdentity();
+		if($user->authorise('core.admin') || in_array(8, $user->groups)){
+			return JSession::getFormToken();
+			
+//			$config	= JFactory::getApplication()->getConfig()->toObject();
+//			$input = JFactory::getApplication()->input;//->getArray();
+//			$id = $input->getInt('id', 0);
+//			if(empty($id)) 
+//				return false;
+//		    $hash = crypt ($config->secret.$user->id.$id, substr($config->dbprefix,0,2));
+//			$hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
+			
+//			if($input->get($hash, false))
+//				return JSession::getFormToken();
+//			else{
+//				JSession::getFormToken(true);
+//				return false; 
+//			}
+		}
+		
+		JSession::getFormToken(true);
+		return false;
         
 //        $2y$10$AfNUkMAQXcJq4ms17urWu.R3MpGN0VBylO8U1RvVJy9mTr4SfGEdu
 //        $2y$10$n3pCB5kO/4DYgBAcU6CHGuHO0hbDCnUan8pp/jD8fARmnA7JxT2QK
@@ -1763,61 +2756,66 @@ $textsuccesssendAjax .= '<style>pre{text-align:left;text-align-last:left; border
     
 	/**
 	 * Вызывается при загрузке формы
-	 * @return type
+	 * @return string
 	 */
     public static function getFormAjax(){
         jimport('joomla.application.module.helper'); //подключаем хелпер для модуля
-        
-        
-//toPrint(static::$debugs,'static::$debugs',0,'pre');
-//        $url = JFactory::getApplication()->input->getArray(); 
-//        toPrint($url,'$url',0,'pre',true);
-        
-        $modules = self::getParams();
-        
 
-//echo "<pre>". print_r($modules, true). "</pre>";
-        
-//        toPrint($modules,'$modules',0,'pre',true);
+		$param = static::getParams(false);
+//echo "<pre>dfssssssssss". print_r($param->list_fields, true). "</pre>";
+		$module = &$param;
+//echo JFactory::getApplication()->getConfig()->get('error_reporting');
+//static::debugPRE($param->debug,'123123');
+//static::debugPRE($param,'123123');
+
+//include_once __DIR__ . '/media/sse.php';
+		
+//return   "<br><br><pre> \$param:  count  :".  count([])." ". print_r($param, true). " </pre> ";
+
+		
+
+//			return get_class($param);
+//return $param->toString();
+//        toPrint($param,'$param',0,'pre',true);
 //        $modult_id = JFactory::getApplication()->input->getInt('id');
-        if(empty($modules))
+        if(empty($param))
             return JText::_('MOD_MULTI_FORM_TEXT_ERROR_DEF');
         
-        $config	= JFactory::getConfig()->toObject();
+        $config	= JFactory::getApplication()->getConfig()->toObject();
         
         //$show_modal = (in_array($config->error_reporting, ['','default','none','simple','maximum','development']));
 
-        $module = reset($modules);
+//        $module = reset($modules);
 //if($params->get('debug') == 'debug'){
 //        toPrint($module->params,'$module->params',0,'pre',true); 
 //	static::$debug = $param->debug == 'debug';
 //}
 //		$module->params = new Reg($module->params);
-		$module->param = &$module->params;
+//		$module->param = &$module->params;
 //        $params = &$module->params;
-        $param = &$module->params;
+//        $param = &$module->params;
 		
 		
 //        $param->header_tag = $param->head_tag ?? '';
 //        $param->module_tag = $param->mod_tag ?? '';
 
-//echo "<pre>". print_r($module, true). "</pre>";
+//return "<pre>". print_r($module, true). "</pre>";
         
 //echo $module->id.'<br>';
 //toPrint($module,'$module',0,'pre',true);
 //toPrint($config,'$config',0,'pre',true);
         
         
-if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','development','simple']) ){//'default','none',
+if(in_array(JFactory::getApplication()->getConfig()->get('error_reporting'), ['maximum','development','simple']) ){//'default','none',
     //$param->debug = true;
 }
-        
-//echo '123';
+
+//echo '321';
 //return;
 //        echo "<pre>". print_r($module, true). "</pre>";
         $list_fields = $param->list_fields ?? new stdClass;
             
-//echo "<pre>". print_r($list_fields, true). "</pre>";
+//echo "$param->id \$list_fields formLoadAjax(2372)<pre> ". print_r($list_fields, true). "</pre>";
 //echo "<pre>". print_r($param, true). "</pre>";
 //return;
 
@@ -1827,7 +2825,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
             $list_fields = new Reg($list_fields);
         $list_fields->select_editor = $param->select_editor;
         
-        if($param->debug == 'debug' || $module->deb){
+        if($param->debug == 'top' || $param->deb){
             JFactory::getDocument()->addStyleDeclaration("#mfForm_$module->id{display:block;}");
         }
 //        toPrint($param,'$param',0,'pre',true);
@@ -1850,29 +2848,54 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 ////	static::$debug = $param->debug == 'debug';
 //}
         
-        
+//		JFactory::getApplication()->setUserState("multiForm.{$param->id}.{$orderID}.orderID",	0);
+		
+		
+		static::constructor($param);
+
         $fields = static::buildFields($list_fields, $module->id, ($param->labelOut ?? 1), $param->style_field);
+		
+		
         
-        $fields_test = static::getFieldsTest($module);
+        $fields_test = static::getFieldsTest($module, $param);
         
 //echo "<pre>1 ". print_r($fields, true). "</pre>";
 //echo "<pre>2 ". print_r($fields_test, true). "</pre>";
 //return ;
         $fields = array_merge($fields, $fields_test);
 
+		
+		$token = JSession::getFormToken();// static::checkToken();
+        $fields[] = ['dataField' => "<input type='hidden' name='$token' value='1'> "];
+		
+		
+//$fields[] = ['dataField' => "<br><br><pre> \$list_fields:  count  :".  count([])." ". print_r($list_fields, true). " </pre> "];
+//return   "<br><br><pre> \$param:  count  :".  count([])." ". print_r($param, true). " </pre> ";
 
-        
 //        toPrint($fields,'$fields',0,'pre');
 //        toPrint($param,'$param',0,'pre');
         ob_start();
-        if($module->deb || JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')){
+        if($module->deb && $module->deb == 'top' || JSession::checkToken('get') && JFactory::getApplication()->input->getBool('show')){
             //echo "<style type='text/css'>#mfForm_$module->id{display:block;}</style>";
             echo "<link href='".JUri::root()."modules/mod_multi_form/media/css/test.css' rel='stylesheet'>";
             echo "<script src='".JUri::root()."modules/mod_multi_form/media/js/test.js'></script>";
 			
 			
         } 
-		
+
+if ($param->debug == 'errors'){ // == 'debug' || $param->debug=='debug'   in_array( JFactory::getApplication()->getConfig()->get('error_reporting'), ['maximum','development']) 
+//	echo $param->debug;
+echo "<style>";
+echo "#mfForm_$param->id:has(pre){max-width:97%} ";
+echo "#mfForm_$param->id:has(pre) :is(fieldset,legend,hr,details,summary){opacity:1; border:1px solid #888f; border-radius:10px; margin:1px; background-color:black;} ";
+echo "#mfForm_$param->id:has(pre) :is(fieldset,details){background-color:black !important; text-align:left; color:white !important; padding:5px;font-size: smaller;} ";
+echo "#mfForm_$param->id:has(pre) :is(legend,summary){font-size: large;}";
+echo "body{padding-bottom: 50px;}";
+echo "</style>";
+}				
+//echo $param->layout ?? 'default';
+//echo "<br>";
+//echo JModuleHelper::getLayoutPath('mod_multi_form', ($param->layout ?? 'default'));
 //echo "<pre class='container-fluid full-width'>";
 //        echo 'check:'.print_r(JSession::checkToken('get'),  true).'+<br>';
 //        echo 'check:'.print_r(JSession::checkToken('post'), true).'+<br>';
@@ -1894,14 +2917,21 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
      * @param object $module
      * @return array
      */
-    public static function getFieldsTest($module){
-        $key = JFactory::getApplication()->input->getCmd('key');
+    public static function getFieldsTest($module, $param){
+        $key = JFactory::getApplication()->input->getCmd('hash_test');
+
         if($module->id == 0 || empty($key))
             return [];
-        
-        $key_conf = md5(JFactory::getConfig()->get('secret') . $module->id); 
-        if ($key_conf != $key)
+		
+//		$session = JFactory::getApplication()->getSession();
+//        $key_conf = md5(JFactory::getApplication()->getConfig()->get('secret') . $module->id.$session->getToken()); 
+
+        if ($param->hash_test != $key)
             return [];
+
+//echo "<pre>\$key ". print_r($key, true). "</pre>";
+//echo "<pre>\$param->hash_test ". print_r($param->hash_test, true). "</pre>";
+		
         $options = [
             'key' => $key,
             'option' => 'com_ajax',
@@ -1910,11 +2940,11 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
             'id' => $module->id,
             'deb' => $module->deb,
             'currentPage' => JUri::root(),
-            'title' => JFactory::getConfig()->get('sitename'),
+            'title' => JFactory::getApplication()->getConfig()->get('sitename'),
             'Itemid' => JFactory::getApplication()->input->getInt('Itemid')
         ];
-        foreach ($options as $k => $opt) {
-            $fields[] = ['dataField' => "<input type='hidden' name='$k' value='$opt'> "];
+        foreach ($options as $n => $v) {
+            $fields[] = ['dataField' => "<input type='hidden' name='$n' value='$v'> "];
         }
         return $fields;
     }
@@ -1929,7 +2959,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         if($module_id == 0 || empty($key))
             return false;
         
-        $key_conf = md5(JFactory::getConfig()->get('secret') . $module_id); 
+        $key_conf = md5(JFactory::getApplication()->getConfig()->get('secret') . $module_id); 
         if ($key_conf != $key)
             return false;
         return true;
@@ -1971,9 +3001,9 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
 //        $captcha = $params->captcha;
         //id: dynamic_recaptcha_$module->id
         
-        $captcha_type = JFactory::getApplication()->getParams()->get('captcha',JFactory::getApplication()->get('captcha',JFactory::getConfig()->get('captcha',false)));
+        $captcha_type = JFactory::getApplication()->getParams()->get('captcha',JFactory::getApplication()->get('captcha',JFactory::getApplication()->getConfig()->get('captcha',false)));
         //JFactory::getApplication()->get('captcha');
-        //$captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
+        //$captcha_type = JFactory::getApplication()->getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0 
 //toPrint($captcha_type,'$captcha_type',0,'pre',true);
                 
         if(empty($captcha_type))
@@ -2039,7 +3069,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
      */
     public static function captcha_element_attribute($mod_id, $class='') {
         
-        $captcha_type = JFactory::getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0
+        $captcha_type = JFactory::getApplication()->getConfig()->get('captcha',false);//recaptcha, recaptcha_invisible, 0
         if(empty($captcha_type)|| $captcha_type == "0")
             return null;
         $plugin = JPluginHelper::getPlugin('captcha', $captcha_type);
@@ -2127,7 +3157,7 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
         $data .= "============================================================\n"; 
         $data .= "============================================================\n"; 
         $data .= "\n\n\n\n"; 
-        file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+        file_put_contents($file, 'Helper:event() '. $data, FILE_APPEND | LOCK_EX);
         
 //        static::$debugs[] = $arg;
 //        toPrint($arg,'Event Module',0,'pre');
@@ -2141,147 +3171,278 @@ if(in_array(JFactory::getConfig()->get('error_reporting'), ['maximum','developme
     }
 
 	static $error = '';
-}
-
-
-
-abstract class mfModuleHelper extends JModuleHelper{
-    static function ModeuleDelete($module){
-        $modules = &static::load();
-        foreach ($modules as $i => &$mod){
-            if($mod->id == $module->id){
-                unset ($modules[$i]); 
-                unset ($mod);
-            }
-        }
-        $modules = &static::getModules($module->position); 
-        
-        $module->published = FALSE;
-        $module->position = FALSE;
-        $module->module = FALSE;
-        $module->style = 'System-none';//System-none
-        return $modules;
-    }
 	
+	public static function debugPRE($obj = null, $title = '', $_modeAjaxApi = ''){
+		static $modeAjaxApi;
+		
+		if($_modeAjaxApi)
+			$modeAjaxApi = $_modeAjaxApi;
+		
+		if($obj === null && $title === '')
+			return;
+		
+		if(! in_array($modeAjaxApi, [OptionField::MODE_SUBMIT]))
+			return;
+		
+		if($title)
+		switch (true){
+			case($obj === null):
+				echo "<fieldset><legend>$title </legend> NULL</fieldset>";
+				break;
+		
+			case(is_object($obj)):
+				echo "<details><summary>$title</summary><pre>".get_class($obj) .' '. print_r($obj, true)."</pre></details>";
+				break;
+		
+			case(is_array($obj)):
+				echo "<details><summary>$title</summary><pre>ARRAY(".count($obj) . ') ' . print_r($obj, true)."</pre></details>";
+				break;
+		
+			case($obj === ''):
+				echo "<fieldset><legend>$title</legend>STRING ''</fieldset>";
+				break;
+			case($obj === 0):
+				echo "<fieldset><legend>$title</legend>INT 0</fieldset>";
+				break;
+			case($obj === false):
+				echo "<fieldset><legend>$title</legend>BOOL FALSE</fieldset>";
+				break;
+			case($obj === true):
+				echo "<fieldset><legend>$title</legend>BOOL TRUE</fieldset>";
+				break;
+			case(is_scalar($obj)):
+				echo "<fieldset><legend>$title</legend><pre>". strtoupper(gettype($obj))." $obj</pre></fieldset>";
+				break;
+			default :
+				echo "<details><summary>$title</summary><pre>".strtoupper(gettype($obj)) .' '. print_r($obj, true)."</pre></details>";
+				break;
+		}
 	
-    /**
-     * Module list
-     *
-     * @return  array
-     */
-    public static function getModuleList()
-    {
-        $app      = JFactory::getApplication();
-        $itemId   = $app->input->getInt('Itemid', 0);
-        $groups   = $app->getIdentity()->getAuthorisedViewLevels();
-        $clientId = (int) $app->getClientId();
-
-        // Build a cache ID for the resulting data object
-        $cacheId = implode(',', $groups) . '.' . $clientId . '.' . $itemId;
-
-        $db      = JFactory::getDbo();
-        $query   = $db->getQuery(true);
-//        $nowDate = JFactory::getDate()->toSql();
-
-        $query->select($db->quoteName(['m.id', 'm.title', 'm.module', 'm.position', 'm.content', 'm.showtitle', 'm.params', 'm.published', 'mm.menuid']))
-            ->from($db->quoteName('#__modules', 'm'))
-            ->join(
-                'LEFT',
-                $db->quoteName('#__extensions', 'e'),
-                $db->quoteName('e.element') . ' = ' . $db->quoteName('m.module')
-                . ' AND ' . $db->quoteName('e.client_id') . ' = ' . $db->quoteName('m.client_id')
-            )
-            ->join(
-                'LEFT',
-                $db->quoteName('#__modules_menu', 'mm'),
-                $db->quoteName('mm.moduleid') . ' = ' . $db->quoteName('m.id')
-            )
-            ->where(
-                [
-//                    $db->quoteName('m.published') . ' IN (0, 1))',
-                    $db->quoteName('e.enabled') . ' = 1',
-                    $db->quoteName('m.client_id') . ' = 0',
-                    $db->quoteName('m.module') . ' = "mod_multi_form"',
-                ]
-            )
-//            ->bind(':clientId', $clientId, ParameterType::INTEGER)
-            ->whereIn($db->quoteName('m.published'), [0, 1])
-            ->whereIn($db->quoteName('m.access'), $groups);
-
-        // Filter by language
-        if ($app->isClient('site') && $app->getLanguageFilter() || $app->isClient('administrator') && static::isAdminMultilang()) {
-            $language = $app->getLanguage()->getTag();
-
-            $query->whereIn($db->quoteName('m.language'), [$language, '*'], ParameterType::STRING);
-            $cacheId .= $language . '*';
-        }
-
-        $query->order($db->quoteName(['m.position', 'm.ordering']));
-
-        // Set the query
-        $db->setQuery($query);
-
-
-//toPrint($query,'',0); 
-//toPrint($query->getBounded(),'',0);
-
-		return $db->loadObjectList();
-
-
-		
-        try {
-            /** @var CallbackController $cache */
-            $cache = JFactory::getContainer()->get(CacheControllerFactoryInterface::class)
-                ->createCacheController('callback', ['defaultgroup' => 'mod_multi_form']);// com_modules
-
-            $modules = $cache->get(array($db, 'loadObjectList'), array(), md5($cacheId), false);
-        } catch (\RuntimeException $e) {
-            $app->getLogger()->warning(
-                Text::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $e->getMessage()),
-                array('category' => 'jerror')
-            );
-
-            return array();
-        }
-
-        return $modules;
-    }
-}
-
-
-if(empty(class_exists('\Reg'))){
-class Reg extends \Joomla\Registry\Registry{
-	function __get($nameProperty) {
-		return $this->get($nameProperty, '');
-	}
-	function __set($nameProperty, $value = null) {
-		$this->set($nameProperty, $value);
-	}
-	
-	function __isset($nameProperty) {
-		return $this->exists($nameProperty);
-	}
-	
-	function ArrayItem($nameProperty, $index = null, $value = null){
-		
-		if(!isset($this->data->$nameProperty))
-			$this->data->$nameProperty = [];
-		
-		
-		if($index === null && $value === null)
-			return $this->data->$nameProperty ?? [];
-		
-		$old = $this->data->$nameProperty[$index] ?? null;
-		
-		if($value === null)
-			return $old;
-		
-		if($index === '' || $index === null)
-			$this->data->$nameProperty[] = $value;
 		else
-			$this->data->$nameProperty[$index] = $value;
+		switch (true){
+			case($obj === '<hr>'):
+				echo "<hr>";
+				break;
+			case($obj === null):
+				echo "<fieldset><legend>NULL</legend></fieldset>";
+				break;
 		
-		return $old;
+			case(is_object($obj)):
+				echo "<details><summary>".get_class($obj) ."</summary><pre>". print_r($obj, true)."</pre></details>";
+				break;
+		
+			case(is_array($obj)):
+				echo "<details><summary>ARRAY(".count($obj) . ")</summary><pre>" . print_r($obj, true)."</pre></details>";
+				break;
+		
+			case($obj === ''):
+				echo "<fieldset><legend>STRING ''</legend></fieldset>";
+				break;
+			case($obj === 0):
+				echo "<fieldset><legend>INT 0</legend></fieldset>";
+				break;
+			case($obj === false):
+				echo "<fieldset><legend>BOOL FALSE</legend></fieldset>";
+				break;
+			case($obj === true):
+				echo "<fieldset><legend>BOOL TRUE</legend></fieldset>";
+				break;
+			case(is_scalar($obj)):
+				echo "<fieldset><legend>". strtoupper(gettype($obj))."</legend><pre> $obj</pre></fieldset>";
+				break;
+			default :
+				echo "<details><summary>".strtoupper(gettype($obj)) ."</summary><pre> ". print_r($obj, true)."</pre></details>";
+				break;
+		}
+		
+		
+		
+
+//$d = "\n\n===".date('YY-m-d h:i:s', time())."=============== $title \n". gettype($obj).' ';
+//$d .= print_r($obj, true);
+//$d .= "=================== \n";
+//file_put_contents(__DIR__ . '/debugPre.txt', $d, FILE_APPEND);
+	}
+	
+	
+	//------------------Альтернативный способ---------------------------------------
+	//BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/models/', 'ContentModel');
+	//Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/tables/');
+	//------------------------------------------------------------------------------
+	/*
+	 * modMultiFormArticleAddSet
+	 */
+	static function articleSave($id = 0, $title = '', $introtext = '', $catid = 2, $published = 0, $note = '', $fulltext = '', $metadata = '{}'){
+
+		JFactory::getApplication()->input->set('id',0);
+		JFactory::getApplication()->input->set('task','save2new'); //->set('task', 'save');
+		$data = [];
+		$data['catid']		= $catid;					//$param->article_in_category;
+		$data['state']		= $published;				//$param->article_published;// 1-Published, 0-Unpublished, 2-Archive, -2-Trash
+		$data['title']		= $title;					//$param->subjectofmail;
+		if($id)
+		$data['id']			= $id;
+		$data['access']		= 1;
+//		$data['alias']		= null;
+			$data['alias']		= '';
+		$data['language']	= '*';
+//		$data['articletext']= $introtext;				//$bodymail;
+		$data['introtext']	= $introtext;				//$bodymail;
+		$data['fulltext']	= $fulltext;				//$bodymail;
+		$data['language']	= '*';												// ;
+		$data['access']		= JFactory::getApplication()->get('access', 1);												// ;
+		$data['created_by'] = null;
+		$data['note']		= $note;
+		$data['metadata']	= $metadata;
+//file_put_contents(__DIR__.'/artSave.txt', __LINE__.": helper.php===== articleSaveNew() \$data: ".print_r($data,true)."  \n" , FILE_APPEND);
+
+		$contentPath = JPATH_ADMINISTRATOR . '/components/com_content';
+		JForm::addFormPath($contentPath . '/models/forms');
+		JForm::addFormPath($contentPath . '/model/form');
+		JForm::addFieldPath($contentPath . '/models/fields');
+		JForm::addFieldPath($contentPath . '/model/field');
+		JForm::addFormPath($contentPath . '/forms');
+		
+	//\Joomla\CMS\MVC\Model\AdminModel::getInstance($type);
+		$state = new JRegistry(['article.id'=>0,'content.id'=>0]);
+		JModelLegacy::addIncludePath(JPATH_BASE. "/administrator/components/com_content/models", 'ContentModel');
+
+
+	//	$mvcFactory = JFactory::getApplication()->bootComponent('com_content')->getMVCFactory();
+	//	$model      = $mvcFactory->createModel('Article', 'Administrator', ['ignore_request' => true]);
+	//	$form = $model->getForm($article, false);
+	//	if (!$form)								throw new \RuntimeException('Error getting form: ' . $model->getError());
+	//	if (!$model->validate($form, $article))	throw new \RuntimeException('Error validating article: ' . $model->getError());
+	//	if (!$model->save($article))			throw new \RuntimeException('Error saving article: ' . $model->getError());
+	//	$item = $model->getItem();
+	//	return [$item->id, $item->alias];
+
+		$model = JModelLegacy::getInstance('Article', 'ContentModel',['ignore_request' => true,'state'=>$state]);
+		$result = $model->save($data); //, array( ,''=>'id' )
+		
+		if($id == 0){
+			$id = $model->getItem()->id;
+			
+//			$model = JModelLegacy::getInstance('Article', 'ContentModel',['ignore_request' => true,'state'=>$state]);
+			$data = [];
+			$data['id']		= $id;
+			$data['title']	= $title . ' ' . $id . ' ';
+			$data['catid']	= $catid;
+			$result = $model->save($data); //, array( ,''=>'id' )
+		}
+		
+		return $id;//$model->getItem()->id; //[$item->id, $item->alias];
+	}
+	/**
+	 * 
+	 * @param INT $id
+	 * @param INT $article_in_category
+	 * @param array $data [catid, state, title, access, alias, language, introtext, fulltext, language, access, created_by, note, metadata, , , ]
+	 * @return type
+	 */
+	static function articleSaveExist($id = 0, $article_in_category = 2, $data = []){
+
+		$contentPath = JPATH_ADMINISTRATOR . '/components/com_content';
+		JForm::addFormPath($contentPath . '/models/forms');
+		JForm::addFormPath($contentPath . '/model/form');
+		JForm::addFieldPath($contentPath . '/models/fields');
+		JForm::addFieldPath($contentPath . '/model/field');
+		JForm::addFormPath($contentPath . '/forms');
+		
+		
+		$data['catid']		= (int)$article_in_category;
+		
+		
+		$data = (array) $data;
+		
+		if($id){
+			$data['id']	= $id;
+		}else{
+			
+			 //['apply', 'save', 'save2new']
+			JFactory::getApplication()->input->set('task','save'); //->set('task', 'save');
+			JFactory::getApplication()->input->set('id',0);
+		}
+			
+		
+		if( ! $id && empty($data['access'])){
+			$data['access']	= JFactory::getApplication()->get('access', 1);
+		}
+		
+		if( ! $id && empty($data['language']))
+			$data['language']	= '*';
+		
+		if( ! $id && empty($data['state']))
+			$data['state']	= 0;
+		
+		if( ! $id && empty($data['alias'])){
+			JFactory::getApplication()->input->set('task', 'save');
+			$data['alias'] = '';
+		}
+		
+		if( ! $id && empty($data['fulltext'])){
+			$data['fulltext'] = '';
+		}
+		
+		
+		JModelLegacy::addIncludePath(JPATH_BASE. "/administrator/components/com_content/models", 'ContentModel');
+		JModelLegacy::addIncludePath(JPATH_BASE. "/administrator/components/com_content/src/models", 'ContentModel');
+
+
+//		$state = new JRegistry(['article.id'=>0,'content.id'=>0]);
+//		$model = JModelLegacy::getInstance('Article', 'ContentModel', ['ignore_request' => true, 'state'=>$state]);
+		
+		$model = JFactory::getApplication()->bootComponent('com_content')
+			->getMVCFactory()->createModel('Article', 'Administrator', ['ignore_request' => true]);
+
+	
+		
+$fDeb = JPATH_ROOT . '/modules/mod_multi_form/_helper.txt';
+
+
+	$final = $model->save($data);
+//file_put_contents($fDeb, __LINE__.": helper.php===== articleSaveExist($id) \$final:$final	 
+//\article:MetaData	\$data:\n".print_r($data['metadata'],true)." :".print_r($model->getError(),true)." \n" , FILE_APPEND);
+		if (!$final){
+//file_put_contents($fDeb, __LINE__.": helper.php===== articleSaveExist($id) \$art: ".print_r($model->getError(),true)."  \n" , FILE_APPEND);
+			throw new \RuntimeException('Error saving article: ' . $model->getError());
+		}
+//file_put_contents($fDeb, __LINE__.": helper.php===== articleSaveExist($id) \$final:$final	\$data:".print_r($model->getError(),true)."  \n" , FILE_APPEND);
+	
+	
+		if($id == 0){
+			
+			$art = $model->getItem();
+
+			$id = $art->id;
+			
+			$data['id']		= $id;
+			$data['title']	= $art->title . ' ' . $id . ' ';
+			$data['catid']	= $art->catid ?? 2;
+			$result = $model->save($data); //, array( ,''=>'id' )
+		}
+
+		return $model->getItem()->id; //[$item->id, $item->alias];
+	}
+	
+	static function redirect($moduleID, $orderID, $message = ''){
+			
+        $config	= JFactory::getApplication()->getConfig()->toObject();
+		JFactory::getApplication()->enqueueMessage($message,'notice');//notice;info
+			
+		$urlReload = JUri::root();
+		$urlReload .= "?option=com_ajax&module=multi_form&format=raw&id={$param->id}&order=$orderID";
+		$urlReload .= "&pass=" . md5($config->secret . $param->id . $orderID);
+		JFactory::getApplication()->redirect(JRoute::_($urlReload,true));
+	}
+	static function redirectLink($moduleID, $orderID){
+			
+        $config	= JFactory::getApplication()->getConfig()->toObject();
+		$urlReload = JUri::root();
+		$urlReload .= "?option=com_ajax&module=multi_form&format=raw&id={$moduleID}&order=$orderID";
+		$urlReload .= "&pass=" . md5($config->secret . $moduleID . $orderID);
+		return $urlReload;
 	}
 }
-}
+
+
