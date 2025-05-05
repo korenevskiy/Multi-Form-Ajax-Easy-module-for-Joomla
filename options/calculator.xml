@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields _name="robokassa" _addfieldprefix="Joomla\Module\MultiForm\Site">
+		<fieldset _name="webauthn" label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL">
+			
+			<field
+				name="field_id"
+				type="sql"
+				label="A field with cost"
+				translate="false"
+				default=""
+				multiple="false"
+				
+					   description="Add class in dialog window: cartTable, cartLine" 
+				show_empty="true" 
+				key_field="id" 
+				value_field="title" 
+				_value_field="title"
+				query="
+SELECT id, CONCAT('DEVELOP: ',title  , ' /:', id , ' ', IF(state,' 👁',' ○'))  title 
+FROM `#__fields`
+WHERE only_use_in_subform = 0
+ORDER BY ordering;" >
+				<option value="class">Use element with class</option>
+				<option value="field">Use number field with data atribute</option>
+				<option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+			</field>
+			
+
+			
+				<field
+					name="field_type" 
+					type="list" 
+					label="Type field" 
+					class="_chzn-color-state radio btn-group "
+					default="number">
+					<option value="button" class="btn-sm btn btn-outline-secondary">Button</option>
+					<option value="number" class="btn-sm btn btn-outline-secondary">Number</option>
+					<option value="text" class="btn-sm btn btn-outline-secondary">Text</option>
+				</field> 
+				
+				<field
+					name="field_label_select"
+					type="text"
+					label="Text by field/button unselected"
+					required="false"
+					readonly="false"
+					default=" Select ₿ "
+					showon="field_type:button"
+				/>
+				<field
+					name="field_label_selected"
+					type="text"
+					label="Text by field/button selected"
+					required="false"
+					readonly="false"
+					default=" Selected ₿ "
+					showon="field_type:button"
+				/>
+				
+				
+				<field
+					name="field_plusminus"
+					type="list"
+					label="Additional buttons plus-minus"
+					showon="field_type:number[OR]field_type:text"
+					class="_chzn-color-state radio btn-group _btn-group-yesno popup-yes-no"
+					default="1">
+					<option value="0" class="btn-sm btn btn-outline-secondary">JHIDE</option>
+					<option value="1" class="btn-sm btn btn-outline-success">JSHOW</option>
+				</field> 		
+
+				<field
+					type="spacer"
+					default=""
+					label=""
+					description="&lt;hr>"/>
+		
+				<field
+					name="field_format"
+					type="list"
+					label="Format cost"
+					class="chzn-color-state radio btn-group _btn-group-yesno _popup-yes-no"
+					default="float">
+					<option value="int" class="btn-sm btn btn-outline-secondary">Integer</option>
+					<option value="float" class="btn-sm btn btn-outline-success">Float</option>
+				</field>
+				
+				
+				<field
+					name="onlyone"
+					type="list"
+					label="Only one in cart&lt;s&gt; &lt;/s&gt;"
+					class="chzn-color-state radio btn-group _btn-group-yesno popup-yes-no"
+					default="0">
+					<option value="0" class="btn-sm btn btn-outline-secondary">JDISABLED</option>
+					<option value="label" class="btn-sm btn btn-outline-success">[[%1:]][[%2:]],Option,&#160;&#160;&#160;</option>
+					<option value="article" class="btn-sm btn btn-outline-success">[[%1:]][[%2:]],Article,&#160;&#160;&#160;</option>
+				</field>
+				<field
+					name="require"
+					type="list"
+					label="Required&lt;s&gt;&lt;/s&gt;"
+					class="chzn-color-state radio btn-group _btn-group-yesno popup-yes-no"
+					_default="0">
+					<option value="0" class="btn-sm btn btn-outline-secondary">JOFF</option>
+					<option value="1" class="btn-sm btn btn-outline-success">JENABLED</option>
+				</field>
+				
+				
+				<field
+					name="require_message"
+					type="text"
+					label="Message Error by Required"
+					required="false"
+					readonly="false"
+					default="Please select product"
+				/>
+				
+				<field
+					name="field_nodelete"
+					type="list"
+					label="&lt;s&gt;No delete in cart&lt;/s&gt;"
+					class="chzn-color-state radio btn-group _btn-group-yesno popup-yes-no"
+					default="0">
+					<option value="0" class="btn-sm btn btn-outline-secondary">JOFF</option>
+					<option value="1" class="btn-sm btn btn-outline-success">JENABLED</option>
+				</field>
+				<field
+					name="field_selectopencart"
+					type="list"
+					label="&lt;s&gt;Opening cart when selecting.&lt;/s&gt;"
+					title="Автомтаическое открывание корзины сразу по выбору товара"
+					class="chzn-color-state radio btn-group _btn-group-yesno popup-yes-no"
+					default="0">
+					<option value="0" class="btn-sm btn btn-outline-secondary">JOFF</option>
+					<option value="1" class="btn-sm btn btn-outline-success">JENABLED</option>
+				</field>
+				
+				
+				
+				
+				
+				<field
+					name="class_article"
+					type="text"
+					label="Class Article - conainier &lt;s&gt; &lt;/s&gt;"
+					required="false"
+					readonly="false"
+					default=".com-content-article, .item-content, article, .item-page, "
+					desc="Class conainier for classes field,link,title"
+				/>
+				<field
+					name="class_title"
+					type="text"
+					label="Class title &lt;s&gt; &lt;/s&gt;"
+					required="false"
+					readonly="false"
+					default=".page-header a, .page-header > :is(h1,h2,h3,h4,h5,h6), .page-header:is(h1,h2,h3,h4,h5,h6), a.page-header, a"
+				/>
+				<field
+					name="class_link"
+					type="text"
+					label="Class link &lt;s&gt;&lt;/s&gt;"
+					required="false"
+					readonly="false"
+				/>
+				
+				<field
+					name="class_option"
+					type="text"
+					label="Class parent node (conainier) for field, label"
+					required="false"
+					readonly="false"
+					default=".field-entry"
+				/>
+				<field
+					name="class_field"
+					type="text"
+					label="Class field &lt;s&gt; &lt;/s&gt;"
+					required="false"
+					readonly="false"
+					default=".fields-container > .field-entry > .field-value, .form-control, input[data-cost][data-label]"
+				/>
+				<field
+					name="class_label"
+					type="text"
+					label="Class label &lt;s&gt; &lt;/s&gt;"
+					required="false"
+					readonly="false"
+					default=".page-header a, .page-header > :is(h1,h2,h3,h4,h5,h6), .page-header:is(h1,h2,h3,h4,h5,h6), a.page-header, a"
+				/>
+				
+				<field
+					name="info_format"
+					type="text"
+					label="Name &quot;quantity  all ammount &quot; format {quantity},{cost}"
+					required="false"
+					readonly="false"
+					default=" Select {quantity} on {cost} ₿ "
+				/>
+				<field
+					name="label_format_1"
+					type="text"
+					label="Ⅰ column format {title}"	
+					required="false"
+					readonly="false"
+					default=" {title} "
+				/>
+				<field
+					name="label_format_2"
+					type="text"
+					label="Ⅱ column format {label}"	
+					required="false"
+					readonly="false"
+					default="{label}"
+				/>
+				<field
+					name="label_format_3"
+					type="text"
+					label="Ⅲ column format {quantity},{cost}"		_label="Name &quot;ammount of products&quot; : %$"
+					required="false"
+					readonly="false"
+					default="{quantity},{cost}"
+				/>
+				<field
+					name="label_format_4"
+					type="text"
+					label="Ⅳ column format {ammount}"
+					required="false"
+					readonly="false"
+					default="{ammount} ₿ "
+				/>
+
+				<field  type="note" 
+						label="" 
+						heading="h4"
+					   description="&lt;hr>Add class in 'Dialog Window' setting: cartTable, cartLine" 
+						comment="" /> 
+
+
+ 			<field
+				name="rounding"
+				type="number"
+				label="Rounding of decimal Amount"
+				default="2"
+			/>
+			
+				<field
+					name="field_cart" 
+					type="list" 
+					label="&lt;s&gt;Fild in cart&lt;/s&gt;" 
+					class="_chzn-color-state radio btn-group "
+					default="0">
+					<option value="1" class="btn-sm btn btn-outline-secondary">JSHOW</option>
+					<option value="0" class="btn-sm btn btn-outline-secondary">JHIDE</option>
+				</field> 
+<!--			<field
+				name="select_editor"
+				type="sql" 
+				default="tinymce"
+				label="The field with the quantity counter"
+				multiple="true"
+				
+				
+				fileFilter="intarray"
+				layout="joomla.form.field.list-fancy-select" 
+				key_field="id" 
+				value_field="title" 
+				_translate_default="true"
+				_readonly="0" 
+				_disabled="0" 
+				_translate="true"
+				query="
+SELECT id, CONCAT(title  , ' /:', id , ' ', IF(state,' 👁',' ○'))  title 
+FROM `#__fields`
+WHERE only_use_in_subform = 0
+ORDER BY ordering;" />-->
+   
+		<!--	
+			
+			
+			<field
+				name="password1"
+				type="text"
+				label="Merchant Password1"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="password2"
+				type="text"
+				label="Merchant Password2"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			
+			
+			<field
+				name="isTest"
+				type="checkbox"
+				label="Is Test"
+				required="false"
+				readonly="false"
+				value="1" 
+				_checked="1"
+				_default=""
+			/>
+			
+			
+			
+			<field
+				name="IncCurrLabel"
+				type="text"
+				label="Default carrency (optional)"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="Culture"
+				type="text"
+				label="Language interface (optional)"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="Encoding"
+				type="text"
+				label="Page encoding (optional) [windows-1251]"
+				required="false"
+				readonly="false"
+				default="utf-8"
+			/>-->
+		</fieldset>
+	</fields>
+</form>

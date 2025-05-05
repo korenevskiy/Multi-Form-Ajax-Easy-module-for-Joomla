@@ -1,0 +1,62 @@
+
+/* 
+    Created on : 3 нояб. 2024 г., 01:54:07
+    Author     : koren
+*/
+
+/*input:user-valid {
+  border: 2px solid green;
+}*/
+
+/*input:user-valid + span::before {
+  content: "✓";
+  color: green;
+}*/
+form.mfPanelForm .calculator + label.error,
+form.mfPanelForm .calculator + label.error{
+	display: none;
+}
+
+form.mfPanelForm .calculator:user-invalid + label.error,
+form.mfPanelForm .calculator.error + label.error{
+	display: block;
+}
+form.mfPanelForm .calculator:user-invalid + label.error:after,
+form.mfPanelForm .calculator.error + label.error:after {
+	content: attr(title);
+	display: inline-block;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+}
+
+form.mfPanelForm .calculatorInfo.calculator input{	
+	/*all: unset;*/
+	min-width: 0px;
+	width: 10ch;
+  width: auto;
+  min-width: unset;
+	display: inline;
+  text-align: center;
+  text-align-last: center;
+  /*background-color: #ff300038;*/
+  background-color: transparent;
+  display: inline;
+  max-width: 100px;
+	
+  border: 0 transparent none;
+  outline: 0;
+  margin: 0 auto;
+  padding: 0;
+}
+
+form.mfPanelForm .calculatorInfo.calculator input.count{	
+	width: 5ch;
+}
+form.mfPanelForm .calculatorInfo.calculator input.cost{
+	text-align: right;
+  text-align-last: right;
+	width: 7ch;
+}
+form.mfPanelForm .calculatorInfo.calculator input::placeholder{
+	color: inherit;
+}

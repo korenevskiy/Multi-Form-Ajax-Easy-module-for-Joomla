@@ -1,5 +1,5 @@
 #  Игнорировать все 
-/*
+#/*
 # Кроме папки
 !/mod_multi_form/
 
@@ -90,9 +90,9 @@ Desktop.ini
 
 # Never ignore #
 # Only apply this rule to the main repository's gitignore files
-/field/default.php
-/field/cat.php
-/field/jed.php
+# /field/default.php
+# /field/cat.php
+# /field/jed.php
 !/.gitignore
 !/build/.gitignore
 !/tests/unit/suites/libraries/joomla/archive/.gitignore

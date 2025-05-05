@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields _name="robokassa" _addfieldprefix="Joomla\Module\MultiForm\Site">
+		<fieldset _name="webauthn" label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL">
+			
+
+ 
+				
+
+				<field 
+					name="list_fields"
+					type="gridfields"
+					label="Fields"
+ 
+					addfieldpath="modules/mod_multi_form/field"
+					creatable="true"
+					movable="true"
+					removable="true" 
+					removableClass="btn-sm"
+					removable-class="btn-sm"
+				>   
+					<default>
+						{
+						"field_label":["Годовой доступ","Пол года","1 месяц"],
+						"field_interval":[365.25,182.625,30.4375]
+						}
+					</default>
+					<field
+						name="field_label" 
+						type="text" 
+						label="Название параметра"
+						/>
+					<field
+						name="field_interval"
+						type="text"
+						label="Интервал продления (Дней)"
+						/> 
+ 
+				</field>
+				
+				
+				<field
+					name="field_calculator"
+					type="text"
+					label="NAME= поля Опции Корзины для удаления названия покупки в запросе"
+					/> 
+				
+				
+				
+<!--			<field
+				name="field_id"
+				type="sql"
+				label="A field with cost"
+				translate="false"
+				default=""
+				multiple="false"
+				
+				show_empty="true" 
+				key_field="id" 
+				value_field="title" 
+				_value_field="title"
+				query="
+SELECT id, CONCAT(title  , ' /:', id , ' ', IF(state,' 👁',' ○'))  title 
+FROM `#__fields`
+WHERE only_use_in_subform = 0
+ORDER BY ordering;" >
+				<option value="">[[%1:]],JOPTION_DO_NOT_USE</option>
+			</field>-->
+			
+			
+		</fieldset>
+	</fields>
+</form>

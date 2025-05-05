@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields _name="robokassa" addfieldprefix="Joomla\Module\MultiForm\Site">
+		<fieldset _name="webauthn" label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL">
+			
+			
+			<field
+				name="shopID"
+				type="text"
+				label="ID shop"
+				required="true"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="pass1_combat"
+				type="text"
+				label="Password 1 Combat"
+				required="true"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="pass2_combat"
+				type="text"
+				label="Password 2 Combat"
+				required="true"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="pass1_test"
+				type="text"
+				label="Password 1 Test"
+				required="true"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="pass2_test"
+				type="text"
+				label="Password 2 Test"
+				required="true"
+				readonly="false"
+				default=""
+			/>
+			
+			
+			<field
+				name="mode"
+				type="list"
+				label="Mode"
+				required="false"
+				readonly="false"
+				_value="1" 
+				_checked="1"
+				_default="">
+					<option value="0" class="btn-sm btn btn-outline-secondary">Test</option>
+					<option value="1" class="btn-sm btn btn-outline-success">Combat</option>
+				</field> 
+			
+			
+			
+			<field
+				name="IncCurrLabel"
+				type="text"
+				label="Default carrency (optional)"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="Culture"
+				type="text"
+				label="Language interface (optional)"
+				required="false"
+				readonly="false"
+				default=""
+			/>
+			<field
+				name="Encoding"
+				type="text"
+				label="Page encoding (optional) [windows-1251]"
+				required="false"
+				readonly="false"
+				default="utf-8"
+			/>
+			<field
+				name="messagePaid"
+				type="text"
+				label="Сообщение оплачено"
+			/>
+			<field
+				name="messageCancel"
+				type="text"
+				label="Сообщение отмены"
+			/>
+		</fieldset>
+	</fields>
+</form>

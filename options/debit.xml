@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields _name="debit" addfieldprefix="Joomla\Module\MultiForm\Site">
+		<fieldset _name="webauthn" label="MOD_MULTI_FROM_FIELD_CONDITIONS_LABEL">
+	
+			
+			<field
+				name="Name"
+				type="textarea"
+				label="Юридическое имя продавца"
+				required="true"
+				readonly="false"
+				filter="raw"
+				default="СТ-ПЕТЕРБУРГСКИЙ филиал ПАО &quot;ПРОМСВЯЗЬБАНК&quot;Г."
+			/>
+			<field
+				name="PersonalAcc"
+				type="text"
+				label="Расчетный счет [р/с]"
+				required="true"
+				default=""
+			/>
+			<field
+				name="BankName"
+				type="textarea"
+				label="Наименование банка и город"
+				required="true"
+				default="ПАО Сбербанк"
+			/>
+			<field
+				name="BIC"
+				type="text"
+				label="БИК"
+				required="true"
+				default=""
+			/>
+			<field
+				name="CorrespAcc"
+				type="text"
+				label="Кор. счет [к/c]"
+				required="true"
+				default=""
+			/>
+			
+			
+			
+			
+				<field
+					type="spacer"
+					default=""
+					label=""
+					description="&lt;hr>"/>
+					
+			<field
+				name="KPP"
+				type="text"
+				label="КПП для ЮЛ"
+				required="true"
+				default=""
+			/>
+			<field
+				name="PayeeINN"
+				type="text"
+				label="ИНН получателя"
+				required="true"
+				default=""
+			/>
+			<field
+				name="PayerINN"
+				type="text"
+				label="ИНН плательщика"
+				required="true"
+				default=""
+			/>
+	
+			<field
+				name="Purpose"
+				type="text"
+				label="Назначение платежа (до 210 символов)"
+				required="true"
+				default=""
+			/>
+			<field
+				name="Sum"
+				type="text"
+				label="Сумма"
+				required="true"
+				default=""
+			/>
+			
+			<field
+				type="spacer"
+				default=""
+				label=""
+				description="&lt;hr>"/>
+					
+			<field
+				name="PaymPeriod" PaymTerm=''
+				type="number"
+				label="Срок платежа дней"
+				required="true"
+				min="0"
+				max="33"
+				default="5"
+			/>
+			
+<!--			<field
+				name="phone"
+				type="text"
+				label="Телефон поставщика"
+				default=" +7()"
+			/>-->
+			<field
+				name="supplier"
+				type="textarea"
+				label="Поставщик: адрес,телефон"
+				filter="raw"
+				default=", Российская Федерация, г. , Невский пр-кт, д. лит. ,
+&lt;br>пом. , тел.: +7()"
+			/>
+			<field
+				name="descriptionBefore"
+				type="textarea"
+				label="Текст вначале"
+				filter="raw"
+				default="Внимание! Оплата данного счета означает согласие с условиями поставки товара. Счет действителен в течение 5(пяти) банковских дней, не считая дня выписки счета. Уведомление об оплате обязательно, в противном случае НЕ ГАРАНТИРУЕТСЯ наличие товара на складе. Товар отпускается по факту прихода денег на р/с Поставщика, самовывозом, при наличии доверенности и паспорта."
+			/>
+			<field
+				name="descriptionAfter"
+				type="textarea"
+				label="Текст вконце"
+				filter="raw"
+				default="1. Счет действителен в течении 5 (пяти) банковских дней, не считая дня выписки счета. В случае нарушения срока оплаты сохранение цены на товар и наличие товара на складе НЕ ГАРАНТИРУЕТСЯ.&lt;br>2. Оплата данного счета означает согласие с условиями изложенными в п.1"
+			/>
+			
+			
+			<field
+				name="NDS"
+				type="number"
+				label="НДС"
+				min="0"
+				max="100"
+				default="0"
+			/>
+			
+				<field
+					type="spacer"
+					default=""
+					label=""
+					description="&lt;hr>"/>
+				<field  type="note" 
+						label="" 
+						heading="h4"
+					   description="&lt;hr>Add class in 'Dialog Window' setting: cartTable, cartLine" 
+						comment="" /> 
+
+			
+<!--			<field
+				name="Contract"
+				type="text"
+				label="Номер договора"
+				required="true"
+				default=""
+			/>
+			
+			
+			<field
+				name="TechCode"
+				type="list"
+				label="Mode"
+				required="false"
+				_value="1" 
+				_checked="1"
+				_default="">
+					<option value="01">01 – Мобильная связь, стационарный телефон</option>
+					<option value="02">02 – Коммунальные услуги, ЖКХ</option>
+					<option value="03">03 – ГИБДД, налоги, пошлины, бюджетные платежи</option>
+					<option value="04">04 – Охранные услуги</option>
+					<option value="05">05 – Услуги, оказываемые УФМС</option>
+					<option value="06">06 – ПФР</option>
+					<option value="07">07 – Погашение кредитов</option>
+					<option value="08">08 – Образовательные учреждения</option>
+					<option value="09">09 – Интернет и ТВ</option>
+					<option value="10">10 – Электронные деньги</option>
+					<option value="11">11 – Отдых и путешествия</option>
+					<option value="12">12 – Инвестиции и страхование</option>
+					<option value="13">13 – Спорт и здоровье</option>
+					<option value="14">14 – Благотворительные и общественные организации</option>
+					<option value="15">15 – Прочие услуги</option>
+				</field> 
+			
+			<field
+				name="DocNo"
+				type="text"
+				label="Номер документа"
+				required="true"
+				default=""
+			/>
+			
+			
+			<field
+				name="LastName"
+				type="text"
+				label="Фамилия плательщика"
+				required="true"
+				default=""
+			/>
+			<field
+				name="FirstName"
+				type="text"
+				label="Имя плательщика"
+				required="true"
+				default=""
+			/>
+			<field
+				name="MiddleName"
+				type="text"
+				label="Отчество плательщика"
+				required="true"
+				default=""
+			/>
+			<field
+				name="PayerAddress"
+				type="text"
+				label="Адрес плательщика"
+				required="true"
+				default=""
+			/>
+			<field
+				name="Phone"
+				type="text"
+				label="Телефон плательщика"
+				required="true"
+				default=""
+			/>
+			<field
+				name="AddAmount"
+				type="text"
+				label="Пени/Страховка/Доп.сумма"
+				required="true"
+				default=""
+			/>-->
+			
+		</fieldset>
+	</fields>
+</form>
