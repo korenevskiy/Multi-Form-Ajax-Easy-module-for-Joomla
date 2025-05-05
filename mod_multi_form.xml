@@ -12,7 +12,7 @@
 	<authorUrl>https://explorer-office.ru/download/joomla</authorUrl>
 	<copyright>Copyright (C) 2017 All rights reserved.</copyright>
 	<license>GNU General Public License version 2, or later.</license>
-	<version>5.3.00</version>
+	<version>5.3.01</version>
 	<element>mod_multi_form</element>
 	<description>[[%1:]] [[%2:]] [[%3:]] [[%4:]] [[%5:]],MOD_MULTI_FORM_DESC,MOD_MULTI_FORM_DESC_FREE,MOD_MULTI_FORM_DESC_JED,MOD_MULTI_FORM_DESC_PRO,MOD_MULTI_FORM_DESC_HTML</description>
 	<files>
