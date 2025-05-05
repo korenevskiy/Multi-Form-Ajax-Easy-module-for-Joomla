@@ -1,1 +1,1197 @@
-.mfForm.margin,.mfForm.padding,.modMF.moduletable.margin>.mfForm,.modMF.moduletable.padding>.mfForm{padding:0 12px}.mfForm.margin-top,.modMF.margin-top>.mfForm{margin-top:1.3rem}.mfForm.margin-bottom,.modMF.margin-bottom>.mfForm{margin-bottom:1.3rem}.mfForm.center,.modMF.moduletable.center>.mfForm{margin-left:auto;margin-right:auto}.mfForm.left,.modMF.moduletable.left>.mfForm{margin-left:0;margin-right:auto}.mfForm.right,.modMF.moduletable.right>.mfForm{margin-left:auto;margin-right:0}.mfForm.fluid,.modMF.moduletable.fluid>.mfForm{margin-left:0;margin-right:0;max-width:none}.modMF{background-color:transparent;display:block;margin:auto;opacity:1;position:static;visibility:visible}.mfForm{padding-bottom:20px;text-align:center;text-align-last:center}.mfForm_modal .modal-content{background-color:inherit;background-color:#8883;border:0 transparent}.mfForm_modal .modal-body,.mfForm_modal .modal-footer,.mfForm_modal .modal-header,.mfStatusForm{align-items:center;border:0 transparent;display:flex;display:table;flex-direction:column;margin:auto auto 0;padding:0;width:inherit;width:100%}.mfForm_modal .mfBeforeForm,.mfForm_modal .modal-body,.mfForm_modal .modal-footer,.mfForm_modal .modal-header{box-sizing:border-box;padding:1rem 1.3rem 0;width:100%}.mfForm_modal .mfBeforeForm{padding-bottom:0}.mfForm_modal .modal-footer{background-color:#8883;background-color:transparent;background-color:initial;padding-bottom:1.3rem;padding-top:0}.mfFieldGroup .form-control.submit,.mfGo{display:block;line-height:normal;margin:0 auto;max-width:260px;padding:4px 12px;text-align:center;text-align-last:center;text-decoration:none;transition:.3s .1s;width:12rem;width:-webkit-fill-available}.mfFieldGroup .form-control.submit.active,.mfFieldGroup .form-control.submit:focus,.mfFieldGroup .form-control.submit:hover,.mfGo.active,.mfGo:focus,.mfGo:hover{background-position:0 -20px,0 0;text-decoration:none;transform:scaleX(1.05)}.mfForm_modal .modal-title{font-size:x-large;font-size:xx-large;line-height:1em;margin-block-end:0;margin-block-start:0}.mfForm_modal h4.modal-title{font-size:x-large}.mfForm_modal h5.modal-title{font-size:large}.mfForm_modal p{margin:auto}.mfFieldGroup{display:flex;justify-content:space-around;place-content:center;place-content:space-between}.mfForm_modal .modal-footer,.mfForm_static .static-footer{display:flex;flex-direction:column;gap:8px;justify-content:space-around;place-content:center;place-items:center}.mfForm_modal .modal-header{border:0 transparent}.mfForm_modal{border:1px solid;margin:auto;width:280px;transition-behavior:allow-discrete;background-color:inherit;border-radius:5px;box-shadow:0 0 10px;box-shadow:0 0 0 100vmax #000b;display:block;font-weight:400;max-height:calc(100% - 6px - 2em);max-width:calc(100% - 6px - 2em);opacity:0;overflow:auto;padding:0;position:fixed;top:-100%;transition:.3s;user-select:text;visibility:visible;z-index:1050}.mfForm_modal[open]{opacity:1;visibility:visible;@starting-style{opacity:0}}dialog.mfForm_modal .mfCloseLabel{cursor:pointer;display:flex;height:4rem;position:absolute;right:-5px;right:0;top:-10px;top:-1rem;width:3.4rem}dialog.mfForm_modal .mfClose{height:1.4em;width:1.4em;z-index:1;-cursor:pointer;align-content:center;align-items:center;background-color:transparent;background-image:linear-gradient(180deg,transparent 0,#8882 100%,#fff0 200%);background-position:0 1.5rem;background-repeat:no-repeat;border:0 transparent;border-radius:3px;color:#d04a10;color:#000;display:block;display:flex;font-size:medium;font-size:large;font-size:inherit;height:1.5rem;justify-content:center;justify-items:center;line-height:20px;margin:auto;opacity:.8;opacity:1;padding:2px 0 0;right:7px;right:4px;right:0;right:2px;text-align:center;text-shadow:0 0 2px #000;top:-9px;top:-6px;top:3px;transition:.5s;width:3rem}dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):focus,dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover{background-color:transparent;box-shadow:0 0 0 gray;box-shadow:0 1px 2px #8888;color:var(--button-text-color-select,#000);opacity:1;outline:0;-color:transparent;backdrop-filter:blur(1px);background-position-y:0;border:1px solid #ccc}dialog.mfForm_modal .mfClose span{box-sizing:initial;display:block;display:flex;height:inherit;line-height:inherit;margin:0;padding:0 8px;place-content:center;position:relative;transition:.5s;width:inherit}dialog.mfForm_modal .mfClose span:before{bottom:0;display:flex;line-height:normal;margin:.1rem auto;place-content:center;place-items:center;position:absolute;top:0;transition:transform .5s}dialog.mfForm_modal .mfClose:hover span:before{transform:rotate(180deg)}.mfForm_modal+.modal-backdrop{display:none}.mfForm_modal::backdrop,.mfForm_modal~.modal-backdrop,.mfOverlay{background-color:#000b;background-color:transparent;cursor:pointer;display:none;height:100%;left:0;opacity:.8;position:fixed;top:0;width:100%;z-index:1040}.mfBeforeButton,.mfBeforeText{border-bottom:1px solid;color:inherit;font-size:20px;padding:10px;text-align:center}.mfBeforeText{border:none;text-align:left;text-align-last:start}.mfBeforeButton{border:none}.mfBeforeButton p,.mfBeforeText p{color:#929292;font-size:16px;margin:0}form.mfStatusForm input.checkbox,form.mfStatusForm input.color,form.mfStatusForm input.radio{border:1px solid #8886;float:left;font-size:large;grid-area:chck;height:auto;height:20px;margin:2px 6px 0 0;padding:10px;width:auto;width:20px}form.mfStatusForm label.chk,form.mfStatusForm label.col,form.mfStatusForm label.rad{align-items:center;cursor:pointer;display:flex;float:left;grid-area:label;height:auto;margin:5px 0 0;padding-left:0;text-indent:-20px;text-indent:-10px;text-indent:0;width:auto}form.mfStatusForm label.chk input,form.mfStatusForm label.col input,form.mfStatusForm label.rad input{position:relative}form.mfStatusForm .color p{display:inline-block}form.mfStatusForm input.color{border:1px solid #ccc;border-radius:3px;box-shadow:none;cursor:pointer;float:none;height:30px;margin:0 10px 0 0;padding:0;width:40px}form.mfStatusForm .input{border:1px solid #8886;border-radius:3px;box-shadow:none;box-sizing:border-box;color:inherit;font-size:14px;height:auto;justify-self:center;line-height:normal;margin:4px auto 10px;min-width:140px;padding:5px;transition:box-shadow .6s;width:100%}.mfStatusForm .form-group.input{align-items:center;border:none;justify-content:start}form.mfStatusForm .mfEditor{margin:10px 0}form.mfStatusForm .mfEditor .toggle-editor{display:none}form.mfStatusForm textarea{min-height:55px!important;outline:none}form.mfStatusForm input:focus,form.mfStatusForm select:focus,form.mfStatusForm textarea:focus{-border-color:inherit;-border-color:transparent;-border-radius:3px;box-shadow:none;box-shadow:0 0 3px gray,inset 0 0 5px gray;outline:none}.mfStatusForm input.submit{cursor:pointer;-line-height:39px;margin:20px 0;min-height:0;min-width:0;text-align:center;text-align-last:center;text-transform:uppercase;-margin-top:10px;-border-width:0 0 3px;-margin:0;-letter-spacing:0;-font-size:16px;-border:none;-border-bottom:3px solid #7d00b1;-background-color:#9c00bb;-border-color:#5a0075;-border-radius:0;font-weight:600;-line-height:40px;padding-left:20px;padding-right:20px;-color:#fff;transition:.6s}.mfForm .g-recaptcha:not(.btn){display:flex;margin:4px auto 10px;max-width:240px;max-width:256px;place-content:center;transform:scale(.8)}.mfForm_modal input.fluid.submit{box-sizing:border-box;margin:0;width:100%}.mfForm_static input.fluid.submit{box-sizing:border-box;font-size:large;margin:auto;max-width:240px;max-width:256px;place-content:center;width:100%;z-index:0}.mfStatusForm .mfFieldGroup{display:flex;flex-wrap:wrap;margin:auto;place-content:center;place-content:space-between;align-content:center;justify-content:space-between;text-align:initial;width:100%}form.mfStatusForm .mfFieldGroup .form-group.chk,form.mfStatusForm .mfFieldGroup .form-group.col,form.mfStatusForm .mfFieldGroup .form-group.rad{align-items:baseline;display:flex;flex-wrap:nowrap;flex-wrap:wrap;gap:10px;grid-template-areas:"chck error" "chck label";grid-template-columns:30px auto;grid-template-rows:repeat(4,auto);justify-items:stretch;justify-self:center;margin:4px auto 10px;max-width:240px;max-width:256px;min-height:20px;padding:0!important;place-content:flex-start}form.mfStatusForm .mfFieldGroup .form-group.chk.opts0{display:grid;flex-direction:row;flex-wrap:nowrap;gap:0 15px}form.mfStatusForm .mfFieldGroup .form-group.chk.opts0>input{margin:0}.mfStatusForm input.submit:active,.mfStatusForm input.submit:focus,.mfStatusForm input.submit:hover{-border:0 solid transparent;-border-bottom:3px solid #600088;-background-color:#7f0098;-border-color:#420056;-color:#fff;padding-left:30px;padding-right:30px;transform:scaleX(1.1)}.mfStatusForm .input{text-align:left;text-align-last:left;-border:0 solid transparent;-border-bottom:1px solid #7a8188;-border-radius:0;-border-radius:5px;transition:.4s .1s}.mfStatusForm .number,.mfStatusForm .range{text-align:right;text-align-last:right}.mfStatusForm textarea{border:1px solid transparent;border-radius:0;margin-top:15px;resize:vertical}.mfStatusForm .input.error{border:1px solid red;box-shadow:inset 0 0 5px red,0 0 5px red}.mfStatusForm:not(.above) .mfFieldGroup>label{display:block;margin-bottom:0;max-width:160px;max-width:180px;padding-top:2px;text-align:left;text-align-last:left;transition:.3s .1s;width:100%}.mfStatusForm .mfFieldGroup>label{align-items:center;display:flex;text-align:left;text-align-last:left}.mfStatusForm.modal-body .mfFieldGroup>label{max-width:240px;max-width:256px;width:auto}.mfFieldGroup p{margin:3px 0 2px}form.mfStatusForm legend{font-size:inherit;margin-bottom:5px}.mfForm_modal .mfStatusError{color:red;font-size:22px;padding:15px 10px;text-align:center}.mfForm_modal .mfStatusDone{color:inherit;font-size:18px;padding:15px 10px;text-align:center}.mfForm_modal .mfStatusDone p,.mfForm_modal .mfStatusError p{margin:0}.mfStatusForm label.error{background-color:transparent;border-radius:4px;clear:both;color:red;display:block;float:none;font-size:14px;font-weight:bolder;margin-bottom:0;margin-top:-5px;max-width:100%;padding:1px 5px;text-align:center;text-align-last:center;text-decoration:underline;text-shadow:0 0 10px #fff}form.mfStatusForm label.error{color:red;font-size:inherit;justify-self:baseline;max-width:inherit;max-width:none;position:static;text-decoration-thickness:1px}form.mfStatusForm:not(.above) .mfFieldGroup>label.error{max-width:none}form.mfStatusForm .mfFieldGroup.checkbox label.error{align-self:start;grid-area:error;margin-top:0}.mfForm.static.grid .mfStatusDone,.mfForm.static.grid .mfStatusDone h3,.mfForm.static.grid .mfStatusError,.mfForm.static.grid .mfStatusError h3,.mfForm.static.grid form{padding:10px;text-align:center;text-align-last:center}.mfForm.static.grid form>*{text-align:left;text-align-last:left}.mfFieldGroup.grid{display:grid;grid-template-areas:"title title" "field intro";grid-template-columns:40% auto;grid-template-rows:auto 1fr;-border-top:1px solid #ddd;grid-column-gap:20px;place-content:initial;text-align:left;text-align-last:left}.mfFieldGroup.grid.legend{grid-template-areas:"title title" "intro intro"}.mfFieldGroup.grid .article{clear:both;display:block}.mfFieldGroup.grid intro{clear:both}.mfFieldGroup.grid intro,.mfFieldGroup.grid>*{display:block;text-align:left;text-align-last:left}.mfFieldGroup.grid>label,.mfFieldGroup.grid>p{color:#555;font-weight:700;grid-area:title}.mfFieldGroup.grid>label{margin:10px 0 -5px;max-width:none}.mfFieldGroup.grid>h5{color:#555;grid-area:title;margin:10px 0 -5px}.mfFieldGroup.grid intro{grid-area:intro;margin:0 0 10px}.mfFieldGroup.grid>.mfEditor .mfFieldGroup.grid>.input,.mfFieldGroup.grid>button,.mfFieldGroup.grid>input,.mfFieldGroup.grid>textarea{border:1px solid #ccc;border-radius:4px;grid-area:field;max-width:none}.mfFieldGroup.grid>.mfEditor{border:0;text-align:justify}.mfFieldGroup intro .table,.mfFieldGroup intro .tbl{border:1px solid #ddd;margin-top:2px}.mfFieldGroup intro .table td,.mfFieldGroup intro .table th,.mfFieldGroup intro .tbl td,.mfFieldGroup intro .tbl th{-line-height:20px;padding:1px;-text-align:left;border-top:1px solid #ddd;vertical-align:top}.mfFieldGroup intro .table th,.mfFieldGroup intro .tbl th{background-color:#8882}.mfForm_modal .mfFieldGroup{align-content:center;flex-direction:column;flex-wrap:wrap}.mfForm_modal .mfStatusForm:not(.edge)>label,.mfStatusForm.above .mfFieldGroup>label{max-width:none}form.mfStatusForm.above .mfFieldGroup{align-content:center;flex-direction:column;flex-wrap:wrap}form.mfStatusForm.edge .mfFieldGroup{display:grid;gap:10px;grid-template-columns:1fr 2fr}form.mfStatusForm			.form-control{font-size:large;justify-self:center;margin:4px auto 0;max-width:256px}form.mfStatusForm.field180 .form-control,form.mfStatusForm.field180 .form-group.chk,form.mfStatusForm.field180 .form-group.col,form.mfStatusForm.field180 .form-group.rad,form.mfStatusForm.field180 .input,form.mfStatusForm.field180 .mfFieldGroup{max-width:180px}form.mfStatusForm.field240 .form-control,form.mfStatusForm.field240 .form-group.chk,form.mfStatusForm.field240 .form-group.col,form.mfStatusForm.field240 .form-group.rad,form.mfStatusForm.field240 .input,form.mfStatusForm.field240 .mfFieldGroup{max-width:240px}form.mfStatusForm.field256 .form-control,form.mfStatusForm.field256 .form-group.chk,form.mfStatusForm.field256 .form-group.col,form.mfStatusForm.field256 .form-group.rad,form.mfStatusForm.field256 .input,form.mfStatusForm.field256 .mfFieldGroup{max-width:256px}form.mfStatusForm.field300 .form-control,form.mfStatusForm.field300 .form-group.chk,form.mfStatusForm.field300 .form-group.col,form.mfStatusForm.field300 .form-group.rad,form.mfStatusForm.field300 .input,form.mfStatusForm.field300 .mfFieldGroup{max-width:300px}form.mfStatusForm.field440 .form-control,form.mfStatusForm.field440 .form-group.chk,form.mfStatusForm.field440 .form-group.col,form.mfStatusForm.field440 .form-group.rad,form.mfStatusForm.field440 .input,form.mfStatusForm.field440 .mfFieldGroup{max-width:440px}form.mfStatusForm.field600 .form-control,form.mfStatusForm.field600 .form-group.chk,form.mfStatusForm.field600 .form-group.col,form.mfStatusForm.field600 .form-group.rad,form.mfStatusForm.field600 .input,form.mfStatusForm.field600 .mfFieldGroup{max-width:600px}form.mfStatusForm.field740 .form-control,form.mfStatusForm.field740 .form-group.chk,form.mfStatusForm.field740 .form-group.col,form.mfStatusForm.field740 .form-group.rad,form.mfStatusForm.field740 .input,form.mfStatusForm.field740 .mfFieldGroup{max-width:740px}form.mfStatusForm.fieldFluid .form-control,form.mfStatusForm.fieldFluid .input,form.mfStatusForm.fieldFluid .mfFieldGroup,form.mfStatusForm.fieldFluid .mfFieldGroup.chk,form.mfStatusForm.fieldFluid .mfFieldGroup.col,form.mfStatusForm.fieldFluid .mfFieldGroup.rad{max-width:none}.mfForm.static.grid{max-width:inherit}.mfForm.static{margin:0 auto}.mfForm_modal,.mfForm_static{margin:auto;max-width:inherit;width:inherit}.mfForm_modal.max310,.mfForm_static.max310{max-width:310px}.mfForm_modal.max460,.mfForm_static.max460{max-width:460px}.mfForm_modal.max640,.mfForm_static.max640{max-width:640px}.mfForm_modal.max920,.mfForm_static.max920{max-width:920px}.mfForm_modal.margin0,.mfForm_static.margin0{margin-left:0;margin-right:0}.mfForm_modal.margin10,.mfForm_static.margin10{margin-left:10px;margin-right:10px}.mfForm_modal.margin20,.mfForm_static.margin20{margin-left:20px;margin-right:20px}.mfForm_modal.margin50,.mfForm_static.margin50{margin-left:50px;margin-right:50px}.mfForm_modal.margin80,.mfForm_static.margin80{margin-left:80px;margin-right:80px}.mfForm_modal.margin120,.mfForm_static.margin120{margin-left:120px;margin-right:120px}
+
+
+.mfForm.margin,
+.mfForm.padding,
+.modMF.moduletable.margin > .mfForm,
+.modMF.moduletable.padding > .mfForm{ 
+    padding: 0 12px;
+}
+.mfForm.margin-top,
+.modMF.margin-top > .mfForm{
+    margin-top: 1.3rem;
+}
+.mfForm.margin-bottom,
+.modMF.margin-bottom > .mfForm{
+    margin-bottom: 1.3rem;
+}
+.mfForm.center,
+.modMF.moduletable.center > .mfForm { 
+    margin-left: auto;
+    margin-right: auto;
+}
+.mfForm.left,
+.modMF.moduletable.left > .mfForm { 
+    margin-left: 0;
+    margin-right: auto;
+}
+.mfForm.right,
+.modMF.moduletable.right > .mfForm { 
+    margin-left: auto;
+    margin-right: 0;
+}
+.mfForm.fluid,
+.modMF.moduletable.fluid > .mfForm{ 
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+}
+.modMF{
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    position: static;
+    background-color: transparent;
+    margin: auto;
+    /*border: 0;*/
+}
+
+.mfForm {
+    text-align: center;
+    text-align-last: center;
+    padding-bottom: 20px;   
+    /*color: inherit;*/
+}
+.mfForm_modal .modal-content{
+    border: 0 none transparent;
+    background-color: inherit;
+    background-color: #8883;
+}
+
+.mfForm_modal :is(.mfPanelForm, .modal-header,.modal-body, .modal-footer){
+    padding: 0 20px;
+    padding: 0 1rem;
+    padding: 0 1.3rem;
+    padding: 0;
+    margin: auto;
+    margin-bottom: 0; 
+    border: 0 none transparent;
+    display: flex;
+    flex-direction: column;
+    /*width: max-content;*/
+    /*max-width: 100%;*/
+    width: inherit;
+    width: 100%;
+    align-items: center;
+    display: table;
+		display: grid;
+}
+.mfForm_modal .modal-body{
+    /*border-bottom: 1px solid #8888;*/
+}
+.mfForm_modal :is(.mfBeforeForm,.modal-header,.modal-body, .modal-footer){
+    padding: 1rem 1.3rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+.mfForm_modal .mfBeforeForm{
+    padding-bottom: 0;
+}
+.mfForm_modal :is(.mfPanelFrame,.mfPanelError, .mfPanelDone){
+    padding-bottom: 1.3rem;
+}
+.mfForm_modal .modal-footer{
+    padding-bottom: 1.3rem;
+    background-color: #8883;
+    background-color: transparent;
+    background-color: initial;
+		padding-top: 0;
+}
+
+.mfGo,
+.mfFieldGroup .form-control.submit  {
+    /*padding:  0 20px 20px;*/
+    /*padding:  0 1rem 1rem;*/
+    /*margin:  0 10px ;*/
+	display: block;
+    padding: 8px 5px 5px 5px;
+    padding: 4px 12px;
+    line-height: initial;
+	max-width: 260px;
+    width: 12rem; 
+    width: -webkit-fill-available;
+    text-align-last: center;
+    text-align: center;
+	text-decoration: none;
+    margin: 0 auto;
+    /*font-size: 14px;*/
+    /*font-size: 1rem;*/
+    transition: 0.3s 0.1s;
+}
+.mfGo{     
+    /*text-transform: uppercase;*/     
+}
+.mfGo.fixed{     
+    position: fixed;
+	z-index: 99;
+} 
+.mfGo.bottom{
+ bottom: 10px;
+}
+.mfGo.right{
+ right:10px;
+}
+.mfGo.left{
+ left: 10px;
+}
+.mfGo.top{
+ top: 10px;
+}
+
+
+.mfGo:hover, .mfGo:focus, .mfGo.active,
+.mfFieldGroup .form-control.submit.active,
+.mfFieldGroup .form-control.submit:hover ,
+.mfFieldGroup .form-control.submit:focus { 
+    text-decoration: none;
+    background-position: 0 -20px , 0 0px;
+    transform: scaleX(1.05);
+}
+.mfForm_modal .modal-title{
+    /*margin: auto;*/
+    /*color: var(--menu-text-color, black);*/
+    font-size: x-large;
+    font-size: xx-large;
+    
+    margin-block-start: 0;
+    margin-block-end: 0;
+    line-height: 1em;
+}
+.mfForm_modal h4.modal-title{ 
+    font-size: x-large;
+}
+.mfForm_modal h5.modal-title{ 
+    font-size: large;
+}
+.mfForm_modal p{ 
+    margin: auto;
+}
+.mfFieldGroup {
+    justify-content: space-around;
+    place-content: center; 
+    display: flex;
+    place-content: space-between;
+}
+.mfForm_modal .modal-footer,
+.mfForm_static .static-footer {
+    justify-content: space-around;
+    place-content: center; 
+}
+.mfForm_modal .modal-footer,
+.mfForm_static .static-footer{
+    flex-direction: column;
+    place-items: center;
+    gap: 8px;
+    display: flex;
+}
+.mfForm_modal .modal-header{
+    border: 0 none transparent;
+    /*color: rgb(33, 37, 41);*/
+}
+
+.mfForm_modal {
+    margin: auto;
+	width: 280px;
+	border: 1px solid;
+	transition-behavior: allow-discrete;
+	/*background: #fff;*/
+	background-color: inherit;
+	/*position: absolute;*/
+	position: fixed;
+	/*left: 50%;*/
+	/*margin-left: -150px;*/
+	/*display: none;*/
+/*	opacity: 0;*/
+	z-index: 1050;
+	/*padding: 5px 10px 0px;*/
+    padding: 0;
+    /*padding: 20px 30px 30px;*/ 
+    border-radius: 5px;
+    font-weight: normal;
+    box-shadow: 0 0 10px;
+		/*top: -100%;*/
+		
+	max-width: calc((100% - 6px) - 2em);
+	max-height: calc((100% - 6px) - 2em);
+	visibility: visible;
+	overflow: auto;
+	user-select: text;
+	
+	/*display: block;*/
+	box-shadow: 0 0 0 100vmax #000B;
+	/*opacity: 0;*/
+	transition:  0.3s;
+}
+.mfForm_modal[open] {
+	opacity: 1;
+	visibility: visible;
+	@starting-style{
+		opacity: 0;
+	}
+}
+
+dialog.mfForm_modal  .mfCloseLabel{ 
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    top: -1rem;
+    /*right: -0.3rem;*/
+    /*width: 4rem;*/
+		right: 0;
+		width: 3.4rem;
+    height: 4rem;
+    display: flex;
+    cursor: pointer;
+}
+dialog.mfForm_modal  .mfClose{
+    z-index: 1;
+    width: 1.4em;
+    height: 1.4em;
+        display: block;
+    padding: 0.04em 0 0;
+    /*position: absolute;*/
+    -cursor: pointer;
+	display: block;
+	text-align: center;
+    line-height: 20px;
+	border-radius: 3px;
+    /*border: none;*/
+    /*color: transparent;*/
+    top: 3px;
+    top: -6px;
+    right: 7px;
+    right: 0px;
+    top: -9px;
+     top: -6px;
+    top: 3px;
+    right: 4px;
+     right: 0px;
+    right: 2px;
+    border-radius: 3px;
+    opacity: .8;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    margin: auto;
+    /*border-radius: 4px;*/
+    
+    font-size: initial;
+        font-size: large;
+    font-size: inherit;
+        
+    background-color: transparent;
+    opacity: 1;
+    border: 0 none transparent;
+    color: #D04A10;
+    color: black;
+    border: 3px solid #ed8714;
+    border: 0 none transparent;
+    background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);
+    background-repeat: no-repeat;
+    background-position: 0 1.5rem;
+    /*box-shadow: 0 0 5px black, 0 0 3px inset black;*/
+    /*box-shadow: none;*/
+    /*border-radius: 8px !important;*/
+    text-shadow: 0 0 2px black;
+    /*height: 2.4em !important;*/
+    height: 1.5rem;
+    /*width: 2.4em!important;*/
+    width: 3rem;
+    /*height: 3rem !important;*/
+    /*width: 3rem!important;*/
+        padding-top: 2px ;
+    transition:  .5s; 
+}
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):focus,
+dialog.mfForm_modal .mfClose:not(:disabled):not(.disabled):hover
+{
+    outline: 0;
+    box-shadow: 0 0 0 gray;
+    box-shadow: 0 1px 2px #8888;
+    color: var(--button-text-color-select,black);
+    background-color: transparent;
+    opacity: 1;
+    -color: transparent;
+    border: 1px solid #ccc;
+    background-position-y: 0rem;
+		backdrop-filter: blur(1px);
+}
+dialog.mfForm_modal .mfClose span{
+    display: block; 
+    margin: 0;
+    /*line-height: 0;*/
+    /*line-height: 1.11em;*/ 
+    /*line-height: 1em;*/ 
+    /*line-height: 0.9em;*/  
+    
+    /*box-shadow: 0 0 2px grey;*/
+    /*height: auto;*/
+    /*width: auto;*/    
+    /*background-color: yellow;*/
+    padding: 3px 8px;
+    /*border-radius: 5px;*/
+    /*border-radius: 3px;*/
+    /*border: 1px solid #ccc;*/
+    /*border: 1px solid transparent;*/
+/*    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;*/
+        /*width: 100%;*/
+    /*height: 40%;*/
+    /*height: 50%;*/
+    height: inherit;
+    width: inherit;
+    padding: 5px 8px 0px;
+    padding: 0 8px;
+    margin: 0px 0px 0 0;
+    transition: .5s; 
+    /*background-image: none;*/
+    /*background-color: transparent;*/
+    /*background-image: linear-gradient(to bottom,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to top,#fff,#e6e6e6);*/
+    /*background-image: linear-gradient(to bottom,#e6e6e6,#fff);*/
+    /*background-image: linear-gradient(to bottom,#8882,#fff0);*/
+    /*background-image: linear-gradient(to bottom,transparent 0%,#8882 100%,#fff0 200%);*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 0 1.5rem;*/
+    box-sizing: initial; 
+    line-height: inherit;
+    display: flex;
+    place-content: center;
+    position: relative;
+}
+
+dialog.mfForm_modal .mfClose:hover span,
+dialog.mfForm_modal .mfClose:focus span{
+    /*background-color: #e6e6e6;*/
+    /*background-position-y: -1.5rem;*/
+    /*border: 1px solid #ccc;*/
+    /*background-position-y: 0rem;*/
+}
+dialog.mfForm_modal .mfClose span::before {
+    position: absolute; 
+     top: 0; 
+    /* left: 0; */
+    /* right: 0; */
+    bottom: 0; 
+    /*margin: auto;*/
+    /*margin: 2px auto;*/
+    /*margin: 0.05rem auto;*/
+    margin: 0.1rem auto;
+    line-height: initial;
+    /*line-height: inherit;*/
+    display: flex;
+    place-items: center;
+    place-content: center;
+    /* text-align: center; */
+    /* text-align-last: center; */
+    transition: transform .5s; 
+}
+dialog.mfForm_modal .mfClose:hover span::before { 
+    transform: rotate(180deg);
+} 
+
+/* РџРѕРґР»РѕР¶РєР° */
+
+.mfForm_modal + .modal-backdrop{
+    display: none;
+}
+.mfForm_modal ~ .modal-backdrop,
+.mfForm_modal::backdrop,
+.mfOverlay {
+	z-index: 1040;
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0; 
+	left: 0;
+	background-color: #000B;
+	opacity: 0.8;
+	cursor: pointer;
+	
+	background-color: transparent;
+}
+.mfBeforeText, .mfBeforeButton {
+	padding: 10px;
+	text-align: center;
+	border-bottom: 1px solid;
+	font-size: 20px;
+	color: inherit;
+}
+
+.mfBeforeText {
+    border: none;
+    text-align: left;
+    text-align-last: start;
+}
+
+.mfBeforeButton{
+	border: none;
+}
+.mfBeforeText p, .mfBeforeButton p{
+	margin: 0;
+	font-size: 16px;
+    color: #929292;
+}
+
+form.mfPanelForm  input.radio,
+form.mfPanelForm  input.checkbox,
+form.mfPanelForm  input.color{
+    float: left;
+    width: auto;
+	margin: 2px 6px 0 0;
+    height: auto;
+	padding: 6px;
+	font-size: large;
+	  /* Double-sized Checkboxes */
+/*  -ms-transform: scale(2);  IE 
+  -moz-transform: scale(2);  FF 
+  -webkit-transform: scale(2);  Safari and Chrome 
+  -o-transform: scale(2);  Opera */
+  padding: 10px;
+	width: 20px; 
+	height: 20px;
+	
+		border: 1px solid #8886;
+		grid-area: chck ;
+}
+
+form.mfPanelForm  label.rad,
+form.mfPanelForm  label.chk,
+form.mfPanelForm  label.col{
+    float: left;
+    width: auto;
+	margin: 5px 0px 0 0;
+    height: auto;
+    cursor: pointer;
+	
+    padding-left: 20px;
+    text-indent: -20px;
+	padding-left: 0px;
+  text-indent: -10px;
+		text-indent: 0px;
+	grid-area: label ;
+	display: flex;
+  align-items: center;
+}
+
+form.mfPanelForm  label.rad input,
+form.mfPanelForm  label.chk input,
+form.mfPanelForm  label.col input{
+	position: relative;
+    /*left: -20px;*/
+}
+form.mfPanelForm  .color p{
+	display: inline-block;
+}
+form.mfPanelForm   input.color{
+	width: 40px;
+    height: 30px;
+    float: none;
+    margin: 0px 10px 0 0;
+    padding: 0px;
+    box-shadow: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/*form.mfPanelForm  input:not(.submit):not([type=radio]):not([type=checkbox]),
+form.mfPanelForm  select,
+form.mfPanelForm  textarea,*/
+form.mfPanelForm  .input { 
+    width: 100%;
+    min-width: 140px;
+    margin: 10px 0;
+    margin: 0 0 10px 6px;
+    margin: 4px 0 10px 0px;
+    margin: 4px auto 10px;
+    font-size: 14px;
+    line-height: normal;
+    padding: 5px;
+    color: inherit;
+    /*display: table-row-group;*/
+    box-sizing: border-box;
+    box-shadow: none;
+	height: auto;
+    transition: box-shadow 0.6s; 
+  border-radius: 3px;
+  /*border: 1px solid #ccc;*/
+    border: 1px solid #8886;
+  /*background-color: #fff8;*/
+      justify-self: center;
+		font-family: Helvetica, "Roboto", sans-serif;
+}
+.mfPanelForm .form-group.input{
+    /*max-width: 200px;*/
+    border: none;
+    align-items: center;
+    justify-content: start;
+}
+
+form.mfPanelForm  .mfEditor{/* arkeditor codemirror none tinymce */
+    margin: 10px 0;
+}
+form.mfPanelForm  .mfEditor .toggle-editor{/* arkeditor codemirror none tinymce */
+    display: none;
+}
+
+form.mfPanelForm  textarea {
+    min-height: 55px!important;
+	outline: none;
+}
+form.mfPanelForm  input{ 
+}
+form.mfPanelForm  input:focus,
+form.mfPanelForm  select:focus,
+form.mfPanelForm  textarea:focus{
+    -border-color: inherit;
+    -border-color: transparent;
+        -border-radius: 3px;
+	box-shadow: none;
+	outline: none;
+    box-shadow: 0 0 3px gray, 0 0  5px inset gray;
+}
+.mfPanelForm  input.submit { 
+    margin: 20px 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    /*-transition: color 0.4s ease 0s, background-color 0.4s ease 0s, border-color 0.4s ease 0s;*/
+    text-align: center;
+    text-align-last: center;
+    min-height: 0px;
+    min-width: 0px;
+    -margin-top: 10px;
+    -line-height: 39px;
+    -border-width: 0px 0px 3px;
+    -margin: 0px;
+    -letter-spacing: 0px;
+    -font-size: 16px;
+	-border: none;
+    -border-bottom: 3px solid rgb(125, 0, 177);
+    -background-color: rgb(156, 0, 187);
+    -border-color: rgb(90, 0, 117);
+    -border-radius: 0;
+    -line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 600;
+    -color: #fff;
+    transition:  0.6s ;
+		
+		/*--btn-border-color: #b5bdc6;*/
+/*    -webkit-transition: color 400ms, background-color 400ms, border-color 400ms;
+    -o-transition: color 400ms, background-color 400ms, border-color 400ms;
+    -transition: color 400ms, background-color 400ms, border-color 400ms;*/
+}
+.mfForm .g-recaptcha:not(.btn){
+    max-width: 240px;
+    max-width: 256px;
+    margin: auto;
+    margin: 4px auto 10px;
+    
+    display: flex;
+    place-content: center;
+    transform: scale(0.8);
+}
+.mfForm_modal  input.fluid.submit {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+.mfForm_static  input.fluid.submit {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    margin: auto;
+    max-width: 240px;
+    max-width: 256px;
+    place-content: center;
+	font-size: large;
+	  z-index: 0;
+}
+.mfPanelForm  .mfFieldGroup{
+    display: flex;
+    place-content: center;
+    place-content: space-between;
+    text-align: initial;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 100%;
+    justify-content: space-between;
+/*    display: table-row;*/
+	align-content: center;
+} 
+.mfPanelForm  output{
+	cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #8888;
+  padding-left: 10px;
+  background-color: #00b7ff1c;
+} 
+.mfPanelForm  output:empty{
+	border-style: none;
+} 
+form.mfPanelForm .mfFieldGroup .form-group.rad,
+form.mfPanelForm .mfFieldGroup .form-group.chk,
+form.mfPanelForm .mfFieldGroup .form-group.col {
+    min-height: 20px;
+    padding: 0!important;
+    margin: 0px auto 0px;
+    margin: 4px auto 10px;
+    place-content: flex-start;
+    justify-self: center;
+    max-width: 240px;
+    max-width: 256px;
+    display: flex;
+    justify-items: stretch;
+    flex-wrap: nowrap;
+	flex-wrap: wrap;
+	
+	gap: 10px;
+  grid-template-columns: 30px auto;
+  grid-template-rows: repeat(4, auto);
+	grid-template-areas: "chck error" "chck label";
+	align-items: baseline;
+}
+
+form.mfPanelForm .mfFieldGroup .form-group.chk.opts0{
+	flex-direction: row;
+	flex-wrap: nowrap;
+	display: grid;
+	gap: 0 15px;
+	
+}
+form.mfPanelForm .mfFieldGroup .form-group.chk.opts0 > input{
+	margin: 0px 0 0;
+	
+}
+
+form.mfPanelForm .mfFieldGroup .form-group.chk input:checked{
+	
+}
+
+.mfPanelForm  input.submit:focus,
+.mfPanelForm  input.submit:hover,
+.mfPanelForm  input.submit:active {
+	-border: 0 solid transparent;
+    -border-bottom: 3px solid rgb(96, 0, 136);
+    -background-color: rgb(127, 0, 152);
+    -border-color: rgb(66, 0, 86);
+	-color: white;
+    padding-left: 30px;
+    padding-right: 30px;
+    transform: scaleX(1.1);
+}
+
+.mfPanelForm  .input {
+    text-align: left;
+    text-align-last: left;
+  -border: 0 solid transparent;
+  -border-bottom: 1px solid #7a8188;
+  -border-radius: 0;
+  -border-radius: 5px;
+   transition: 0.4s 0.1s;
+}
+.mfPanelForm  .number,
+.mfPanelForm  .range {
+    text-align: right;
+    text-align-last: right; 
+}
+
+.mfPanelForm  textarea {
+  border: 1px solid transparent;
+  border-radius: 0;
+  /*background-color: rgba(204,204,204,0.3);*/
+  margin-top: 15px;
+  resize: vertical;
+}
+.mfPanelForm  .input.error{
+    box-shadow: 0 0 5px inset red, 0 0 5px red;
+    border: 1px solid red;
+} 
+.mfPanelForm:not(.above)  .mfFieldGroup>label{
+    max-width: 160px;
+    max-width: 180px;
+    width: 100%;
+    text-align: left;
+    text-align-last: left;
+    padding-top: 2px;
+    margin-bottom: 0px;
+    transition: 0.3s 0.1s;
+        display: block;
+}
+.mfPanelForm  .mfFieldGroup> label,
+.mfPanelForm  .mfFieldGroup> label{
+    text-align: left;
+    text-align-last: left;
+	display: flex;
+    align-items: center;
+}
+.mfPanelForm.modal-body  .mfFieldGroup>label{
+    max-width: 240px;
+    max-width: 256px;
+    width: auto;
+}
+.mfFieldGroup p{
+    margin: 10px 0 -5px 0px;
+    margin: 3px 0 2px 0px;
+}
+form.mfPanelForm  legend {
+	margin-bottom: 5px;
+	font-size: inherit;
+}
+.mfForm_modal .mfPanelError{
+	padding: 15px 10px;
+	text-align: center;
+	font-size: 22px;
+	color: red;
+}
+.mfForm_modal .mfPanelDone{
+	padding: 15px 10px;
+	text-align: center;
+	font-size: 18px;
+	color: inherit;
+}
+.mfForm_modal .mfPanelError p,
+.mfForm_modal .mfPanelDone p{
+	margin: 0;
+}
+.mfPanelForm  label.error{ 
+    text-shadow: 0 0 10px white;
+    /*box-shadow: 0 0 10px red;*/
+    text-align: center;
+    text-align-last: center;
+    display: block;
+    background-color: transparent;
+    /*background-color: rgba(255,255,255, 0.8);*/
+    border-radius: 4px;
+    margin-top: -5px;
+    margin-bottom: -0px;
+    color: red;
+    font-size: 14px;
+    /* width: 100%; */
+    max-width: 100%;
+    float: none;
+    clear: both;
+    padding: 0;
+    padding: 1px 5px;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+/*form.mfPanelForm  fieldset.radio,
+form.mfPanelForm  fieldset.checkbox{
+    position:relative;
+    display: flex;
+}*/
+form.mfPanelForm  label.error{
+	/*position: absolute;*/
+	/*bottom: 0;*/
+     position: initial;
+    justify-self: baseline;
+		max-width: inherit;
+		color: red;
+		max-width: initial;
+		text-decoration-thickness: 1px;
+		font-size: inherit;
+}
+form.mfPanelForm:not(.above) .mfFieldGroup > label.error{ 
+		max-width: initial;
+}
+
+form.mfPanelForm .mfFieldGroup.checkbox label.error{
+	/*position: absolute;*/
+	/*bottom: 0;*/
+		margin-top: 0;
+		grid-area: error;
+		align-self: start;
+}
+
+.mfForm.static .mfEditor iframe{
+    /*height: 250px !important;*/
+}
+/** ------------------------------- Разметка для Представления Grid            */
+
+    .mfForm.static.grid form,
+    .mfForm.static.grid .mfPanelDone,
+    .mfForm.static.grid .mfPanelDone h3 ,
+    .mfForm.static.grid .mfPanelError h3,
+    .mfForm.static.grid .mfPanelError{
+        text-align: center;
+        text-align-last: center;
+        padding: 10px;
+    }
+    .mfForm.static.grid form > *{
+        text-align: left;
+        text-align-last: left;
+    }
+    .mfFieldGroup.grid{
+        display: grid;
+        grid-template-columns: 40% auto;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 
+        "title title"
+        "field intro";
+        -border-top: 1px solid #ddd;
+        grid-column-gap: 20px;
+        text-align: left;
+        text-align-last: left;
+        place-content: initial;
+    }
+    .mfFieldGroup.grid {
+         text-align: left;
+         text-align-last: left;
+    }
+    .mfFieldGroup.grid.legend{
+        grid-template-areas: 
+        "title title"
+        "intro intro"; 
+    }
+    .mfFieldGroup.grid .article{
+        display: block;
+        clear:both;
+    }
+    .mfFieldGroup.grid intro{ 
+        clear:both;
+        display: block;
+    }
+    .mfFieldGroup.grid intro{
+        text-align: left;
+        text-align-last: left;
+        display: block;
+        clear:both;
+    }
+    .mfFieldGroup.grid > *{
+         text-align: left;
+         text-align-last: left;
+        display: block;
+    }
+    .mfFieldGroup.grid > p{
+        grid-area: title;
+        font-weight: bold;
+        color: #555555;
+    }
+    .mfFieldGroup.grid > label{
+        grid-area: title;
+        font-weight: bold;
+        color: #555555;    
+        margin: 10px 0 -5px 0px;
+        max-width: none;
+    }
+    .mfFieldGroup.grid > h5{  
+        grid-area: title; 
+        color: #555555; 
+        margin: 10px 0 -5px 0px;
+    }
+    .mfFieldGroup.grid intro{ 
+        grid-area: intro;
+        margin: 0px 0 10px;
+    }
+    .mfFieldGroup.grid > input,
+    .mfFieldGroup.grid > textarea,
+    .mfFieldGroup.grid > button,
+    .mfFieldGroup.grid > .mfEditor
+    .mfFieldGroup.grid > .input{
+        grid-area: field;
+        max-width: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .mfFieldGroup.grid > .mfEditor{
+        text-align: justify; 
+        border: 0 none;
+    }
+    .mfFieldGroup.grid input.submit{
+        
+/*        text-align: center;
+        text-align-last: center;
+        background-image: linear-gradient(to bottom, #FFCC66, #FF6600);
+        background: -webkit-linear-gradient(#FFCC66, #FF6600);
+        -margin: auto !important;
+        margin: 10px auto;
+        -font-size: 14px !important;
+        font: bolder 26px 'Poiret One', 'Helvetica', arial, sans-serif;
+        font-size: 18px !important;
+        height: auto;
+        transition: 0.3s;
+            border: 1px solid #ccc;
+        border-color: rgba(200, 200, 200, 0.6) rgba(0, 0, 0, 0.0980392) #B3B3B3; 
+        text-shadow: 0 0 0 rgba(255, 255, 255, 1), 0 1px 1px rgba(255, 255, 255, 0.5), 0 0px 1px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+        text-indent: 0;
+        width: auto;
+        border-radius: 4px;
+        padding: 4px 12px;
+        padding: 4px 32px;
+        text-transform: none;*/
+    }
+    .mfFieldGroup.grid input.submit:hover{
+/*        background-color: #FF6600;
+        background: -webkit-linear-gradient(top, #FF6600, #FF6600) #FF6600;
+        border-width: 1px;*/
+    }
+     
+
+/** ----------------------------------------------------   Стили для таблицы расположеной в материале    -------*/    
+.mfFieldGroup intro .table , .mfFieldGroup intro .table  ,
+.mfFieldGroup intro .tbl , .mfFieldGroup intro .tbl  {
+    border: 1px solid #ddd;
+    margin-top: 2px;
+}
+.mfFieldGroup intro .table th, .mfFieldGroup intro .table td ,
+.mfFieldGroup intro .tbl th, .mfFieldGroup intro .tbl td {
+    padding: 1px;
+    -line-height: 20px;
+    -text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.mfFieldGroup intro .table th, .mfFieldGroup intro .tbl th  {
+    background-color: #8882;
+}
+
+
+
+/** ----------------------------------------------------  Позиция названия полей    -------*/ 
+.mfForm_modal .mfFieldGroup{
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
+}
+.mfPanelForm.above  .mfFieldGroup > label,
+.mfForm_modal .mfPanelForm:not(.edge) > label{
+	max-width: initial;
+	
+}
+.mfPanelForm.above  .mfFieldGroup > label,
+.mfForm_modal .mfPanelForm:not(.edge,.before,.after,.above) > label.form-group{
+	
+	margin-bottom: 0 !important;
+}
+/*form.mfPanelForm.in .form-control,*/
+/*form.mfPanelForm.in .form-group,*/
+/*form.mfPanelForm.in .form-group.rad, 
+form.mfPanelForm.in .form-group.chk, 
+form.mfPanelForm.in .form-group.col,*/
+form.mfPanelForm.in .mfFieldGroup{
+	
+}
+/*form.mfPanelForm.out .form-control,*/
+/*form.mfPanelForm.out .form-group,*/
+/*form.mfPanelForm.out .form-group.rad, 
+form.mfPanelForm.out .form-group.chk, 
+form.mfPanelForm.out .form-group.col,*/
+form.mfPanelForm.out .mfFieldGroup{
+    
+}
+/*form.mfPanelForm.above .form-control,*/
+/*form.mfPanelForm.above .form-group,*/
+/*form.mfPanelForm.above .form-group.rad, 
+form.mfPanelForm.above .form-group.chk, 
+form.mfPanelForm.above .form-group.col, */
+form.mfPanelForm.above .mfFieldGroup{
+    flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
+}
+/*form.mfPanelForm.edge .form-control,*/
+/*form.mfPanelForm.edge .form-group,*/
+/*form.mfPanelForm.edge .form-group.rad, 
+form.mfPanelForm.edge .form-group.chk, 
+form.mfPanelForm.edge .form-group.col,*/
+form.mfPanelForm.edge .mfFieldGroup{
+	display: grid;
+    grid-template-columns: 1fr 2fr;
+	gap: 10px;
+}
+
+/** ----------------------------------------------------   Ширина Полей    -------*/  
+form.mfPanelForm			.form-control{
+    /*?????*/
+    /*max-width: 240px;*/
+	max-width: 256px;
+    /*margin: auto;*/
+	margin: 4px auto 10px;
+	margin: 4px auto 0px;
+	justify-self: center;
+	font-size: large;
+}
+form.mfPanelForm		.form-control::placeholder {
+  opacity: 0.5;
+}
+form.mfPanelForm.field180 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+    max-width: 180px;
+}
+form.mfPanelForm.field240 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+    max-width: 240px;
+}
+form.mfPanelForm.field256 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+    max-width: 256px;
+}
+form.mfPanelForm.field300 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+    max-width: 300px;
+}
+form.mfPanelForm.field440 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+	max-width: 440px;
+}
+form.mfPanelForm.field600 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+	max-width: 600px;
+}
+form.mfPanelForm.field740 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+	max-width: 740px;
+}
+form.mfPanelForm.fieldFluid :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
+	max-width: initial;
+}
+
+form.mfPanelForm input[type=number]{
+	min-width: 70px;
+	text-align: center;
+	padding: 0 1px;
+}
+
+ 
+/** ----------------------------------------------------   Ширина формы    -------*/  
+.mfForm.static.grid{
+    max-width: inherit;
+}    
+.mfForm.static{
+	/*width: 100%;*/
+	/*max-width: 460px;*/
+	margin: 0 auto;
+}
+.mfForm_modal,
+.mfForm_static{
+	max-width: inherit;
+	width: inherit;
+	margin: auto;
+}    
+.mfForm_modal.max310,
+.mfForm_static.max310{
+    max-width: 310px;
+}
+.mfForm_modal.max460,
+.mfForm_static.max460{
+    max-width: 460px;
+	
+}
+.mfForm_modal.max640,
+.mfForm_static.max640{
+    max-width: 640px;
+}
+.mfForm_modal.max920,
+.mfForm_static.max920{
+    max-width: 920px;
+}
+.mfForm_modal.margin0,
+.mfForm_static.margin0{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.mfForm_modal.margin10,
+.mfForm_static.margin10{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.mfForm_modal.margin20,
+.mfForm_static.margin20{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.mfForm_modal.margin50,
+.mfForm_static.margin50{
+	margin-left: 50px;
+	margin-right: 50px;
+}
+.mfForm_modal.margin80,
+.mfForm_static.margin80{
+	margin-left: 80px;
+	margin-right: 80px;
+}
+.mfForm_modal.margin120,
+.mfForm_static.margin120{
+	margin-left: 120px;
+	margin-right: 120px;
+}
+
+
+
+.mfPanelForm .calculatorList{
+	display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-rows: auto;
+  column-gap: 5px;
+	padding-left: 0rem;
+}
+.mfPanelForm .calculatorList label {
+  display: grid;
+  grid-column: 1 / -1;
+	grid-template-columns: inherit;
+  grid-template-columns: subgrid;
+}
+.mfPanelForm .calculatorList label > *{
+  align-content: center;
+}
+.mfPanelForm .calculatorList label > .col2{
+  text-align: center;
+}
+.mfPanelForm .calculatorList label > .col3{
+  text-align: right;
+}                    
+
+.mfPanelForm .calculatorInfo{
+  margin: auto;
+  font-weight: bold;
+  /*text-decoration: underline;*/
+}                    
+
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+.cartLine .calculatorList label{
+	margin:5px;
+  padding:0px 20px;
+  column-gap: 0px;
+  cursor: pointer;
+  
+  border: 1px solid #8883;
+  border-radius: 10px;
+  transition: .5s;
+}
+          
+.cartLine .calculatorList label:hover{
+	box-shadow: 0 0 5px #0004;
+}
+.cartLine .calculatorList .col1{
+	/*grid-column: 1 / span 2;*/
+	grid-column: 1 / -2;
+}
+.cartLine .calculatorList .col2{
+	grid-column: 1 / span 3;
+	text-align: left;
+}
+.cartLine .calculatorList .col4{
+	display: none;
+}
+.cartLine .calculatorList .col3{
+	grid-column: 4;
+}
+
+.cartLine .calculatorList button{
+	grid-column: -1;
+	
+	grid-column:-1;
+	grid-row:1 / span 2;
+	padding:0 0 0 10px;
+	
+}

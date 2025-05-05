@@ -215,7 +215,7 @@ $allparams = $param->list_fields;
 //echo 123;
 //return;
 $fDeb = JPATH_ROOT . '/modules/mod_multi_form/_helper.txt';
-file_put_contents($fDeb, "\n\n=$module->id============================\n++++++++++++++++++++++++++++++++++++++++++++\n\n");
+//file_put_contents($fDeb, "\n\n=$module->id============================\n++++++++++++++++++++++++++++++++++++++++++++\n\n");
 
 //toPrint();
 //if($module->id == 175){ 

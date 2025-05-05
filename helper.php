@@ -3157,7 +3157,7 @@ echo "</style>";
         $data .= "============================================================\n"; 
         $data .= "============================================================\n"; 
         $data .= "\n\n\n\n"; 
-        file_put_contents($file, 'Helper:event() '. $data, FILE_APPEND | LOCK_EX);
+//        file_put_contents($file, 'Helper:event() '. $data, FILE_APPEND | LOCK_EX);
         
 //        static::$debugs[] = $arg;
 //        toPrint($arg,'Event Module',0,'pre');

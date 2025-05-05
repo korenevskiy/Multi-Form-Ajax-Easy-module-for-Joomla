@@ -18,6 +18,7 @@ use Joomla\CMS\Factory as JFactory;
 use Joomla\Registry\Registry as JRegistry;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel as JModelLegacy;
+use Joomla\CMS\Form\Form as JForm;
 
 /**
  * Form Field class for the Joomla Platform.
@@ -48,8 +49,8 @@ class JFormFieldCat extends JFormFieldCategory //JFormField
 	protected function getOptions()
 	{
             $options = []; 
-                                
-            if (isset($this->element['show_empty']) && $this->element['show_empty'])
+			
+            if (isset($this->element['show_empty']) && (bool)$this->element['show_empty'])
             {
                 $options[]= JHtml::_('select.option', '', JText::_('JOPTION_DO_NOT_USE'));//JHtml
             }
@@ -69,11 +70,6 @@ class JFormFieldCat extends JFormFieldCategory //JFormField
   
 }
 
-
-
-if(empty(${'f'}) || !${'f'} || !$param->{'ar'.'ti'.'cle'.'_i'.'n_c'.'ate'.'go'.'ry'}){
-    return;
-}
 
     
     
@@ -100,34 +96,6 @@ if(empty(${'f'}) || !${'f'} || !$param->{'ar'.'ti'.'cle'.'_i'.'n_c'.'ate'.'go'.'
 ////$result = $model_article->save($data);
 
 
-//------------------Альтернативный способ---------------------------------------
-//BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/models/', 'ContentModel');
-//Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/tables/');
-//------------------------------------------------------------------------------
-
-JFactory::getApplication()->input->set('id',0);
-JFactory::getApplication()->input->set('task','save2new');
-$data = [];
-$data['catid'] = $param->article_in_category;
-$data['state'] = $param->article_published;// 1-Published, 0-Unpublished, 2-Archive, -2-Trash
-$data['title'] = $param->subjectofmail;
-$data['id'] = 0;
-$data['access'] = 1;
-$data['alias'] = null;
-$data['language'] = '*';
-$data['articletext'] = $bodymail;
-//\Joomla\CMS\MVC\Model\AdminModel::getInstance($type);
-$state = new JRegistry(['article.id'=>0,'content.id'=>0]);
-JModelLegacy::addIncludePath(JPATH_BASE. "/administrator/components/com_content/models", 'ContentModel');
-$model = JModelLegacy::getInstance('Article', 'ContentModel',['ignore_request' => true,'state'=>$state]);
-        //->getTable('', 'Table', []);//,'state'=>$state
-//C:\Servers\OpenServer\OSPanel\domains\exoffice\administrator\components\com_content\models\article.php
-//C:\Servers\OpenServer\OSPanel\domains\exoffice\libraries\src\MVC\Model\AdminModel.php - JModelAdmin
-//C:\Servers\OpenServer\OSPanel\domains\exoffice\libraries\src\Table\Table.php - JTable
-//C:\Servers\OpenServer\OSPanel\domains\exoffice\libraries\src\MVC\Model\BaseDatabaseModel.php - JModelLegacy
-
-
-$result = $model->save($data); //, array( ,''=>'id' )
 
 //$result = Joomla\CMS\Table\Table::getInstance('Content','JTable','id')->save($data);
 //$result = Joomla\CMS\Table\Table::getInstance('Content','JTable','id')->save($data);

@@ -56,10 +56,8 @@
     background-color: inherit;
     background-color: #8883;
 }
-.mfStatusForm,
-.mfForm_modal .modal-body,
-.mfForm_modal .modal-header,
-.mfForm_modal .modal-footer{
+
+.mfForm_modal :is(.mfPanelForm, .modal-header,.modal-body, .modal-footer){
     padding: 0 20px;
     padding: 0 1rem;
     padding: 0 1.3rem;
@@ -75,20 +73,21 @@
     width: 100%;
     align-items: center;
     display: table;
+		display: grid;
 }
 .mfForm_modal .modal-body{
     /*border-bottom: 1px solid #8888;*/
 }
-.mfForm_modal .mfBeforeForm,
-.mfForm_modal .modal-header,
-.mfForm_modal .modal-body,
-.mfForm_modal .modal-footer{
-    padding: 1rem 1.3rem 0;
+.mfForm_modal :is(.mfBeforeForm,.modal-header,.modal-body, .modal-footer){
+    padding: 1rem 1.3rem 1rem;
     width: 100%;
     box-sizing: border-box;
 }
 .mfForm_modal .mfBeforeForm{
     padding-bottom: 0;
+}
+.mfForm_modal :is(.mfPanelFrame,.mfPanelError, .mfPanelDone){
+    padding-bottom: 1.3rem;
 }
 .mfForm_modal .modal-footer{
     padding-bottom: 1.3rem;
@@ -97,7 +96,6 @@
     background-color: initial;
 		padding-top: 0;
 }
-
 
 .mfGo,
 .mfFieldGroup .form-control.submit  {
@@ -120,9 +118,26 @@
     transition: 0.3s 0.1s;
 }
 .mfGo{     
-    /*text-transform: uppercase;*/ 
-    
+    /*text-transform: uppercase;*/     
+}
+.mfGo.fixed{     
+    position: fixed;
+	z-index: 99;
 } 
+.mfGo.bottom{
+ bottom: 10px;
+}
+.mfGo.right{
+ right:10px;
+}
+.mfGo.left{
+ left: 10px;
+}
+.mfGo.top{
+ top: 10px;
+}
+
+
 .mfGo:hover, .mfGo:focus, .mfGo.active,
 .mfFieldGroup .form-control.submit.active,
 .mfFieldGroup .form-control.submit:hover ,
@@ -193,7 +208,7 @@
     border-radius: 5px;
     font-weight: normal;
     box-shadow: 0 0 10px;
-		top: -100%;
+		/*top: -100%;*/
 		
 	max-width: calc((100% - 6px) - 2em);
 	max-height: calc((100% - 6px) - 2em);
@@ -201,9 +216,9 @@
 	overflow: auto;
 	user-select: text;
 	
-	display: block;
+	/*display: block;*/
 	box-shadow: 0 0 0 100vmax #000B;
-	opacity: 0;
+	/*opacity: 0;*/
 	transition:  0.3s;
 }
 .mfForm_modal[open] {
@@ -422,9 +437,9 @@ dialog.mfForm_modal .mfClose:hover span::before {
     color: #929292;
 }
 
-form.mfStatusForm  input.radio,
-form.mfStatusForm  input.checkbox,
-form.mfStatusForm  input.color{
+form.mfPanelForm  input.radio,
+form.mfPanelForm  input.checkbox,
+form.mfPanelForm  input.color{
     float: left;
     width: auto;
 	margin: 2px 6px 0 0;
@@ -444,9 +459,9 @@ form.mfStatusForm  input.color{
 		grid-area: chck ;
 }
 
-form.mfStatusForm  label.rad,
-form.mfStatusForm  label.chk,
-form.mfStatusForm  label.col{
+form.mfPanelForm  label.rad,
+form.mfPanelForm  label.chk,
+form.mfPanelForm  label.col{
     float: left;
     width: auto;
 	margin: 5px 0px 0 0;
@@ -463,16 +478,16 @@ form.mfStatusForm  label.col{
   align-items: center;
 }
 
-form.mfStatusForm  label.rad input,
-form.mfStatusForm  label.chk input,
-form.mfStatusForm  label.col input{
+form.mfPanelForm  label.rad input,
+form.mfPanelForm  label.chk input,
+form.mfPanelForm  label.col input{
 	position: relative;
     /*left: -20px;*/
 }
-form.mfStatusForm  .color p{
+form.mfPanelForm  .color p{
 	display: inline-block;
 }
-form.mfStatusForm   input.color{
+form.mfPanelForm   input.color{
 	width: 40px;
     height: 30px;
     float: none;
@@ -485,10 +500,10 @@ form.mfStatusForm   input.color{
     border: 1px solid #ccc;
 }
 
-/*form.mfStatusForm  input:not(.submit):not([type=radio]):not([type=checkbox]),
-form.mfStatusForm  select,
-form.mfStatusForm  textarea,*/
-form.mfStatusForm  .input { 
+/*form.mfPanelForm  input:not(.submit):not([type=radio]):not([type=checkbox]),
+form.mfPanelForm  select,
+form.mfPanelForm  textarea,*/
+form.mfPanelForm  .input { 
     width: 100%;
     min-width: 140px;
     margin: 10px 0;
@@ -509,30 +524,31 @@ form.mfStatusForm  .input {
     border: 1px solid #8886;
   /*background-color: #fff8;*/
       justify-self: center;
+		font-family: Helvetica, "Roboto", sans-serif;
 }
-.mfStatusForm .form-group.input{
+.mfPanelForm .form-group.input{
     /*max-width: 200px;*/
     border: none;
     align-items: center;
     justify-content: start;
 }
 
-form.mfStatusForm  .mfEditor{/* arkeditor codemirror none tinymce */
+form.mfPanelForm  .mfEditor{/* arkeditor codemirror none tinymce */
     margin: 10px 0;
 }
-form.mfStatusForm  .mfEditor .toggle-editor{/* arkeditor codemirror none tinymce */
+form.mfPanelForm  .mfEditor .toggle-editor{/* arkeditor codemirror none tinymce */
     display: none;
 }
 
-form.mfStatusForm  textarea {
+form.mfPanelForm  textarea {
     min-height: 55px!important;
 	outline: none;
 }
-form.mfStatusForm  input{ 
+form.mfPanelForm  input{ 
 }
-form.mfStatusForm  input:focus,
-form.mfStatusForm  select:focus,
-form.mfStatusForm  textarea:focus{
+form.mfPanelForm  input:focus,
+form.mfPanelForm  select:focus,
+form.mfPanelForm  textarea:focus{
     -border-color: inherit;
     -border-color: transparent;
         -border-radius: 3px;
@@ -540,7 +556,7 @@ form.mfStatusForm  textarea:focus{
 	outline: none;
     box-shadow: 0 0 3px gray, 0 0  5px inset gray;
 }
-.mfStatusForm  input.submit { 
+.mfPanelForm  input.submit { 
     margin: 20px 0;
     cursor: pointer;
     text-transform: uppercase;
@@ -598,7 +614,7 @@ form.mfStatusForm  textarea:focus{
 	font-size: large;
 	  z-index: 0;
 }
-.mfStatusForm  .mfFieldGroup{
+.mfPanelForm  .mfFieldGroup{
     display: flex;
     place-content: center;
     place-content: space-between;
@@ -610,9 +626,19 @@ form.mfStatusForm  textarea:focus{
 /*    display: table-row;*/
 	align-content: center;
 } 
-form.mfStatusForm .mfFieldGroup .form-group.rad,
-form.mfStatusForm .mfFieldGroup .form-group.chk,
-form.mfStatusForm .mfFieldGroup .form-group.col {
+.mfPanelForm  output{
+	cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #8888;
+  padding-left: 10px;
+  background-color: #00b7ff1c;
+} 
+.mfPanelForm  output:empty{
+	border-style: none;
+} 
+form.mfPanelForm .mfFieldGroup .form-group.rad,
+form.mfPanelForm .mfFieldGroup .form-group.chk,
+form.mfPanelForm .mfFieldGroup .form-group.col {
     min-height: 20px;
     padding: 0!important;
     margin: 0px auto 0px;
@@ -633,25 +659,25 @@ form.mfStatusForm .mfFieldGroup .form-group.col {
 	align-items: baseline;
 }
 
-form.mfStatusForm .mfFieldGroup .form-group.chk.opts0{
+form.mfPanelForm .mfFieldGroup .form-group.chk.opts0{
 	flex-direction: row;
 	flex-wrap: nowrap;
 	display: grid;
 	gap: 0 15px;
 	
 }
-form.mfStatusForm .mfFieldGroup .form-group.chk.opts0 > input{
+form.mfPanelForm .mfFieldGroup .form-group.chk.opts0 > input{
 	margin: 0px 0 0;
 	
 }
 
-form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
+form.mfPanelForm .mfFieldGroup .form-group.chk input:checked{
 	
 }
 
-.mfStatusForm  input.submit:focus,
-.mfStatusForm  input.submit:hover,
-.mfStatusForm  input.submit:active {
+.mfPanelForm  input.submit:focus,
+.mfPanelForm  input.submit:hover,
+.mfPanelForm  input.submit:active {
 	-border: 0 solid transparent;
     -border-bottom: 3px solid rgb(96, 0, 136);
     -background-color: rgb(127, 0, 152);
@@ -662,7 +688,7 @@ form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
     transform: scaleX(1.1);
 }
 
-.mfStatusForm  .input {
+.mfPanelForm  .input {
     text-align: left;
     text-align-last: left;
   -border: 0 solid transparent;
@@ -671,24 +697,24 @@ form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
   -border-radius: 5px;
    transition: 0.4s 0.1s;
 }
-.mfStatusForm  .number,
-.mfStatusForm  .range {
+.mfPanelForm  .number,
+.mfPanelForm  .range {
     text-align: right;
     text-align-last: right; 
 }
 
-.mfStatusForm  textarea {
+.mfPanelForm  textarea {
   border: 1px solid transparent;
   border-radius: 0;
   /*background-color: rgba(204,204,204,0.3);*/
   margin-top: 15px;
   resize: vertical;
 }
-.mfStatusForm  .input.error{
+.mfPanelForm  .input.error{
     box-shadow: 0 0 5px inset red, 0 0 5px red;
     border: 1px solid red;
 } 
-.mfStatusForm:not(.above)  .mfFieldGroup>label{
+.mfPanelForm:not(.above)  .mfFieldGroup>label{
     max-width: 160px;
     max-width: 180px;
     width: 100%;
@@ -699,14 +725,14 @@ form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
     transition: 0.3s 0.1s;
         display: block;
 }
-.mfStatusForm  .mfFieldGroup> label,
-.mfStatusForm  .mfFieldGroup> label{
+.mfPanelForm  .mfFieldGroup> label,
+.mfPanelForm  .mfFieldGroup> label{
     text-align: left;
     text-align-last: left;
 	display: flex;
     align-items: center;
 }
-.mfStatusForm.modal-body  .mfFieldGroup>label{
+.mfPanelForm.modal-body  .mfFieldGroup>label{
     max-width: 240px;
     max-width: 256px;
     width: auto;
@@ -715,27 +741,27 @@ form.mfStatusForm .mfFieldGroup .form-group.chk input:checked{
     margin: 10px 0 -5px 0px;
     margin: 3px 0 2px 0px;
 }
-form.mfStatusForm  legend {
+form.mfPanelForm  legend {
 	margin-bottom: 5px;
 	font-size: inherit;
 }
-.mfForm_modal .mfStatusError{
+.mfForm_modal .mfPanelError{
 	padding: 15px 10px;
 	text-align: center;
 	font-size: 22px;
 	color: red;
 }
-.mfForm_modal .mfStatusDone{
+.mfForm_modal .mfPanelDone{
 	padding: 15px 10px;
 	text-align: center;
 	font-size: 18px;
 	color: inherit;
 }
-.mfForm_modal .mfStatusError p,
-.mfForm_modal .mfStatusDone p{
+.mfForm_modal .mfPanelError p,
+.mfForm_modal .mfPanelDone p{
 	margin: 0;
 }
-.mfStatusForm  label.error{ 
+.mfPanelForm  label.error{ 
     text-shadow: 0 0 10px white;
     /*box-shadow: 0 0 10px red;*/
     text-align: center;
@@ -757,12 +783,12 @@ form.mfStatusForm  legend {
     text-decoration: underline;
     font-weight: bolder;
 }
-/*form.mfStatusForm  fieldset.radio,
-form.mfStatusForm  fieldset.checkbox{
+/*form.mfPanelForm  fieldset.radio,
+form.mfPanelForm  fieldset.checkbox{
     position:relative;
     display: flex;
 }*/
-form.mfStatusForm  label.error{
+form.mfPanelForm  label.error{
 	/*position: absolute;*/
 	/*bottom: 0;*/
      position: initial;
@@ -773,11 +799,11 @@ form.mfStatusForm  label.error{
 		text-decoration-thickness: 1px;
 		font-size: inherit;
 }
-form.mfStatusForm:not(.above) .mfFieldGroup > label.error{ 
+form.mfPanelForm:not(.above) .mfFieldGroup > label.error{ 
 		max-width: initial;
 }
 
-form.mfStatusForm .mfFieldGroup.checkbox label.error{
+form.mfPanelForm .mfFieldGroup.checkbox label.error{
 	/*position: absolute;*/
 	/*bottom: 0;*/
 		margin-top: 0;
@@ -791,10 +817,10 @@ form.mfStatusForm .mfFieldGroup.checkbox label.error{
 /** ------------------------------- Разметка для Представления Grid            */
 
     .mfForm.static.grid form,
-    .mfForm.static.grid .mfStatusDone,
-    .mfForm.static.grid .mfStatusDone h3 ,
-    .mfForm.static.grid .mfStatusError h3,
-    .mfForm.static.grid .mfStatusError{
+    .mfForm.static.grid .mfPanelDone,
+    .mfForm.static.grid .mfPanelDone h3 ,
+    .mfForm.static.grid .mfPanelError h3,
+    .mfForm.static.grid .mfPanelError{
         text-align: center;
         text-align-last: center;
         padding: 10px;
@@ -935,49 +961,55 @@ form.mfStatusForm .mfFieldGroup.checkbox label.error{
 	flex-wrap: wrap;
 	align-content: center;
 }
-.mfStatusForm.above  .mfFieldGroup > label,
-.mfForm_modal .mfStatusForm:not(.edge) > label{
+.mfPanelForm.above  .mfFieldGroup > label,
+.mfForm_modal .mfPanelForm:not(.edge) > label{
 	max-width: initial;
-}
-/*form.mfStatusForm.in .form-control,*/
-/*form.mfStatusForm.in .form-group,*/
-/*form.mfStatusForm.in .form-group.rad, 
-form.mfStatusForm.in .form-group.chk, 
-form.mfStatusForm.in .form-group.col,*/
-form.mfStatusForm.in .mfFieldGroup{
 	
 }
-/*form.mfStatusForm.out .form-control,*/
-/*form.mfStatusForm.out .form-group,*/
-/*form.mfStatusForm.out .form-group.rad, 
-form.mfStatusForm.out .form-group.chk, 
-form.mfStatusForm.out .form-group.col,*/
-form.mfStatusForm.out .mfFieldGroup{
+.mfPanelForm.above  .mfFieldGroup > label,
+.mfForm_modal .mfPanelForm:not(.edge,.before,.after,.above) > label.form-group{
+	
+	margin-bottom: 0 !important;
+}
+/*form.mfPanelForm.in .form-control,*/
+/*form.mfPanelForm.in .form-group,*/
+/*form.mfPanelForm.in .form-group.rad, 
+form.mfPanelForm.in .form-group.chk, 
+form.mfPanelForm.in .form-group.col,*/
+form.mfPanelForm.in .mfFieldGroup{
+	
+}
+/*form.mfPanelForm.out .form-control,*/
+/*form.mfPanelForm.out .form-group,*/
+/*form.mfPanelForm.out .form-group.rad, 
+form.mfPanelForm.out .form-group.chk, 
+form.mfPanelForm.out .form-group.col,*/
+form.mfPanelForm.out .mfFieldGroup{
     
 }
-/*form.mfStatusForm.above .form-control,*/
-/*form.mfStatusForm.above .form-group,*/
-/*form.mfStatusForm.above .form-group.rad, 
-form.mfStatusForm.above .form-group.chk, 
-form.mfStatusForm.above .form-group.col, */
-form.mfStatusForm.above .mfFieldGroup{
+/*form.mfPanelForm.above .form-control,*/
+/*form.mfPanelForm.above .form-group,*/
+/*form.mfPanelForm.above .form-group.rad, 
+form.mfPanelForm.above .form-group.chk, 
+form.mfPanelForm.above .form-group.col, */
+form.mfPanelForm.above .mfFieldGroup{
     flex-direction: column;
 	flex-wrap: wrap;
 	align-content: center;
 }
-/*form.mfStatusForm.edge .form-control,*/
-/*form.mfStatusForm.edge .form-group,*/
-/*form.mfStatusForm.edge .form-group.rad, 
-form.mfStatusForm.edge .form-group.chk, 
-form.mfStatusForm.edge .form-group.col,*/
-form.mfStatusForm.edge .mfFieldGroup{
+/*form.mfPanelForm.edge .form-control,*/
+/*form.mfPanelForm.edge .form-group,*/
+/*form.mfPanelForm.edge .form-group.rad, 
+form.mfPanelForm.edge .form-group.chk, 
+form.mfPanelForm.edge .form-group.col,*/
+form.mfPanelForm.edge .mfFieldGroup{
 	display: grid;
     grid-template-columns: 1fr 2fr;
 	gap: 10px;
 }
 
 /** ----------------------------------------------------   Ширина Полей    -------*/  
-form.mfStatusForm			.form-control{
+form.mfPanelForm			.form-control{
     /*?????*/
     /*max-width: 240px;*/
 	max-width: 256px;
@@ -987,70 +1019,38 @@ form.mfStatusForm			.form-control{
 	justify-self: center;
 	font-size: large;
 }
-form.mfStatusForm.field180 .form-control, 
-form.mfStatusForm.field180 .input, 
-form.mfStatusForm.field180 .form-group.rad, 
-form.mfStatusForm.field180 .form-group.chk, 
-form.mfStatusForm.field180 .form-group.col,
-form.mfStatusForm.field180 .mfFieldGroup{
+form.mfPanelForm		.form-control::placeholder {
+  opacity: 0.5;
+}
+form.mfPanelForm.field180 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
     max-width: 180px;
 }
-form.mfStatusForm.field240 .form-control,
-form.mfStatusForm.field240 .input,
-form.mfStatusForm.field240 .form-group.rad, 
-form.mfStatusForm.field240 .form-group.chk, 
-form.mfStatusForm.field240 .form-group.col,
-form.mfStatusForm.field240 .mfFieldGroup{
+form.mfPanelForm.field240 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
     max-width: 240px;
 }
-form.mfStatusForm.field256 .form-control,
-form.mfStatusForm.field256 .input,
-form.mfStatusForm.field256 .form-group.rad, 
-form.mfStatusForm.field256 .form-group.chk, 
-form.mfStatusForm.field256 .form-group.col,
-form.mfStatusForm.field256 .mfFieldGroup{
+form.mfPanelForm.field256 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
     max-width: 256px;
 }
-form.mfStatusForm.field300 .form-control,
-form.mfStatusForm.field300 .input,
-form.mfStatusForm.field300 .form-group.rad, 
-form.mfStatusForm.field300 .form-group.chk, 
-form.mfStatusForm.field300 .form-group.col,
-form.mfStatusForm.field300 .mfFieldGroup{
+form.mfPanelForm.field300 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
     max-width: 300px;
 }
-form.mfStatusForm.field440 .form-control,
-form.mfStatusForm.field440 .input,
-form.mfStatusForm.field440 .form-group.rad, 
-form.mfStatusForm.field440 .form-group.chk, 
-form.mfStatusForm.field440 .form-group.col,
-form.mfStatusForm.field440 .mfFieldGroup{
+form.mfPanelForm.field440 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
 	max-width: 440px;
 }
-form.mfStatusForm.field600 .form-control,
-form.mfStatusForm.field600 .input,
-form.mfStatusForm.field600 .form-group.rad, 
-form.mfStatusForm.field600 .form-group.chk, 
-form.mfStatusForm.field600 .form-group.col,
-form.mfStatusForm.field600 .mfFieldGroup{
+form.mfPanelForm.field600 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
 	max-width: 600px;
 }
-form.mfStatusForm.field740 .form-control,
-form.mfStatusForm.field740 .input,
-form.mfStatusForm.field740 .form-group.rad, 
-form.mfStatusForm.field740 .form-group.chk, 
-form.mfStatusForm.field740 .form-group.col,
-form.mfStatusForm.field740 .mfFieldGroup{
+form.mfPanelForm.field740 :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
 	max-width: 740px;
 }
-form.mfStatusForm.fieldFluid .form-control,
-form.mfStatusForm.fieldFluid .input,
-form.mfStatusForm.fieldFluid .mfFieldGroup.rad, 
-form.mfStatusForm.fieldFluid .mfFieldGroup.chk, 
-form.mfStatusForm.fieldFluid .mfFieldGroup.col,
-form.mfStatusForm.fieldFluid .mfFieldGroup
-{
+form.mfPanelForm.fieldFluid :is(.form-control,.input,.form-group.rad,.form-group.chk,.form-group.col,.mfFieldGroup){
 	max-width: initial;
+}
+
+form.mfPanelForm input[type=number]{
+	min-width: 70px;
+	text-align: center;
+	padding: 0 1px;
 }
 
  
@@ -1117,6 +1117,38 @@ form.mfStatusForm.fieldFluid .mfFieldGroup
 	margin-right: 120px;
 }
 
+
+
+.mfPanelForm .calculatorList{
+	display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-rows: auto;
+  column-gap: 5px;
+	padding-left: 0rem;
+}
+.mfPanelForm .calculatorList label {
+  display: grid;
+  grid-column: 1 / -1;
+	grid-template-columns: inherit;
+  grid-template-columns: subgrid;
+}
+.mfPanelForm .calculatorList label > *{
+  align-content: center;
+}
+.mfPanelForm .calculatorList label > .col2{
+  text-align: center;
+}
+.mfPanelForm .calculatorList label > .col3{
+  text-align: right;
+}                    
+
+.mfPanelForm .calculatorInfo{
+  margin: auto;
+  font-weight: bold;
+  /*text-decoration: underline;*/
+}                    
+
+
                     
                     
                     
@@ -1126,6 +1158,40 @@ form.mfStatusForm.fieldFluid .mfFieldGroup
                     
                     
                     
-                    
-                    
-                    
+.cartLine .calculatorList label{
+	margin:5px;
+  padding:0px 20px;
+  column-gap: 0px;
+  cursor: pointer;
+  
+  border: 1px solid #8883;
+  border-radius: 10px;
+  transition: .5s;
+}
+          
+.cartLine .calculatorList label:hover{
+	box-shadow: 0 0 5px #0004;
+}
+.cartLine .calculatorList .col1{
+	/*grid-column: 1 / span 2;*/
+	grid-column: 1 / -2;
+}
+.cartLine .calculatorList .col2{
+	grid-column: 1 / span 3;
+	text-align: left;
+}
+.cartLine .calculatorList .col4{
+	display: none;
+}
+.cartLine .calculatorList .col3{
+	grid-column: 4;
+}
+
+.cartLine .calculatorList button{
+	grid-column: -1;
+	
+	grid-column:-1;
+	grid-row:1 / span 2;
+	padding:0 0 0 10px;
+	
+}

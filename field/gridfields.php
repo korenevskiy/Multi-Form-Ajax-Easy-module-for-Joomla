@@ -8,12 +8,12 @@ defined('_JEXEC') or die;
  * @copyright	(C) 2021 //explorer-office.ru. All Rights Reserved.
  * @license		GPL   GNU General Public License version 2 or later;
  * @creationDate	2022-03-25
- * @modifed			2022-06-22
- * @introduced		2022-06-22
+ * @modifed			2025-04-28
+ * @introduced		2025-04-28
  * @created
  * @package     Joomla Fields
  * @subpackage  GridFields
- * @version  4
+ * @version  5
  * Websites: http://explorer-office.ru/download/
  * Technical Support:  Forum - http://vk.com/korenevskiys
  */ 
@@ -42,6 +42,7 @@ use  Joomla\Database\Exception;
 
 //if(file_exists(__DIR__ . '/../functions.php'))
 //	require_once  __DIR__ . '/../functions.php';
+
 
 if(file_exists(JPATH_ROOT . '/functions.php'))
 	require_once  JPATH_ROOT . '/functions.php';
@@ -329,8 +330,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 */
 	protected $renderLabelLayout = 'joomla.form.renderlabel';
 	
-	protected $isJ4 = true;
-	
+	private  $isJ4;
+
+
 	/**
 	 * Method to instantiate the form field object.
 	 *
@@ -373,8 +375,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 *
 	 * @since   1.7.0
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
-	{
+	public function setup(\SimpleXMLElement $element, $value, $group = null){
 //toPrint($this,'$this',0,'pre');
 		 
     
@@ -511,11 +512,12 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
             $this->default = (string)$element->value;
         }
 		
-		if(is_string($this->default) && (static::isTrue($element['translateDefault']) || static::isTrue($element['translate_default'])
-				|| static::isTrue($element->default['translateDefault']) || static::isTrue($element->default['translate_default'])
+		if(is_string($this->default) && (static::isTrue($element['translatDefault']) || static::isTrue($element['translate_default'])
+				|| static::isTrue($element->default['translatDefault']) || static::isTrue($element->default['translate_default'])
 				|| static::isTrue($element->default['translate']))){
 			$this->default = JText::_($element->default);
 		}
+        
         
 //toPrint($this->default,'$this->default',0,'message');
 //toPrint($element,'$element',0,'message');
@@ -564,15 +566,30 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 			$value = isset($xml['value'])? (string)$xml['value'] : '';
 			$default = isset($xml['default']) && empty($value)? (string)$xml['default'] : '';
              
-            $column = static::createField($xml, $default);
-//toPrint( $column->class,' $xml->class '.$this->name);
-//toPrint($column->label);
-//toPrint($column->class,$this->name);
-//toPrint((string)$xml['class'],$this->name);
+//			$xml['hidden']= false;
+//			$xml['hiddenLabel']= false;
+//toPrint($xml);|| in_array($dataColumn->type, ['Category','List' ])
+//toPrint($xml);
+            $column = static::createField($xml, $default, [] , true);
+
+			if(empty($column->class)){
+				$typeClass = ''. $column::class;
+				
+				if(is_a($column, '\Joomla\CMS\Form\Field\ListField') )
+					$column->class = ' form-select form-select-sm  '; //classCell
+				else
+					$column->class = ' form-control form-control-sm  '; //classCell
+				
+				if(is_a($column, '\Joomla\CMS\Form\Field\RadioField'))
+					$column->class = ' btn-group-sm ';
+			}
+
 			$key = $this->addColumn($column, $name);
 			
             $this->columns[$key]->element = $xml;
 //            $this->columns[$column->name] = $column;
+			
+			
 			
 			 
 //			$this->value[$key] = (array) $this->value[$key]; 
@@ -581,6 +598,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		foreach((array)$this->value as $i => $colData){
 			if(is_object($colData))
 				$this->value[$i] = (array) $colData;
+
 		}
 //toPrint($this->columnsXML,'',0);
 //toPrint($this->columns,'',0);
@@ -606,6 +624,30 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 
 
      
+	static $attributes_default = [
+			'id','fieldname','name','multiple','description','hint','default',//'value',
+			'labelclass','translateLabel','translate_label','translateDescription','translate_description','translateHint','validationtext', 'autocomplete',
+			'onchange','onclick','validate','pattern','size',
+			'required','readonly','disabled','hidden','spellcheck','autofocus','group','showon', 'parentclass',
+            'label',
+	];
+	static $attributes_element = [
+			
+            'element',
+		
+			'class','field',
+            'repeat',
+            'type','dataAttributes',
+            'text','for','classes','classCell','classHeader','position',
+			'translate_default',  'translateValue',
+            'sortable', 'norender',
+            'creatable','movable','removable',
+           'styleHeader','styleCell',
+			'input', 'countOptions', 'format', 'printf',
+			'options','rows', 
+			'style',
+		//'rows',
+	];
     
 	 
     /**
@@ -621,77 +663,154 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 			return $name;
 		}
 		
-		$dataColumn = (object)$dataColumn;
-		
 //toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');		
-//toPrint($dataColumn->text,'$dataColumn->text');		
+//toPrint($dataColumn->text,'$dataColumn->text');
 		
-        $attributes = [
-            'autocomplete','autofocus','class','description','default','disabled',
-            'element','field','group','hidden','hint',
-            'id','label','labelclass','multiple','showon',
-            'name','onchange','onclick','pattern','validationtext','readonly','repeat','required','size','spellcheck',
-            'type','validate','dataAttribute','dataAttributes',//'value',
-            'text','for','classes','classCell','classHeader','position', 'parentclass',
-            'fieldname','translateLabel','translateDescription','translateHint', 'translateDefault',  'translateValue',
-            'sortable', 'norender',
-            'creatable','movable','removable',
-            'style','styleHeader','styleCell',
-            'translate_label', 'translate_description', // 'translate_default', 
-			'input', 'countOptions', 'format', 'printf',
-			'options',
-            ]; 
+		
+//        $attributes = array_merge(static::$attributes_default,static::$attributes_element);
+
+		
+//if($dataColumn->name == 'placeholder')
+// echo "<pre>\$dataColumn 663 "  .print_r( $dataColumn,true)." </pre>"; 
+        $data = array_fill_keys(array_merge(static::$attributes_default,static::$attributes_element), '');
         
-        $data = (object)array_fill_keys($attributes, '');//
-        
-//        $data->hidden = true;
-        $data->hidden = false;
-        $data->norender = false;
-        $data->translateLabel = true;
-        $data->translateDescription = true;
-        $data->translateDefault = false;
-        $data->field = NULL;
-        $data->default = NULL;
-		$data->rows = 1; // for type "textarea"
-		$data->countOptions = false;
-		$data->options = [];
-        
-		foreach ($attributes as $attr){
-			if(! isset($dataColumn->$attr)){
-				$dataColumn->$attr = $data->$attr;
-			}
+//		$data->hidden = true;
+        $data['hidden'] = false;
+        $data['norender'] = false;
+        $data['translateLabel'] = true;
+        $data['translateDescription'] = true;
+        $data['translate_default'] = false;
+        $data['field'] = NULL;
+        $data['default'] = NULL;
+		$data['rows'] = 1; // for type "textarea"
+		$data['countOptions'] = false;
+		$data['options'] = [];
+//if($dataColumn->name == 'placeholder')
+// echo "<pre>\$field 677 "  .print_r( $dataColumn,true)." </pre>"; 
+		
+//		$isList = FALSE;
+		
+//		$className = '\\'. $dataColumn::class;
+		
+//		if(is_array($dataColumn) && isset($dataColumn['type']))
+//			$isList = in_array ($dataColumn['type'], ['Category','List']);
+//		if(is_object($dataColumn))
+//			$isList = is_a($dataColumn, '\Joomla\CMS\Form\Field\ListField');
+
+//toPrint(strlen($dataColumn->class),' $dataColumn->class '.$this->name);
+//toPrint( $dataColumn->class,' $dataColumn->class ');
+//toPrint($isList, $dataColumn::class);
+//toPrint($isList,$dataColumn->class);
+		
+        if(is_string($dataColumn)){
+            $dataColumn = new SimpleXMLElement($dataColumn);
 		}
+		if($dataColumn instanceof SimpleXMLElement){
+			foreach (get_object_vars($data) as $attr){
+				if(isset($dataColumn[$attr])){
+					$data[$attr] = $dataColumn[$attr];
+				}
+			}
+			
+			if(isset($dataColumn['for']))
+				$dataColumn['for'] = $dataColumn['for'] ?? $dataColumn['id'];
+			else
+				$dataColumn->addAttribute('for', $dataColumn['for'] ?? $dataColumn['id']);
+			
+			$data['for'] = $dataColumn['for'];
+			
+			$data['text'] = $dataColumn['text'] ?? $dataColumn['label'] ?? '';
+//			$data['classHeader'] = $dataColumn['classHeader'];
+			
+			$dataColumn = (object)$data;
+		}
+
+//if($dataColumn->fieldname =="sort_mail")
+//toPrint(static::$attributes_default,'static::$attributes_default',0,'pre');
+//if($dataColumn->fieldname =="sort_mail")
+//toPrint($dataColumn,'$dataColumn',0,'pre');
+		if($dataColumn instanceof JFormField){
+			foreach (static::$attributes_default as $attr){
+//				if($dataColumn->$attr){
+					$data[$attr] = $dataColumn->$attr;
+					
+//if($dataColumn->fieldname =="sort_mail" && $attr =="default"){
+//toPrint($dataColumn->$attr,'$attr->',0,'pre');
+//toPrint($data[$attr],'$attr[]',0,'pre');
+//}
+//				}
+			}
+//if($dataColumn->fieldname =="sort_mail")
+//toPrint($data,'$data',0,'pre');
+			foreach (static::$attributes_element as $attr){
+				$data[$attr] = $dataColumn->getAttribute($attr);
+			}
+
+//			$dataColumn->{'data-countOptions'}	= false;
+//			$dataColumn->{'data-text'}			= $dataColumn->{'data-text'} ?? $dataColumn->label;
+//			$dataColumn->{'data-classHeader'}	= $dataColumn->{'data-text'} ?? $dataColumn->label;
+			$data['classHeader']				= $dataColumn->{'data-classHeader'};
+			$data['text']						= $dataColumn->{'data-text'} ?? $dataColumn->label  ?? '';
+			$data['countOptions'] = $dataColumn->{'data-countOptions'};
+			$data['class'] = $dataColumn->class;
+			
+//if($dataColumn->name == 'placeholder')
+// echo "<pre>\$dataColumn 720 "  .print_r( $dataColumn,true)." </pre>"; 
+			$dataColumn = (object)$data;
+			
+		}
+
+		if(is_array($dataColumn)){
+			foreach (get_object_vars($data) as $attr){
+				if(! isset($dataColumn[$attr])){
+					$dataColumn->$attr = $data->$attr;
+				}
+			}
+			
+			$dataColumn->text = $dataColumn['text'] ?? $dataColumn['label']  ?? '';
+		}
+//if($dataColumn->name == 'placeholder')
+// echo "<pre>\$dataColumn 735"  .print_r( $dataColumn,true)." </pre>"; //'123 '. htmlspecialchars (string)
 		
 		unset($data);
         
-		$dataColumn->class = empty($dataColumn->class) && ucwords($dataColumn->type) == 'Radio' ? ' btn-group-sm ' : (string)$dataColumn->class; 
-		if(empty($dataColumn->class)){
-			if(is_a($dataColumn, '\Joomla\CMS\Form\Field\ListField'))
-				$dataColumn->class = ' form-select form-select-sm '; //classCell
-			else
-				$dataColumn->class = ' form-control form-control-sm  '; //classCell
-		}
+//		if(empty($dataColumn->class)){
+//			
+//			
+//			if($isList)
+//				$dataColumn->class = ' form-select form-select-sm'; //classCell
+//			elseif(ucwords($dataColumn->type) == 'Radio')
+//				$dataColumn->class = ' btn-group-sm ';
+//			else
+//				$dataColumn->class = ' form-control form-control-sm'; //classCell
+//
+//		}
 		$dataColumn->type  = $dataColumn->type ?: 'text';
-//toPrint(strlen($dataColumn->class),' $dataColumn->class '.$this->name);
-//toPrint( $dataColumn->class,' $dataColumn->class '.$this->name);
+
 //toPrint( is_a($dataColumn, '\Joomla\CMS\Form\Field\ListField')," $dataColumn->fieldname ");
-        $dataColumn->position = $dataColumn->name == 'alias' ? ' data-placement="bottom" ' : ''; 
+        
+//toPrint($dataColumn->required,'$dataColumn->required');
+//toPrint($dataColumn->required,'$dataColumn->required');
+//		if(! $dataColumn instanceof JFormField)
+		$dataColumn->position = $dataColumn->name == 'alias' ? ' data-placement="bottom" ' : ''; 
         $dataColumn->required = self::isTrue($dataColumn->required);
-        $dataColumn->classes = explode(' ', $dataColumn->class);
+//		if(! $data instanceof JFormField)
+//			$dataColumn->classes = explode(' ', $dataColumn->class);
 //        $dataColumn->hidden = false;
 //        $dataColumn->hiddenLabel = true;
-        $dataColumn->text = $dataColumn->text ?? $dataColumn->label;
-//toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');		
+		
+//toPrint($dataColumn->required,'$dataColumn->required');
+//toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');	
 //toPrint($dataColumn->text,'$dataColumn->text');	
 //toPrint( $dataColumn->class,' $dataColumn->class '.$this->name);
 //        $dataColumn->hidden = false;
-        $dataColumn->for = $dataColumn->for ?? $dataColumn->id;
+
         $dataColumn->dataAttributes = [];
         $dataColumn->dataAttribute = '';
 		
 		
-		$dataColumn->default = empty($dataColumn->value) && $dataColumn->default && $dataColumn->translateDefault ? JText::_($dataColumn->default) : $dataColumn->default;
-        $dataColumn->html = $dataColumn->value ?: $dataColumn->default;
+		$dataColumn->default = empty($dataColumn->value) && $dataColumn->default && $dataColumn->translate_default ? JText::_($dataColumn->default) : $dataColumn->default;
+        $dataColumn->html = (isset($dataColumn->value) && $dataColumn->value) ? $dataColumn->value : $dataColumn->default;
         
         $alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $dataColumn->fieldname);
         
@@ -733,8 +852,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
         if($dataColumn->description && $dataColumn->translateDescription)
             $dataColumn->description = \JText::_($dataColumn->description);
 		
-        $dataColumn->translateDefault = isset($dataColumn->translateDefault) ?
-				self::isTrue($dataColumn->translateDefault) : self::isTrue($dataColumn->translate_default);
+        $dataColumn->translate_default = isset($dataColumn->translatDefault) ?
+				self::isTrue($dataColumn->translatDefault) : self::isTrue($dataColumn->translate_default);
 		
 //toPrint('getControl();   key:'.$name.'; col->name:'.$dataColumn->fieldname);
 //var_dump($name);
@@ -743,7 +862,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($name);
 //toPrint(array_keys($this->columns));
 //toPrint($dataColumn->name);
-		
+//if($dataColumn->fieldname =="sort_mail")
+//toPrint($dataColumn,'$col',0,'pre');
 		
         return $name;
     }
@@ -862,10 +982,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	
     /**
 	 * Метод получения данных FIELD для  макета для рендеринга. 
-	 * @param   string|SimpleXMLElement  $Element Type field or Load data from $Element.
-	 * <pre>
-	 * <b> <field name="fieldname" label="Label" type="text" />  </b>
-	 * </pre>
+	 * @param   string|SimpleXMLElement  $Element Type field or Load data from $Element.<br>
+	 * <b><field name="fieldname" label="Label" type="text" /></b>
 	 * @param   mixed  $value  The form to attach to the form field object.
 	 * @param   object|array  $data  The form to attach to the form field object.
 	 * <pre> 
@@ -897,9 +1015,12 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		$data = is_array($data) ? $data : get_object_vars($data);
 		
 		$type = '';
-		$translateDefault = false;
+		$translate_default = false;
 		$default = ''; 
 		
+		if(is_null($Element)){
+			$Element = '<field type="text"/>';
+		}
 
 		
 		if(is_string($Element)){
@@ -927,13 +1048,62 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //			$xml->loadXML($source);
 //			$xml->saveXML();
 		}
+		
+		$translate_default = ''; 
+		
+		if(isset($data['translate_default'])){
+			if(isset($Element['translate_default']))
+				$Element['translate_default'] = static::isTrue($data['translate_default']);
+			else
+				$Element->addAttribute ('translate_default', static::isTrue($data['translate_default']));
+			
+			$translate_default = static::isTrue($Element['translate_default']); 
+		}
+			
 //toPrint($Element ,'$Element ',0 ); return null;
 		if($Element instanceof \SimpleXMLElement){
 			$type = (string)$Element['type'] ?: 'text';
-			$translateDefault = static::isTrue($Element['translateDefault']?: false);
 			$default = $Element['default'] ?: '';
 			$value = $value ?? $data['value'] ?? (string)$Element['value'] ?? null;
+			
+			
+			foreach (static::$attributes_element as $attr) {
+					
+				if(isset($data[$attr])){
+					
+					if(is_array($data[$attr]) && $attr == 'options')
+					{
+						foreach ($data[$attr] as $opt)
+							$Element->addChild('option', $opt->text)->addAttribute('value', $opt->value);
+//                    <option value="-2">JTRASH</option>  
+						continue;
+					}
+					
+					$dat_attr = is_array($data[$attr]) ? implode(' ',$data[$attr]) : $data[$attr];
+//if(is_array($data[$attr]))					
+//JFactory::getApplication ()->enqueueMessage ('<pre>'.$attr.' '.print_r($data[$attr],true).'</pre>');
+
+						
+					
+					if(isset($Element[$attr]))
+						$Element[$attr] = $dat_attr;
+					else
+						$Element->addAttribute($attr, $dat_attr);
+				}
+			}
+			
+			 
+			if(isset($Element['id'])){
+				if(isset($Element['for']))
+					$Element['for'] = $Element['for'] ?? $Element['id'];
+				else
+					$Element->addAttribute('for', $Element['for'] ?? $Element['id']);
+			}
+			
 		}
+		
+		if(is_null($value))
+			$value = $translate_default && $default ? JText::_($default) : (string)$default;
 		
 //toPrint($value,'$value');
 
@@ -955,15 +1125,46 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 		if(empty($field))
 			$field = JFormHelper::loadFieldType('text');			// <<<<<<<<<<<<<<<<<<<<<<<
 		
-		$field->setup(simplexml_load_string("<field/>"), '');
 		
 //toPrint( $field->name);
 		$field = static::getDefaultData($field);
 //toPrint( $field);
 		
+//		if(isset($data['text']))
+		$field->{'data-text'} = $data['text'] ?? $data['label'] ?? '';
+		
+//		if(isset($data['countOptions']))
+			$field->{'data-countOptions'} = $data['countOptions'] ?? false;
+		
+//		if(isset($data['classHeader']))
+		$field->{'data-classHeader'} = $data['classHeader'] ?? '';
 		
 		
+		foreach($Element->attributes() as $attr => $val){
+			if(in_array($attr, static::$attributes_default)){
+//if((string)$attr == 'name' && (string)$val == 'field_label')
+// echo "<pre>\$field 1102 ".print_r($Element->attributes(),true)." </pre>";
+				$field->$attr = (string)$val;
+				continue;
+			}
+			
+			if(in_array($attr, static::$attributes_element)){
+				$field->{"data-$attr"} = (string)$val;
+				continue;
+			}
 		
+			$attr = static::attributeToHungarianNotation($attr);
+				
+			if(in_array($attr, static::$attributes_default))
+				$field->$attr = (string)$val;
+			
+			if(in_array($attr, static::$attributes_element))
+				$field->{"data-$attr"} = (string)$val;
+//            $attr = static::attributeToHungarianNotation($attr);
+//			$field->$attr = (string)$val;
+		}
+		
+//toPrint($field,'$field');
 //toPrint($value,'$value');
 		
 		
@@ -977,18 +1178,12 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($value ,'$value ',0,'pre');
 //toPrint($field ,'$field ',0,'pre');
 		
-		if($Element instanceof SimpleXMLElement){
-        foreach($Element->attributes() as $attr => $val){
-            $field->$attr = (string)$val;
-            $attr = static::attributeToHungarianNotation($attr);
-			$field->$attr = (string)$val;
-		}}
+
 //toPrint($field ,'$field ',0,'pre');
-		if(is_array($Element)){
-        foreach($Element as $attr => $val){
-            $attr = static::attributeToHungarianNotation($attr);
-            $field->$attr = (string)$val;
-		}}
+//		if(is_array($Element)){
+//			$Element['translate_default'] = $translate_default;
+			
+		
 //toPrint($field->rows,'$field->rows',0,'pre'); 
 
 //if($Element['name'] == 'name_param')
@@ -998,12 +1193,13 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //if($data && $data['fieldname'] == 'name_param')
 //	toPrint( $data,'',0);
 
+//if($field->name == 'placeholder')
+// echo "<pre>\$field 1153 "  .print_r($field,true)." </pre>"; 
+//if($field->name == 'placeholder')
+// echo "<pre>\$field 1155 "  .print_r($Element,true)." </pre>"; 
 
 
-		$field->translateDefault = isset($data['translateDefault']) ? static::isTrue($data['translateDefault']) :  $field->translateDefault; 
-		
-		if(is_null($value))
-			$value = $field->translateDefault && $default ? JText::_($default) : (string)$default;
+//toPrint($Element,'$Element');
 		
 		if($Element){
 			if(ucfirst($type) == 'Checkbox'){
@@ -1024,6 +1220,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($dataColumn->hiddenLabel,'$dataColumn->hiddenLabel');		
 //toPrint($field->label,'$field->label');
 //toPrint($Element['label'],'$field->label');
+			
+//			$field->label = $field->label
 
 			if($Element['format'])
 				$field->format = (string)$Element['format'];
@@ -1033,18 +1231,35 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 				$field->printf = (string)$Element['printf'];
 			if($Element->printf)
 				$field->printf = (string)$Element->printf;
-//			$options = $Element->xpath('option');
-//			$field->countOptions = $options ? count($Element->xpath('option')) : 0;
-//			$field->countOptions = count($Element->xpath('option'));
+			$options = $Element->xpath('option');
+			$field->{'data-countOptions'} = $options ? count($Element->xpath('option')) : 0;
+//			$field->{'data-countOptions'} = count($Element->xpath('option'));
 			
-        } 
+//toPrint($field->{'data-countOptions'},'$field->{data-countOptions}',0,'pre',true);
+        }
 		
+//if($field->name == 'field_label' && $deb)
+// echo "<pre>\$field 1198 "  .print_r($field->label,true)." </pre>";
+//if($field->name == 'placeholder' && $deb)
+// echo "<pre>\$field 1200 "  .print_r($field->label,true)." </pre>"; 
+
+
 		
         foreach ((array)$data as $attr => $val) {
 			if($attr == 'value')
 				continue;
+			
+			
+			if(in_array($attr, static::$attributes_default)){
+				$field->$attr = $val;// Перепроверить.!!!
+				continue;
+			}
+			
             $attr = static::attributeToHungarianNotation($attr);
-				$field->__set($attr, $val);// Перепроверить.!!!
+			
+			if(in_array($attr, static::$attributes_default))
+				$field->$attr = $val;// Перепроверить.!!!
+			
 //			toPrint($val,$prop);
 //            if(in_array($prop, ['classes','labelclasses']))
 //                continue;
@@ -1053,15 +1268,32 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //            $attr = static::attributeToHungarianNotation($attr);
 //            $field->$prop = $val;   // Перепроверить.!!!
         }
-		
+
+//if($field->name == 'placeholder')
+// echo "<pre>\$field 1224 "  .print_r($field,true)." </pre>"; 
+//toPrint($field->label,'$field');
 		if(isset($data['name']))
 			$field->name = $data['name'];
-		
 //toPrint($field->value, '$field->value:'.$field->name, 0);
 //toPrint($field->checked, '$field->checked:'.$field->name, 0);
 		
-		$field->translateLabel = isset($data['translateLabel']) ? static::isTrue($data['translateLabel']) :  $field->translateLabel; 
-		$field->label = $field->translateLabel && $field->label ? JText::_($field->label) : $field->label;
+//toPrint($field->translateLabel,'translateLabel');
+		$field->translateLabel = isset($data['translateLabel']) ? static::isTrue($data['translateLabel']) :  $field->translateLabel;
+//toPrint($field->translateLabel,'translateLabel');
+//toPrint($field->label,'label');
+		
+		$field->label = (string)$Element['label'];
+		if($Element && $Element['translateLabel'] && static::isTrue($Element['translateLabel']) && $Element['label'] || !$Element || ! $Element['translateLabel'])
+			$field->label = JText::_($Element['label']);
+		
+//		if($field->name == 'placeholder')
+// echo "<pre>\$field 1231 "  .print_r(  $Element['translateLabel'] && $Element['label'] ,true)." </pre>";
+//
+//if($field->name == 'placeholder')
+// echo "<pre>\$field 1233 "  .print_r(  $Element && $Element['translateLabel'] && $Element['label'], true)." </pre>";
+
+//if($field->name == 'placeholder')
+// echo "<pre>\$field 1241 "  .print_r( $field->label,true)." </pre>"; 
 		
 		$field->translateDescription = isset($data['translateDescription']) ? static::isTrue($data['translateDescription']) :  $field->translateDescription; 
 		$field->description = $field->translateDescription && $field->description ? JText::_($field->description) : $field->description;
@@ -1073,31 +1305,20 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //		$field->translateDescription = isset($data['translateDescription']) ? static::isTrue($data['translateDescription']) :  $field->translateDescription; 
 //		$field->translateDescription = $data['translate_description'] ? static::isTrue($data['translate_description']) :  $field->translateDescription; 
         
-		$field->classes = explode(' ', $field->class);
-        $field->text = $field->label;
-        $field->for = $field->id; 
+//		if(! $data instanceof JFormField)
+//			$field->classes = explode(' ', $field->class);
+        
+		if($field instanceof JFormField)
+			$field->{'data-text'} = $field->label ?? '';
+		else
+			$field->text = $field->label ?? '';
+		
+//        $field->for = $field->id; 
         $alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $field->fieldname); 
         $field->hint = $field->translateHint ? JText::alt($field->hint, $alt) : $field->hint;
  
-//return null; 
-		
-//toPrint($Element);
-//toPrint($field);
-//return null;
-         
-		
-		
-//toPrint($field,'$data',0,'pre',true);
-//if($type=='radio')
-//toPrint($data['id'],'FIELD data-id',0,'pre');
-//toPrint((array)$data,'$data',0,'pre');
-//try {
-		
-        return $field;  
-            [ 'element','field','group','repeat','type','value','dataAttribute','dataAttributes','text','for','classes','classCell','classHeader','position',
-            'fieldname','sortable', ];
-            [ 'element','field','group','repeat',                                               'text','for','classes','classCell','classHeader','position',
-            'fieldname','sortable',  ];
+ 
+        return $field;
 	}
  
     
@@ -1128,41 +1349,32 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 */
 	public static function isTrue($var = ''):bool{
 //		return false == in_array($var, ['0', '', false, 'false', 'FALSE', ' ', 'off', null]);
-		return ($var === ''				|| $var === '0' || $var === 0 || $var === null || //|| $var === ' '	
-				$var === 'false'	|| $var === 'False' || $var === 'FALSE' || 
-				$var === 'off'		|| $var === 'Off'	|| $var === 'OFF'	||
-				$var === 'disabled'	|| $var === 'Disabled'|| $var === 'DISABLED'||
-				$var === 'disable'	|| $var === 'Disable'|| $var === 'DISABLE'||
-				$var === 'none'		|| $var === 'None'	|| $var === 'NONE'||
-				$var === 'no'		|| $var === 'No'	|| $var === 'NO'
-				) == false;
+		static $offs = [ // ' ',
+			FALSE, '', '0', 0,null, 
+			'false','False','FALSE','off','Off','OFF',
+			'disabled','Disabled','DISABLED','disable','Disable','DISABLE',
+			'none','None','NONE','no','No', 'NO'
+		];
+		return in_array($var, $offs, true) == false;
+//		return ($var === FALSE		|| $var === ''			|| $var === '0' || $var === 0 || $var === null || //|| $var === ' '	
+//				$var === 'false'	|| $var === 'False' || $var === 'FALSE' || 
+//				$var === 'off'		|| $var === 'Off'	|| $var === 'OFF'	||
+//				$var === 'disabled'	|| $var === 'Disabled'|| $var === 'DISABLED'||
+//				$var === 'disable'	|| $var === 'Disable'|| $var === 'DISABLE'||
+//				$var === 'none'		|| $var === 'None'	|| $var === 'NONE'||
+//				$var === 'no'		|| $var === 'No'	|| $var === 'NO'
+//				) == false;
 	}
 	
 	public static function getDefaultData($data = []){
-		      
-        $atributes = [
-            'autocomplete','autofocus','class','description','default','disabled',
-            'element','field','group','hidden','hint',
-            'id','label','labelclass','multiple','showon','rows',
-            'name','onchange','onclick','pattern','validationtext','readonly','repeat','required','size','spellcheck',
-            'type','validate', 'text','dataAttribute','dataAttributes', // 'value',
-            'text','for','classes','classCell','classHeader','position', 'parentclass',
-            'fieldname','translateLabel','translateDescription','translateHint', 'translateDefault',
-            'sortable', 'norender',
-            'creatable','movable','removable',
-            'style','styleHeader','styleCell', 
-			'input', 'options'
-//            'translate_label', 'translate_description', 'translate_default', 
-            ];
 		
-		
-        $d = (object)array_fill_keys($atributes, '');
+        $d = (object)array_fill_keys(array_merge(static::$attributes_default, static::$attributes_element), '');
 		
         $d->hidden = true;
         $d->norender = false;
         $d->translateLabel = true;
         $d->translateDescription = true;
-        $d->translateDefault = false; 
+        $d->translate_default = false; 
         $d->class = ' form-control form-control-sm  ';// form-select-sm   form-select 
         $d->type = 'text';
 		$d->rows = 1;
@@ -1172,33 +1384,37 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
         $d->options = [];
 		
 		
-		if($data && is_array($data)){
-			foreach ($atributes as $attr){
+		if(is_array($data)){
+			foreach (get_object_vars($d) as $attr => $val){
 				if(isset($data[$attr]))
 					$d->$attr = $data[$attr];
 			}
 			$data = $d;
-		}elseif($data && $data instanceof SimpleXMLElement){
-			foreach ($atributes as $attr){
+		}elseif($data instanceof SimpleXMLElement){
+			foreach (get_object_vars($d) as $attr => $val){
 				if(isset($data[$attr]))
 					$d->$attr = (string)$data[$attr];
 			}
 			$data = $d;
-		}elseif($data && is_object ($data)){
-			foreach ($atributes as $attr){
-				if(! isset($data->$attr))
+		}elseif(is_object ($data)){
+			foreach (static::$attributes_default as $attr){
+				if(isset($data->$attr))
 					$d->$attr = $data->$attr;
 			}
 		}else{
 			$data = $d;
 		}
+//JFactory::getApplication()->enqueueMessage(JText::printf('JLIB_DATABASE_QUERY_FAILED',$e->getCode()), 'error');
+			
 		
         if(empty($data->label))
             $data->label = $data->name;
 		
 		
 		$data->class .= ucwords($data->type)  == 'Radio' ? ' btn-group-sm ' : '';
-        $data->position = $data->name == 'alias' ? ' data-placement="bottom" ' : '';
+		
+		if(! $data instanceof JFormField)
+			$data->position = $data->name == 'alias' ? ' data-placement="bottom" ' : '';
 		
 		$data->translateLabel = static::isTrue($data->translateLabel);
 		$translate_label =  isset($data->translate_label) ? static::isTrue($data->translate_label): false;
@@ -1379,8 +1595,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 *
 	 * @since   3.2
 	 */
-	public function getValue()
-	{
+	public function getValue(){
 		return $this->value;
 	}
 	
@@ -1394,8 +1609,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 *
 	 * @since   3.2
 	 */
-	public function setValue($value)
-	{
+	public function setValue($value){
 		$value = (array)$value;
 		
 		if(is_string($value)){
@@ -1416,8 +1630,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 	 *
 	 * @since   1.7.0
 	 */
-	protected function getLabel()
-	{ 
+	protected function getLabel(){ 
 		
         return '';
         
@@ -1592,7 +1805,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 			
 
 			
-            if ($column->default && static::isTrue($column->translateDefault)){
+            if ($column->default && static::isTrue($column->translate_default)){
                 $lang = JFactory::getLanguage();
 
                 if ($lang->hasKey($column->default)){
@@ -1605,7 +1818,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
                 }
             }
            
-
+			
 			
 //            if(empty($column->name) && empty($column->element['name'])){
 //                $column->name = $column->type;
@@ -1632,16 +1845,20 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //				$column->fieldname = $column->name??'';
 //				$column->name  =$this->name.'['.$column->name.'][]';
                 $column->row   = '';
-				$column->rows = 1;
+				$column->{'data-row'}	= '';
+				$column->{'data-rows'}	= 1;
+//				$column->{'data-text'}	= '';
 //                $column->description='';
 				$column->label = $column->translateLabel ? JText::_($column->getLabel()): $column->getLabel();
+				$column->{'data-text'}	= $column->{'data-text'} ?? $column->label;
+				
 //				array_walk($param , function($val,$prop,$column){ 
 //					toPrint($val,$prop);
 //					$column->__set($prop,$val);
 //					$column->$prop = $val;
 //				},$column);
 				
-//echo "<pre>hidden:".print_r($field->hidden,true)." --- translateLabel:".print_r($field->translateLabel,true)." --- Label:".print_r(htmlspecialchars ($field->label),true).".</pre>"; //'123 '.
+//echo "<pre>hidden:".print_r($column->hidden,true)." --- translateLabel:".print_r($column->translateLabel,true)." --- Label:".print_r(htmlspecialchars ($field->label),true).".</pre>"; //'123 '.
 //echo "<pre>!"  .print_r( ($field->getLabel()),true).".</pre>"; //'123 '. htmlspecialchars (string)
 //JFactory::getApplication()->enqueueMessage($type);
 //toPrint($data->class,'$data->class',0,'pre',true);
@@ -1650,21 +1867,26 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($column->fieldname,'getLayoutColumns() $column->fieldname' ); 
 				
 			}else{
-				
+//echo "<pre>!"  .print_r( ($column->label),true).".</pre>"; //'123 '. htmlspecialchars (string)
 				$column->id = $this->id. '_'.$column->name. '_';
 				$column->fieldname = $column->name??'';
-				$column->label =  $column->translateLabel ? JText::_($column->label): $column->label;
+				$column->label =  $column->translateLabel ? JText::_($column->label) : $column->label;
 				$column->row = '+';
 				$column->rows = 1;
+//				$column->text	= '';
 //				$column->description = '';
 //				$column->name = $column->name;
 //				$column->name = $this->name.'['.$column->fieldname.'][]';
 				
+//if($column->name == 'placeholder')
+// echo "<pre>\$field 1846 "  .print_r( $column->label,true)." </pre>"; 
 				
 
 				$columnsField[$column->fieldname] = static::createField($column->element, $column->default, $column);
 				
-				
+				$columnsField[$column->fieldname]->{'data-countOptions'}= $column->countOptions ?? false;
+				$columnsField[$column->fieldname]->{'data-text'}		= $column->text ?? false;
+				$columnsField[$column->fieldname]->{'data-classHeader'}	= $column->classHeader ?? '';
 //toPrint($column->fieldname,'getLayoutColumns() $column->fieldname' ); 
 			}
 			
@@ -1673,9 +1895,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
             $columnsField[$column->fieldname]->name = $this->name.'['.$column->fieldname.'][]';
 			
 			
-			if(ucwords($columnsField[$column->fieldname]->type)== 'Radio' && $columnsField[$column->fieldname]->countOptions === false){
-				$columnsField[$column->fieldname]->countOptions = count($columnsField[$column->fieldname]->element->xpath('option'));
-				if($columnsField[$column->fieldname]->countOptions === 0){
+			if(ucwords($columnsField[$column->fieldname]->type)== 'Radio' && $columnsField[$column->fieldname]->{'data-countOptions'} === false){
+				$columnsField[$column->fieldname]->{'data-countOptions'} = count($columnsField[$column->fieldname]->element->xpath('option'));
+				if($columnsField[$column->fieldname]->{'data-countOptions'} === 0){
 					$columnsField[$column->fieldname]->name = "{$this->name}[{$column->fieldname}]";
 					$columnsField[$column->fieldname]->addOption(" &#10003; ",['value'=>'', 'xclass'=>'', 'class'=>'btn btn-outline-success fw-bold']);//'class'=>'btn btn-outline-success      btn-check  fa fa-check' &#10003; &#10004;
 // // ✓ ✓   &#10003; 🗸 &#128504;               ✔✔✔✓✔  &#10004; &#10003; &#128504; ✓   🗸 ⍻ √  class="form-check-input"
@@ -1784,6 +2006,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 				$column->default = $this->value[$column->fieldname] ?? '';
 //toPrint($this->name,'$column->default:'.$column->default,0,'pre');
 			}
+//if(ucwords($column->type)== 'Radio')
+//toPrint($column,'$column',0,'pre');
             if(ucwords($column->type)== 'Radio' && $column->countOptions === 0 
 			&& isset($this->value[$column->fieldname]) && is_array($this->value[$column->fieldname])){
 				$column->default = array_search(true, $this->value[$column->fieldname],false) ?? '';
@@ -1809,20 +2033,20 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($key,'$key',0,'message');
 //toPrint($column->fieldname,'$column->fieldname',0,'message');
 				if(isset($this->value[$column->fieldname][$key])) {
-					$value = $column->translateDefault ? JText::_($this->value[$column->fieldname][$key]) : $this->value[$column->fieldname][$key];
+					$value = $column->translate_default ? JText::_($this->value[$column->fieldname][$key]) : $this->value[$column->fieldname][$key];
 //toPrint($value,'$value',0,'message');
 				}
 //				elseif(isset($this->value[$column->fieldname]) && is_scalar($this->value[$column->fieldname]))
 //					$value = $this->value[$column->fieldname];
                 elseif(isset($defaults[$column->fieldname][$key]))
-					$value = $column->translateDefault ? JText::_($defaults[$column->fieldname][$key]) : $defaults[$column->fieldname][$key];
+					$value = $column->translate_default ? JText::_($defaults[$column->fieldname][$key]) : $defaults[$column->fieldname][$key];
 //				elseif(isset($defaults[$column->fieldname]) && is_scalar($defaults[$column->fieldname]))
 //					$value = $defaults[$column->fieldname];
 				else
-					$value = $column->translateDefault ? JText::_((string)$column->default) : (string)$column->default;
+					$value = $column->translate_default ? JText::_((string)$column->default) : (string)$column->default;
 					
 //toPrint($this->value[$column->fieldname][$key],' $value',0, $column->fieldname == 'select' );
-//toPrint($column->translateDefault,' translateDefault',0, $column->fieldname == 'select' );
+//toPrint($column->translate_default,' translate_default',0, $column->fieldname == 'select' );
 				
 				 if(empty($value) && $column->format && isset($options[$key]))
 					 $value = JText::printf($column->format, ...get_object_vars($options[$key]));
@@ -1882,7 +2106,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($value,'$val',0,'pre');
 					$param ['name'] = "{$this->name}[{$column->fieldname}]"; 
 					$param ['fieldname'] = $column->fieldname;
-					$param ['countOptions'] = $column->countOptions;
+					$param ['countOptions'] = $column->{'data-countOptions'};
 						$param['value'] = $value;
 						$param['default'] = $value;  
 						
@@ -1955,6 +2179,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 				
 //toPrint($field,"\$field - $column->fieldname",0,'pre');	
                 $field->id = $this->id. '_'.$key. '_'.$column->fieldname;
+				$field->{'data-text'} = '';
                 $fields[$key][$column->fieldname] = $field;
 
 //toPrint($field->fieldname,'value.'.$key,0,'pre'); 
@@ -2018,9 +2243,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //                $column->translateLabel = true;
 //                $column->translateDescription = true;
 //                $column->translateDescription = true;
-//                $column->translateDefault = false;
+//                $column->translate_default = false;
 //                $value = $column->velue ?: $column->default;
-//                $value = empty($column->value) && $column->default && $column->translateDefault ? JText::_($column->default) : $column->default;
+//                $value = empty($column->value) && $column->default && $column->translate_default ? JText::_($column->default) : $column->default;
 //                $fields[$i][$column->name] = $column;
                 continue;
             }
@@ -2084,43 +2309,44 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
         if(true){
 //            $columnIndex = static::createField(null); 
 			$columnIndex = static::getDefaultData();
-            $columnIndex->hidden      = false;
-            $columnIndex->norender = TRUE;
-            $columnIndex->translateLabel = false;
-            $columnIndex->label      = '#';
-            $columnIndex->text      = '#';
-            $columnIndex->default    = '::';
-            $columnIndex->type       = 'index';
-            $columnIndex->fieldname  = 'i';
-            $columnIndex->name       = 'i';
-            $columnIndex->id         = $this->id.'_'.'i'; 
-            $columnIndex->classHeader= 'index ';
-            $columnIndex->classCell  = 'index '.$this->movableClass;
-            $columnIndex->class	 = ' draggable ';
-            $columnIndex->html       = '';
-            $columnIndex->input       = '';
-            $columnIndex->movable    = $this->movable;
+            $columnIndex->hidden		= false;
+            $columnIndex->norender		= TRUE;
+            $columnIndex->translateLabel= false;
+            $columnIndex->label			= '#';
+            $columnIndex->text			= '#';
+            $columnIndex->default		= '::';
+            $columnIndex->type			= 'index';
+            $columnIndex->fieldname		= 'i';
+            $columnIndex->name			= 'i';
+            $columnIndex->id			= $this->id.'_'.'i'; 
+			$columnIndex->classHeader	= 'index ';
+            $columnIndex->classCell		= 'index '.$this->movableClass;
+            $columnIndex->class			= ' draggable ';
+            $columnIndex->html			= '';
+            $columnIndex->input			= '';
+            $columnIndex->movable		= $this->movable;
         }
         if($this->creatable || $this->removable){
 //            $columnRemove = static::createField(null);
 			$columnRemove = static::getDefaultData();
-            $columnRemove->norender = TRUE;
+            $columnRemove->norender		= TRUE;
             $columnRemove->translateLabel = false;
-            $columnRemove->hidden      = false;
-            $columnRemove->label      = '+';
-            $columnRemove->text      = '+';
-            $columnRemove->default    = 'X';
-            $columnRemove->type       = 'new_del';
-            $columnRemove->fieldname  = 'new_del';
-            $columnRemove->name       = 'new_del';
-            $columnRemove->id         = $this->id.'_'.'new_del';
-            $columnRemove->classHeader= 'new_del '.$this->creatableClass;
-            $columnRemove->classCell  = 'new_del '.$this->removableClass;
-            $columnRemove->class  = $this->buttonClass ?: ' btn-sm ';
-            $columnRemove->html       = '';
-            $columnRemove->input       = '';
-            $columnRemove->creatable  = $this->creatable;
-            $columnRemove->removable  = $this->removable;
+            $columnRemove->hidden		= false;
+            $columnRemove->label		= '+';
+            $columnRemove->text			= '+';
+            $columnRemove->default		= 'X';
+            $columnRemove->type			= 'new_del';
+            $columnRemove->fieldname	= 'new_del';
+            $columnRemove->name			= 'new_del';
+            $columnRemove->id			= $this->id.'_'.'new_del';
+            $columnRemove->{'data-classHeader'}	= 'new_del '.$this->creatableClass;
+            $columnRemove->classHeader	= 'new_del '.$this->creatableClass;
+            $columnRemove->classCell	= 'new_del '.$this->removableClass;
+            $columnRemove->class		= $this->buttonClass ?: ' btn-sm ';
+            $columnRemove->html			= '';
+            $columnRemove->input		= '';
+            $columnRemove->creatable	= $this->creatable;
+            $columnRemove->removable	= $this->removable;
         }
         
         
@@ -2161,6 +2387,8 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //unset($data['columns']['account']);
 //unset($data['columns']['display']);
 //unset($data['columns']['select']);
+		
+		$cells = [];
 
         foreach ($data['columns'] as $name => $col){
 			
@@ -2204,15 +2432,15 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //if($temp_delete)
 //try {
 
-				$col->text = $col->getLabel();
+				$col->{'data-text'} = $col->getLabel();
 				$col->hidden = true;
-				if(ucfirst($col->type) == 'Radio' && $col->countOptions == 0){
+				if(in_array(ucfirst($col->type), ['Checked','Checkboxes'])  && $col->{'data-countOptions'} == 0){
 //					$col->default = false;
 					$col->checked = false;
 					$col->value = true;
 //					toPrint($col->default);
 				}
-				$col->html = $col->renderField(['hidden'=>true,'hiddenLabel' => true, 'hiddenDescription' => true, 'id' => $col->id]); // renderField(); $value
+				$cells[$name] = $col->renderField(['hidden'=>true,'hiddenLabel' => true, 'hiddenDescription' => true, 'id' => $col->id]); // renderField(); $value
 //} catch (Exception $exc) {
 //toPrint($col->checked);
 //toPrint($exc->getTraceAsString());
@@ -2222,6 +2450,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
             $col->id    = $this->id.'_'.$col->name.'_';
         }
 //return;
+		$data['cells'] = $cells;
         
         $data['columns'] = array_merge([], ['i'=>$columnIndex],$data['columns']);
         
@@ -2233,13 +2462,15 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
         $_i = 0;
          
 		
+		$fields = [];
+		
 //unset($data['fields']['select']);
 		
         foreach ($data['fields'] as $i => $row) {
 			
 //toPrint(array_keys($row),'$fields $row');  
 			
-            foreach ($row as $field) {
+            foreach ($row as $col => $field) {
                 
 //				if(isset($data['columns'][$field->fieldname]))
 //					$field->class = $data['columns'][$field->fieldname]->class;
@@ -2255,7 +2486,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($field->countOptions, $field->fieldname.'.'.$i);
 			  }
 //toPrint($field); continue;
-				if(ucwords($field->type)== 'Radio' && $field->countOptions === 0){// in_array($field->countOptions, [false, 1])   [2, 3,4,5,6,7]
+				if(ucwords($field->type)== 'Radio' && $field->{'data-countOptions'} === 0){// in_array($field->countOptions, [false, 1])   [2, 3,4,5,6,7]
 
 //						$field->countOptions
 						$field->checked = $field->default == $i;
@@ -2287,7 +2518,7 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 					$field->html = JLayoutHelper::render($field->layout, $dataField, $field->layoutPath);//, $basePath,$options
 				}
 				else
-					$field->html = $field->renderField(['inlineHelp' => true, 'hidden' => true,'hiddenLabel' => true,'hiddenDescription'=>true,'id'=>$field->id]); // renderField(); $value    ,'id'=>$field->id.'_'.$i
+				$fields[$i][$col] =	$field->renderField(['inlineHelp' => true, 'hidden' => true,'hiddenLabel' => true,'hiddenDescription'=>true,'id'=>$field->id]); // renderField(); $value    ,'id'=>$field->id.'_'.$i
 //				$field->html = $field->renderField(['hiddenLabel' => true,'hiddenDescription'=>true,'id'=>$field->id]); // renderField(); $value    ,'id'=>$field->id.'_'.$i
                 
 //if($field->type=='Radio')
@@ -2300,6 +2531,9 @@ class JFormFieldGridFields extends JFormFieldSql  {//JFormField  //JFormFieldLis
 //toPrint($field->html,'$field->html',0,'pre');
             }
         }
+		
+		$data['fields'] = $fields;
+		
 		$data['error'] = $this->error;
 		
 //toPrint($data['fields'],'$fields',0,'pre');

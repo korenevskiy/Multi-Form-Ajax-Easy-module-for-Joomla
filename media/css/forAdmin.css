@@ -6,8 +6,9 @@
 }
 
 .poryadok{width: 30px;}
-.table-striped tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th {
-    background-color: #ffffff;
+.table-striped tbody > tr:nth-child(even) > td, 
+.table-striped tbody > tr:nth-child(even) > th {
+    /*background-color: #ffffff;*/
 }
 #jform_params_list_fields_table{
 
@@ -101,3 +102,61 @@
 .icon_multiform-hidden:before{background: url("../img/icon-field/hidden.png") center center no-repeat transparent;}
 .icon_multiform-startblock:before{background: url("../img/icon-field/startblock.png") center center no-repeat transparent;}
 .icon_multiform-finishblock:before{background: url("../img/icon-field/finishblock.png") center center no-repeat transparent;}
+
+
+
+.name_option_params .modal-dialog.modal-content{
+	display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:'label fld';
+}
+.name_option_params .modal-dialog.modal-content title{
+	display: block;
+}
+.name_option_params .modal-dialog.modal-content .control-group{
+	display: grid;
+	grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  grid-template-rows: auto auto;
+  grid-template-areas:'label fld' 'desc desc';
+}
+
+.name_option_params .modal-dialog.modal-content .control-group > div{
+	display: block;
+	grid-column: 1 / -1;
+}
+.name_option_params .modal-dialog.modal-content .control-group > .control-label{
+	grid-column: 1;
+	grid-area: label;
+}
+.name_option_params .modal-dialog.modal-content .control-group > .controls{
+	grid-column: 2;
+	display: grid;
+	
+	grid-column: 1 / -1;
+	grid-row: 1 / -1;
+	/*grid-area: f;*/
+	grid-template-columns: subgrid;
+}
+.name_option_params .modal-dialog.modal-content .control-group.field-spacer > :is(.control-label,.controls){
+	display: block;
+	grid-column: 1 / -1;
+}
+
+.name_option_params .modal-dialog.modal-content .control-group > .controls > :is(select,input,fieldset,textarea){
+	grid-column: 2;
+}
+.name_option_params .modal-dialog.modal-content .control-group > .controls > div{
+	grid-column: 1 / -1;
+}
+.gridFields .form-control.sort {
+	width: 60px;
+}
+.gridFields th.name_option_params {
+	width: 60px;
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+.gridFields th.center,.gridFields td.center {
+	text-align: center;
+}

@@ -20,7 +20,9 @@ use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 JHtml::_('jquery.framework'); 
 JHtml::_('bootstrap.framework');
 //JHtml::_('bootstrap.loadCss', true);
+require_once JPATH_ROOT . '/modules/mod_multi_form/helper.php';
 
+modMultiFormHelper::constructor();
 //        echo "<pre>";
 //        echo 'checkGet:'.print_r(JSession::checkToken('get'), true).'+<br>';
 //        echo 'checkPost:'.print_r(JSession::checkToken('post'), true).'+<br>';
@@ -61,6 +63,8 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
 	 */
 	public function getInput()
 	{
+//        $this->id = JFactory::getApplication()->input->getInt('id',0); 
+		
         $this->id = $this->form->getValue('id',null,0); 
         
         $sql = "SELECT menuid FROM `#__modules_menu` WHERE `moduleid` =$this->id; ";
@@ -77,48 +81,56 @@ class JFormFieldTest extends \Joomla\CMS\Form\FormField // /libraries/src/Form/F
         }
         
         
+//		$user = JFactory::getApplication()->getIdentity();
+		
+		$token = modMultiFormHelper::checkToken();
+		
         
         $html = '';
 		
+//		$user = JFactory::getUser();
+		
+//		echo "<b>:";
+//		echo 'user: '.$user->get('id');
+//		echo "<br>";
+//		echo 'sess->getToken() '.$session->getToken();
+//		echo "<br>";
+//		echo 'sess::getFormToken() '.$session::getFormToken();
+//		echo "<br>post ";
+//		echo $session::checkToken('post')? 'true':'false';
+//		echo "<br> get ";
+//		echo JSession::checkToken('get')? 'true':'false';
+		$session = JFactory::getApplication()->getSession();
+		
         $config	= JFactory::getConfig()->toObject(); 
-        $key = $this->id ? ('&key='.md5($config->secret.$this->id)) : '' ;
+//        $key = $this->id ? ('&key='.md5($config->secret.$this->id.$session->getToken())) : '' ;
+        $key = $this->id ? "&key=$this->value" : '' ;
         
-        $input = JFactory::getApplication()->input;//->getArray();
+//        $input = JFactory::getApplication()->input;//->getArray();
         
-        $hash = crypt ($config->secret, substr($config->dbprefix,0,2));
-        $hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
+//		$id = $input->getInt('id', 0);
+//		if(empty($id)) 
+//			return false;
+//		$hash = crypt ($config->secret.$user->id.$id, substr($config->dbprefix,0,2));
+//        $hash = str_replace(['.','"','=','/'], '_', $hash); //'.','"','$','=','/'
+		
         
-        $isToken = $input->get($hash, false);
+//        $isToken = $input->get($hash, false);
         //$isToken = in_array($word, $full_string);
         
-        $token = $isToken ? JSession::getFormToken() : JSession::getFormToken(TRUE);
+//        $token = $isToken ? JSession::getFormToken() : JSession::getFormToken(TRUE);
+		
+//		$hash = modMultiFormHelper::checkToken();
         
-        $urlToken = JUri::root(). "?option=com_ajax&module=multi_form&format=raw&method=getToken&$hash=$this->id";
+//        $urlToken = JUri::root(). "?{$key}&option=com_ajax&module=multi_form&format=raw&method=getToken&$hash=$this->id";
         
-        $root = JUri::root();
+//        $root = JUri::root();
         
         //$urlForm = JUri::root(). "/?option=com_ajax&module=multi_form&format=raw&method=getForm&id=$this->id&$hash=1&show=1&Itemid=0";
+		
        
-        $html .= "<script>       
-const script$this->id  = function(){       
-	const request$this->id = new XMLHttpRequest();       
-	const url$this->id = '$urlToken';       
-	request$this->id.open('GET', url$this->id);       
-	request$this->id.setRequestHeader('Content-Type', 'application/x-www-form-url');       
-	request$this->id.addEventListener('readystatechange', () => {
-		if (request$this->id.readyState === 4 && request$this->id.status === 200) {       
-			const ulrForm$this->id = '$root?option=com_ajax&module=multi_form&format=raw&method=getForm&show=1&id=$this->id$itemids&'+ request$this->id.responseText + '=1$key';
-//			console.log('urlResponse', request$this->id.responseText );
-//			console.log('ulrForm', ulrForm$this->id);
-			document.getElementById('mod_test_$this->id').href = ulrForm$this->id;
-		}
-	});  
-	request$this->id.send();       
-}      
-document.addEventListener('DOMContentLoaded', script$this->id);       
-</script>";
-        
-                
+   
+			
 
         
 //        echo "<pre>";
@@ -139,8 +151,7 @@ document.addEventListener('DOMContentLoaded', script$this->id);
 		else
 			$type = 'a';
         
-        $this->id;
-            
+        
 
 		$class   = $this->element['class'] ? (string) $this->element['class'] : ' btn-medium button-apply btn-success';
 		$icon    = $this->element['icon'] ? (string) $this->element['icon'] : ''; 
@@ -151,27 +162,47 @@ document.addEventListener('DOMContentLoaded', script$this->id);
 		if($icon){
 			$icon = "<span class='icon-$icon'></span>";
 		}
-        $url = "";
-        //$url .= JUri::root()."?option=com_ajax&module=multi_form&format=raw&method=getForm$key&id=$this->id&".JSession::getFormToken().'=1&show=1'.$itemids;
-        $href = $this->id ? "href='$url'" : '' ;
         $message = $this->id ?'': " onclick=\"alert('".JText::_('MOD_MULTI_FORM_TEST_MODULE_MESSAGE')."')\"";
                 
         $text = (string)$this->element['text'] ?: 'MOD_MULTI_FORM_TEST_MODULE_TEXT';
         $text = $this->id ? JText::sprintf($text,$this->id) : $this->default;
-        $this->value = htmlspecialchars($text, ENT_COMPAT, 'UTF-8') ;
+        $text = htmlspecialchars($text, ENT_COMPAT, 'UTF-8') ;
                 
                 $style=' style="min-width: 220px; box-sizing: border-box;" ';
                 
-                $this->disabled = $this->id? '':' disabled ';
-                $this->readonly = $this->id? '':' readonly '; 
- 
-            if($type == 'a'){
-                return "<a $title $href id='mod_test_$this->id' target='_blank' class='btn $class' $this->disabled $this->readonly $style $message>$icon $text</a>$html";
-            }
+		$this->disabled = $this->id && $this->value? '':' disabled ';
+		$this->readonly = $this->id && $this->value? '':' readonly ';
+		$url = '#';
+		if($this->id && $this->value)
+			$url = JUri::root()."?option=com_ajax&module=multi_form&format=raw&method=getForm&$this->fieldname=$this->value&show=1&id=$this->id&$itemids";
+//		$url .= JUri::root()."?option=com_ajax&module=multi_form&format=raw&method=getForm$key&id=$this->id&".JSession::getFormToken().'=1&show=1'.$itemids;
+        
+		
+		$name = $this->name ?: "hash_gen";
+		$html = "<input type=hidden id=fldTestForm$this->id name=$name> ".($this->id && $this->value? '': JText::_('Please save module for active.'));
+
+		$html .= "<script>
+document.getElementById('fldTestForm$this->id').value=Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2);
+</script>
+<style>
+ a.disabled{
+	pointer-events: none !important;
+	cursor: default;
+	background-color: transparent !important;
+	opacity: 0.3;
+}
+</style>
+";
+		
+		$len = strlen($this->value);
+			
+        if($type == 'a'){
+			return "<a  len=$len $title href='$url' id='btnOpenTestForm$this->id' target='_blank' class='btn $class $this->disabled' $this->disabled $this->readonly $style $message>$icon $text</a>$html";
+		}
             
-                
-            $formaction = $this->id ? "formaction='$url'" : '' ;
-            return "<$type id='mod_test_$this->id' class='btn $class'   $title $message $formaction formmethod='GET' formtarget='_blank'>$icon $this->value </$type>" ;
+			
+		$formaction = $this->id ? " formaction='$url' " : '' ;
+		return "<$type id='btnOpenTestForm$this->id' class='btn $class' $this->disabled $this->readonly   $title $message $formaction formmethod='GET' formtarget='_blank'>$icon $text</$type>$html" ;
 	 
 	}	
         /**

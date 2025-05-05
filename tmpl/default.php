@@ -33,7 +33,9 @@ if(empty($fields)){
     return;
 }
 
-
+        $input = JFactory::getApplication()->getInput();
+//		$input = new Joomla\Input\Input;
+		$show = $input->getCmd('show',false);
 
 //$wa = new \Joomla\CMS\WebAsset\WebAssetManager;
 $wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
@@ -64,11 +66,16 @@ $ariaDescribe = $param->textbeforeformShow && ($param->textbeforeform1 || $param
         " aria-describedby='mfDescribe_$module->id'" : ' ';
 
 $method = $fields_test ? ' method="post"  enctype="multipart/form-data" ' : '';
-$show_debug_modal = $param->debug == 'debug' ? 'display:block; opacity: 0.8;' : ' '; //top: -50%;
+$show_debug_modal = in_array($param->debug, ['top']) ? 'display:block; opacity: 0.8;' : ''; //top: -50%;
 //echo "<div id='mfOverlay_overlay-$module->id' data-id='$module->id' class='modal fade mfOverlay__overlay overlay_$module->id' aria-labelledby='$module->title'  role='dialog' tabindex='-1'  aria-hidden='true'>";//подложка
 
+//echo "<pre>69\n". print_r($param, true). "</pre><br>\n\n";
+//echo $param->layout ?? 'default';
+//echo $param->layout ?? 'default';
 
-echo "<$tag_form id='mfForm_$module->id' "
+$showTest = $show || in_array($param->debug, ['top']) ? ' open ' : '';
+
+echo "<$tag_form id='mfForm_$module->id' aria-labelledby='mfHeader_$module->id' $showTest "
 		. " class='mfForm_{$class_form} $param->style_width -modal-dialog {$class_form}_$module->id id$module->id $param->classdialog $param->style style_$style' "
         . " $attribute_form  aria-labeledby='mfHeader_$module->id' $ariaDescribe "
         . " style='$show_debug_modal' data-moduleid='$module->id' data-id='$module->id' >";//само окно    data-sending='$param->textwhensending'
@@ -94,22 +101,19 @@ if($param->popup ){
 
 $action = JUri::root();
 //$param->test;
-        $input = JFactory::getApplication()->getInput();
-		$input = new Joomla\Input\Input;
-		$show = $input->getCmd('show',false);
 if($show)
 	$action = $_SERVER["REQUEST_URI"].'&method=';
-		
+	
 
 if($param->textbeforeformShow && ($param->textbeforeform1 || $param->textbeforeform2 )){
     $param->textbeforeform1 = modMultiFormHelper::getArticles($param->textbeforeform1);
     echo "<div class='mfBeforeForm id$module->id' id='mfDescribe_$module->id'>$param->textbeforeform1 $param->textbeforeform2</div>";
     //echo "<div class='mfBeforeText'>$textbeforeform1".str_replace(array("\r\n", "\r", "\n"), '',  $textbeforeform2)."</div>";
 }
- 
 
-echo "<form class='mfStatusForm  $param->labelOut $param->fields_width {$class_form}-body id$module->id  mf' action='$action' $method id='mfForm_form_$module->id' data-id='$module->id'>";
 
+echo "<form name='mfForm_$module->id' class='mfPanelForm  $param->labelOut $param->fields_width {$class_form}-body id$module->id  mf' action='$action' $method id='mfForm_form_$module->id' data-id='$module->id'>";
+echo "<output></output>";
  
 foreach($fields as $field){
     echo $field['dataField'];
@@ -179,8 +183,9 @@ if($captcha_type){
 
 echo  "</form>";
 
-echo  "<div class='mfStatusError {$class_form}-body id$module->id ' style='display: none;'></div>";
-echo  "<div class='mfStatusDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
+echo  "<div class='mfPanelFrame {$class_form}-body id$module->id ' style='display: none;'></div>"; 
+echo  "<div class='mfPanelError {$class_form}-body id$module->id ' style='display: none;'>".JText::_('Error, not connection')."</div>";
+echo  "<div class='mfPanelDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
  
 echo  "<div class='mfFieldGroup {$class_form}-footer id$module->id '>  "
     . "<div id='dynamic_captcha_$module->id' class='-form-control $captcha_class' {$captcha_attr}  style='transform: scale(0.8);'></div>"
@@ -197,8 +202,8 @@ if($param->popup ){
 
 echo '</div>';
 
-//echo  "<div class='mfStatusError {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>";
-//echo  "<div class='mfStatusDone {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>"; 
+//echo  "<div class='mfPanelError {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>";
+//echo  "<div class='mfPanelDone {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>"; 
 
 //-----------------------------------------------------------
 if($param->captcha && $captcha_type ){ 

@@ -77,7 +77,7 @@ if($param->popup ){
 $action = $module->deb ? " action='index.php?option=com_ajax&module=multi_form&format=raw&id=$module->id&deb=$module->deb' " : '';
 
 
-echo "<form class='mfStatusForm {$class_form}-body id$module->id  mf' $method $action id='mfForm_form_$module->id' data-id='$module->id'> ";
+echo "<form class='mfPanelForm {$class_form}-body id$module->id  mf' $method $action id='mfForm_form_$module->id' data-id='$module->id'> ";
 
 
 
@@ -92,8 +92,8 @@ foreach($fields as $field){
 } 
 echo  "</form>";
 
-echo  "<div class='mfStatusError {$class_form}-body id$module->id ' style='display: none;'></div>";
-echo  "<div class='mfStatusDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
+echo  "<div class='mfPanelError {$class_form}-body id$module->id ' style='display: none;'></div>";
+echo  "<div class='mfPanelDone {$class_form}-body id$module->id ' style='display: none;'></div>"; 
  
 echo  "<div class='mfFieldGroup {$class_form}-footer id$module->id '>  "
     . " <input type='submit' form='mfForm_form_$module->id' value='$param->textsubmit' id='submit_$module->id' class=' $param->classbuttonsubmit  submit form-control' data-ready='$param->textsubmit' data-sending='$param->textwhensending'/>"
@@ -101,8 +101,8 @@ echo  "<div class='mfFieldGroup {$class_form}-footer id$module->id '>  "
 
 echo '</div>';
 
-//echo  "<div class='mfStatusError {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>";
-//echo  "<div class='mfStatusDone {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>"; 
+//echo  "<div class='mfPanelError {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>";
+//echo  "<div class='mfPanelDone {$class_form}-content id$module->id' style='display: none;'><div class='{$class_form}-body id$module->id '></div></div>"; 
 
 
 

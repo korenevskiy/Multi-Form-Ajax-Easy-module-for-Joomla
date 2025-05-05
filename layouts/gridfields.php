@@ -8,15 +8,15 @@
  * @package		GridFields
  * @license		GPL   GNU General Public License version 2 or later;
  * @creationDate	2022-03-25
- * @modifed			2022-06-22
- * @introduced		2022-06-22
+ * @modifed			2025-04-22
+ * @introduced		2025-04-22
  * @created
  * @package     joomla fields
  * @subpackage  GridFields
- * @version  4
+ * @version  5
  * Websites: http://explorer-office.ru/download/
  * Technical Support:  Forum - http://vk.com/korenevskiys
- */ 
+ */
 
 
 //return;
@@ -204,6 +204,9 @@ $count_rows = count($fields);
 //toPrint($columns,'$columns',0,'pre');
 //toPrint($data['columns'],'Fields',0,'pre');
 
+//if($column->name == 'option_params')
+// echo "<pre>\$columns 1836 "  .print_r($columns,true)." </pre>"; 
+
 echo "<div class='table-responsive' $class $attr_desc $style>";
 echo "<table id='{$id}_field' data-name='$name' "
 . " class='gridFields table -table-light table-responsive table-bordered table-striped table-hover table-sm  caption-top' xstyle='border: 1px solid gray; border-radius: 10px; min-width: 20px; min-height: 20px;'>";
@@ -223,7 +226,7 @@ foreach ($columns as $col){
 	$col->description = $col->description ? addslashes($col->description) : '';
     $description = $col->description? 
 			"  data-original-title='$col->label' data-content='$col->description' data-bs-content='<b>$col->text </b><br>$col->description'  data-toggle='tooltip' data-bs-toggle='tooltip'  data-bs-html='true' data-bs-placement='bottom' data-placement='bottom'  data-html='true' ":"";
-    $col->classHeader .= $col->description? 'hasPopover':'';
+	$classHeader = $col->classHeader . ($col->description? ' hasPopover':'');
 //	$translateLabel = $col->translateLabel;
 //toPrint(get_class($col),'get_class($col)');
 //continue;
@@ -231,11 +234,11 @@ foreach ($columns as $col){
     $col->label = $col->translateLabel ? JText::_($col->label):$col->label;
     
     if(in_array($col->type, ['index'])){
-        $col->classHeader .= 'text-center  w-1 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered';  
+        $classHeader .= 'text-center  w-1 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered';  
     }
     if(in_array($col->type, ['new_del'])){
-        $col->classHeader .= ' green text-center    w-10 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered'; 
-        $col->text = "<button type='button' class='btn btn-success  $col->class '  aria-label='".JText::_('JADD')."'  aria-hidden='true' title='".JText::_('JADD')."' "
+        $classHeader .= ' green text-center    w-10 -d-none d-md-table-cell   -d-flex align-items-center align-self-center justify-content-center align-items-center -row row-conformity row-centered'; 
+        $col->label = "<button type='button' class='btn btn-success  $col->class '  aria-label='".JText::_('JADD')."'  aria-hidden='true' title='".JText::_('JADD')."' "
                 . " onclick=\"tblRowNew(this,'.gridFields')\" "
                 . "><i class='bi bi-plus -icon-save-new {$fontIcon}plus-2 large-icon {$fontIcon} {$fontIcon}-lg fas {$fontIcon}-plus  {$fontIcon}-fw'></i></button>";
     }
@@ -247,9 +250,9 @@ foreach ($columns as $col){
 	
 	$col->description && $col->description =  " -\n".$col->description;
 	
-    echo "<th class='head _$col->type $col->labelclass  $col->classHeader name_$col->fieldname' scope='col' "
-            . " data-field='{$name}[{$col->name}][]' data-name='$col->name' id='{$name}[{$col->name}]'  "
-        . "title='$col->description'  $description $style><strong  >$col->text </strong></th>";
+    echo "<th class='head _$col->type $col->labelclass  $classHeader name_$col->fieldname' scope='col' "
+            . "  data-field='$col->name' data-name='$col->fieldname' id='id_{$col->fieldname}_title'  " // data-field='{$name}[{$col->fieldname}][]'
+		. "title='$col->description'  $description $style><strong  >".$col->label." </strong></th>";
 }
 
 
@@ -334,7 +337,7 @@ foreach ($fields as $i => $row){
 //toPrint($col->fieldname,'$fields',0,'pre');
         $html ="";
         if(isset($row[$col->fieldname])){
-            $html .= $row[$col->fieldname]->html;
+            $html .= $row[$col->fieldname];
         }
         else{
             $html .= $col->html;
@@ -349,7 +352,8 @@ foreach ($fields as $i => $row){
 		
 		if($col->type == 'Hidden')
 			$col->classCell .= ' collapse ';
-		
+//if($col->fieldname =="sort_mail")
+//toPrint($col,'$col',0,'pre');
         echo "<td class='$col->classCell name_$col->fieldname $col->type $col->parentclass' $style $attribute>";
         echo " $html"; // {$row[$col->fieldname]->value}
         echo "</td>";
@@ -402,7 +406,8 @@ foreach ($columns as $col){
 			$col->classCell .= ' collapse ';
 		
         echo "<td class='cell $col->classCell name_$col->fieldname' $attribute>"; //$col->parentclass
-        echo "$col->html";
+        echo $cells[$col->fieldname];
+//		echo "$col->html";
         echo "</td>";
 }
 echo "</tr>"; 
@@ -612,9 +617,9 @@ function tblRowNew(el, selector){
   let tbl = tblRow(el,selector);
 //  let tmp = tbl.querySelector('.template.hide');
   let tmp = tbl.querySelector('template').content.querySelector('.table_row');
-  let new_tmp = tmp.cloneNode(true);
   let i = parseInt(tmp.dataset.i);
   tmp.dataset.i = 1 + i;
+  let new_tmp = tmp.cloneNode(true);
 //  console.log(Object.entries(tmp),tmp.content,tmp,tmp.dataset);
   tbl.querySelector('tbody').appendChild( new_tmp );
   delete new_tmp.dataset.i;
@@ -625,7 +630,7 @@ function tblRowNew(el, selector){
 //      inpt.id += i;
 //  console.log(inpt.id);
 //  }
-  new_tmp.querySelectorAll('input, textarea, select, button').forEach((inpt) => inpt.id += i);
+  new_tmp.querySelectorAll('input, textarea, select, button, dialog').forEach((inpt) => inpt.id += i);
   new_tmp.querySelectorAll('label').forEach((lbl) => lbl.setAttribute('for',lbl.getAttribute('for')+i));
 //  let tmp_new = tmp_old.querySelector('.template.hide');//content.
 //  let labels = document.querySelectorAll('.gridFields .btn-group label');
@@ -769,6 +774,9 @@ window.addEventListener('load', function() {
         cursor: move;
         position: relative;
 		overflow-y: hidden;
+    }
+    .gridFields td select{
+        font-family: inherit;
     }
     .gridFields th i{ /*.move*/
         /*content: "::";*/

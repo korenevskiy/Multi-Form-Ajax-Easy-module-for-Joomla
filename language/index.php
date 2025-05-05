@@ -11,10 +11,10 @@
  * Technical Support:  Forum - //vk.com/placebilet
  * -------------------------------------------------------------------------
  **/ 
-defined('_JEXEC') or die;
-return;
+//defined('_JEXEC') or die;
+//return;
 
-
+sleep(3);
 
 if(! class_exists('\Joomla\CMS\Factory')){
 	$files = &HelperMinification::languageMinificationRaw();
@@ -66,6 +66,9 @@ class HelperMinification{
 
 		$dir .= '/language/*';
 		
+		$language = realpath(__DIR__ . "/../../../language/");
+//		echo "$language <br>";
+		
 //		$files = Joomla\Filesystem\Folder::files($dir, "raw.ini", true, true);
 		
 //		$dirs = scandir($dir,  SCANDIR_SORT_NONE);
@@ -73,6 +76,7 @@ class HelperMinification{
 //		$dirs = array_filter(glob('*'), 'is_dir');
 		
 		$files = [];
+		$length = 0;
 		
 		foreach (array_filter(glob($dir), 'is_dir') as &$dir){
 			foreach (glob($dir.'/*.raw.ini') as $file){
@@ -81,9 +85,9 @@ class HelperMinification{
 				$text = str_replace("\n[", "[{<!>}][", $text);			//	\n[		-
 				$text = str_replace("]\n", "][{<!>}]", $text);			//	]\n		-
 				$text = str_replace("]\r", "][{<!>}]", $text);			//	]\r		-
-				$text = str_replace("\";\r\n", "\";[{<!>}]", $text);	//	";\r\n	-
-				$text = str_replace("\";\n", "\";[{<!>}]", $text);		//	";\n	-
-				$text = str_replace("\";\r", "\";[{<!>}]", $text);		//	";\r	-
+				$text = str_replace(";\r\n", ";[{<!>}]", $text);		//	;\r\n	-
+				$text = str_replace(";\n", ";[{<!>}]", $text);		//	;\n	-
+				$text = str_replace(";\r", ";[{<!>}]", $text);		//	;\r	-
 				
 				$text = str_replace("\"\r\n", "\"[{<!>}]", $text);		//	"\r\n	-
 				$text = str_replace("\"\n", "\"[{<!>}]", $text);		//	"\n		-
@@ -97,11 +101,28 @@ class HelperMinification{
 				$f = file_put_contents($file, $text);
 				$file = str_replace(__DIR__ . '/../../../../../', '.ini', $file);
 				
+				$path = str_replace($default_path, '', $file);
+				
+				$file_work = $language . $path;
+//				$files[$file_work] = file_exists($file_work);
+				if(file_exists($file_work))
+					file_put_contents($file_work, $text);
+				
+				
+						
 				
 				$countLines2 = count(explode("\n", $text));
 //				$files[] = str_replace($default_path, '', $file) ." -- count:$countLines , newCount:$countLines2";
-				$files[str_replace($default_path, '', $file)] = " -- count:$countLines , newCount:$countLines2";
+				$files[$path] = "          -- count:$countLines , newCount:$countLines2, exist:".(file_exists($file_work)?:0) ;
+				
+				if(strlen($path) > $length)
+					$length = strlen($path);
 			}
+			
+		}
+		foreach ($files as  $f => $desc){
+			unset($files[$f]);
+			$files[str_pad($f, $length + 1)] = $desc;
 		}
 		return $files;
 	}

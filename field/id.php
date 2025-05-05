@@ -69,7 +69,7 @@ class JFormFieldId extends \Joomla\CMS\Form\FormField // /libraries/src/Form/For
                 $option['value'] = $this->default = $this->form->getValue('id',null,JText::_('JAPPLY'));
             }
             
-                return $this->getRenderer('joomla.form.field.text')->render($option);
+		return $this->getRenderer('joomla.form.field.text')->render($option);
 	}	
         /**
 	 * Method to get the field label markup.

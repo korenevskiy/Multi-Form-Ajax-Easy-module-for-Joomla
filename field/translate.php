@@ -26,11 +26,23 @@ use \Joomla\CMS\Version as JVersion;
 use Joomla\CMS\Form\Form as JForm;
 use Joomla\CMS\Language\Language as JLanguage;
 
+
+//toPrint(null,'' ,0,'');
+//toPrint(JFactory::getApplication()->input->get('jform')['params']['list_fields'],'POST' ,0,'message');
+
+
+
 class JFormFieldTranslate extends JFormField  {
 
 	public function __construct($form = null) {
 		parent::__construct($form);
 
+		
+		$live_site = JFactory::getApplication()->getConfig()->get('live_site');
+		if($live_site)
+			JFactory::getApplication()->getDocument()->setBase($live_site);
+		
+		
 		$this->file = '';
 
 		$this->path = dirname(__DIR__.'/');
@@ -91,10 +103,21 @@ class JFormFieldTranslate extends JFormField  {
 		$pathsOption = $lang->getPaths($this->file);
 		
 		
+		echo (string)$this->element[0] ?? '';
+		
+//		JFactory::getDocument()->a
+		
+		
 //if(file_exists(JPATH_ROOT . '/functions.php'))
 //	require_once  JPATH_ROOT . '/functions.php';
  
 //toPrint($pathsOption,'$pathsOption',0,'pre',true);
+//toPrint( );
+//toPrint($element,'$element',0,'message',true);
+//toPrint($this->path,'$this->path',0,'message',true);
+//toPrint($this->file,'$this->file',0,'message',true);
+//toPrint($pathsOption,'$pathsOption',0,'message',true);
+//toPrint($lang,'$lang',0,'message',true);
 
 //foreach ($pathsOption as $path => $is){
 //	toPrint($path,'$pathsOption:'. (file_exists($path)).'='.($is),0,'pre',true);
